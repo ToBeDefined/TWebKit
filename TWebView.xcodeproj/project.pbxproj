@@ -12,6 +12,9 @@
 		D794006A1F236CF600740CE3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D79400681F236CF600740CE3 /* Main.storyboard */; };
 		D794006C1F236CF600740CE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D794006B1F236CF600740CE3 /* Assets.xcassets */; };
 		D794006F1F236CF600740CE3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D794006D1F236CF600740CE3 /* LaunchScreen.storyboard */; };
+		D794007B1F236D7100740CE3 /* TWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = D794007A1F236D7100740CE3 /* TWebView.m */; };
+		D79400811F23803C00740CE3 /* TDefineAndCFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = D79400801F23803C00740CE3 /* TDefineAndCFunc.m */; };
+		D7B3E8EE1F24807900C9C576 /* TWebViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B3E8ED1F24807900C9C576 /* TWebViewConfig.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,13 @@
 		D794006B1F236CF600740CE3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D794006E1F236CF600740CE3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D79400701F236CF600740CE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D79400781F236D7000740CE3 /* TWebView-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TWebView-Bridging-Header.h"; sourceTree = "<group>"; };
+		D79400791F236D7100740CE3 /* TWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebView.h; sourceTree = "<group>"; };
+		D794007A1F236D7100740CE3 /* TWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebView.m; sourceTree = "<group>"; };
+		D794007D1F23751B00740CE3 /* TDefineAndCFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDefineAndCFunc.h; sourceTree = "<group>"; };
+		D79400801F23803C00740CE3 /* TDefineAndCFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDefineAndCFunc.m; sourceTree = "<group>"; };
+		D7B3E8EC1F24807900C9C576 /* TWebViewConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebViewConfig.h; sourceTree = "<group>"; };
+		D7B3E8ED1F24807900C9C576 /* TWebViewConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebViewConfig.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +64,29 @@
 		D79400631F236CF600740CE3 /* TWebView */ = {
 			isa = PBXGroup;
 			children = (
+				D794007C1F236D7600740CE3 /* Source */,
 				D79400641F236CF600740CE3 /* AppDelegate.swift */,
 				D79400661F236CF600740CE3 /* ViewController.swift */,
 				D79400681F236CF600740CE3 /* Main.storyboard */,
 				D794006B1F236CF600740CE3 /* Assets.xcassets */,
 				D794006D1F236CF600740CE3 /* LaunchScreen.storyboard */,
 				D79400701F236CF600740CE3 /* Info.plist */,
+				D79400781F236D7000740CE3 /* TWebView-Bridging-Header.h */,
 			);
 			path = TWebView;
+			sourceTree = "<group>";
+		};
+		D794007C1F236D7600740CE3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				D794007D1F23751B00740CE3 /* TDefineAndCFunc.h */,
+				D79400801F23803C00740CE3 /* TDefineAndCFunc.m */,
+				D7B3E8EC1F24807900C9C576 /* TWebViewConfig.h */,
+				D7B3E8ED1F24807900C9C576 /* TWebViewConfig.m */,
+				D79400791F236D7100740CE3 /* TWebView.h */,
+				D794007A1F236D7100740CE3 /* TWebView.m */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +121,7 @@
 				TargetAttributes = {
 					D79400601F236CF600740CE3 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 0900;
 					};
 				};
 			};
@@ -135,8 +161,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D794007B1F236D7100740CE3 /* TWebView.m in Sources */,
+				D79400811F23803C00740CE3 /* TDefineAndCFunc.m in Sources */,
 				D79400671F236CF600740CE3 /* ViewController.swift in Sources */,
 				D79400651F236CF600740CE3 /* AppDelegate.swift in Sources */,
+				D7B3E8EE1F24807900C9C576 /* TWebViewConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,11 +302,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = TS9WTSBK78;
 				INFOPLIST_FILE = TWebView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tech.tbd.TWebView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TWebView/TWebView-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -287,11 +319,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = TS9WTSBK78;
 				INFOPLIST_FILE = TWebView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tech.tbd.TWebView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TWebView/TWebView-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -316,6 +350,7 @@
 				D79400751F236CF600740CE3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

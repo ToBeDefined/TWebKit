@@ -1,0 +1,80 @@
+//
+//  TWebView.h
+//  TWebView
+//
+//  Created by 邵伟男 on 2017/7/22.
+//  Copyright © 2017年 邵伟男. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "TWebViewConfig.h"
+
+@class TWebView;
+@class WKNavigation;
+
+extern NSString *TWebViewLoadStatusIsLodingTitle;
+extern NSString *TWebViewLoadStatusFailedTitle;
+extern NSString *TWebViewLoadStatusSuccessDefaultTitle;
+
+typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
+    TWebViewLoadStatusIsLoding = 1,
+    TWebViewLoadStatusSuccess  = 2,
+    TWebViewLoadStatusFailed   = 3,
+};
+
+
+@protocol TWebViewDelegate <NSObject>
+
+@optional
+
+- (BOOL)webView:(TWebView *)webView shouldStartLoadRequest:(NSURLRequest *)request;
+
+- (void)webView:(TWebView *)webView didStartLoadRequest:(NSURLRequest *)request;
+
+- (void)webView:(TWebView *)webView didFinishLoadRequest:(NSURLRequest *)request;
+
+- (void)webView:(TWebView *)webView didFailedLoadRequest:(NSURLRequest *)request withError:(NSError *)error;
+
+- (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title;
+
+@end
+
+@interface TWebView : UIView
+
+@property (nonatomic, weak) id<TWebViewDelegate> delegate;
+@property (nonatomic, weak) id<TWebViewDelegate> commonDelegate;
+@property (nonatomic, readonly) BOOL canGoBack;
+@property (nonatomic, readonly) BOOL canGoForward;
+@property (nonatomic, readonly, getter=isLoading) BOOL loading;
+@property (nonatomic, strong) UIColor *progressTintColor;
+
+- (instancetype)init;
+- (instancetype)initWithConfig:(TWebViewConfig *)config;
+
+- (void)reload;
+- (void)stopLoading;
+
+- (void)goBack;
+- (void)goForward;
+
+- (void)loadRequest:(NSURLRequest *)request;
+- (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL;
+
+- (void)clearCache;
+
+// this forceOverride just once valid
+- (void)resetCookieForceOverride:(BOOL)forceOverride;
+
+// 9.0以及之后，8.0之前可用
+- (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL;
+// 9.0之后可用
+- (WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL NS_AVAILABLE(10_11, 9_0);
+
++ (NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data;
+
+- (void)runJavascriptString:(NSString *)js completionHandler:(void (^)(id obj, NSError *error))completionHandler;
+
+@end
+
+
+
