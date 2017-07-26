@@ -9,19 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "TWebViewConfig.h"
 
+
+NS_ASSUME_NONNULL_BEGIN
+
 @class TWebView;
 @class WKNavigation;
-
-extern NSString *TWebViewLoadStatusIsLodingTitle;
-extern NSString *TWebViewLoadStatusFailedTitle;
-extern NSString *TWebViewLoadStatusSuccessDefaultTitle;
 
 typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
     TWebViewLoadStatusIsLoding = 1,
     TWebViewLoadStatusSuccess  = 2,
     TWebViewLoadStatusFailed   = 3,
 };
-
 
 @protocol TWebViewDelegate <NSObject>
 
@@ -47,6 +45,12 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 @property (nonatomic, readonly) BOOL canGoForward;
 @property (nonatomic, readonly, getter=isLoading) BOOL loading;
 @property (nonatomic, strong) UIColor *progressTintColor;
+@property (nonatomic, assign) BOOL canScrollBack;
+@property (nonatomic, assign) BOOL canScrollChangeSize;
+@property (nonatomic, assign) BOOL blockActionSheet;
+@property (nonatomic, assign) BOOL block3DTouch;
+
+@property (nonatomic, weak) NSLayoutConstraint *progressViewTopConstraint;
 
 - (instancetype)init;
 - (instancetype)initWithConfig:(TWebViewConfig *)config;
@@ -76,5 +80,5 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 @end
 
-
+NS_ASSUME_NONNULL_END
 

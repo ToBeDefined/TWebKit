@@ -18,6 +18,7 @@
 @property (nonatomic, assign) BOOL forceOverrideCookie;
 @property (nonatomic, assign) BOOL showProgressView;
 @property (nonatomic, assign) UIColor *progressTintColor;
+@property (nonatomic, assign) BOOL canScrollChangeSize;
 @property (nonatomic, copy) NSString *confirmTitle;
 @property (nonatomic, copy) NSString *cancelTitle;
 @property (nonatomic, copy) NSString *lodingDefaultTitle;
