@@ -44,16 +44,27 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 @property (nonatomic, readonly) BOOL canGoBack;
 @property (nonatomic, readonly) BOOL canGoForward;
 @property (nonatomic, readonly, getter=isLoading) BOOL loading;
+
+// Progress View
+@property (nonatomic, assign, getter=isShowProgress) BOOL showProgress;
 @property (nonatomic, strong) UIColor *progressTintColor;
+
+// User Interaction
 @property (nonatomic, assign) BOOL canScrollBack;
 @property (nonatomic, assign) BOOL canScrollChangeSize;
 @property (nonatomic, assign) BOOL blockActionSheet;
 @property (nonatomic, assign) BOOL block3DTouch;
 
-@property (nonatomic, weak) NSLayoutConstraint *progressViewTopConstraint;
+// Texts
+@property (nonatomic, copy) NSString *confirmTitle;
+@property (nonatomic, copy) NSString *cancelTitle;
+@property (nonatomic, copy) NSString *lodingDefaultTitle;
+@property (nonatomic, copy) NSString *successDefaultTitle;
+@property (nonatomic, copy) NSString *failedDefaultTitle;
 
 - (instancetype)init;
 - (instancetype)initWithConfig:(TWebViewConfig *)config;
+- (id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel;
 
 - (void)reload;
 - (void)stopLoading;
@@ -76,8 +87,9 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 + (NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data;
 
-- (void)runJavascriptString:(NSString *)js completionHandler:(void (^)(id obj, NSError *error))completionHandler;
+- (void)runJavascriptString:(NSString *)js completionHandler:(void (^__nullable)(id obj, NSError *error))completionHandler;
 
+- (void)setProgress:(double)progress animated:(BOOL)animated;
 @end
 
 NS_ASSUME_NONNULL_END

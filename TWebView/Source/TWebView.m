@@ -61,48 +61,31 @@
 #import "TWebView.h"
 #import "TWebViewConfig.h"
 #import "UIView+TWVLayout.h"
+#import "TWKWebViewDelegate.h"
+#import "TUIWebViewDelegate.h"
 
 static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
+@interface TWebView()
 
-//NSString *self.lodingDefaultTitle       = @"加载中...";
-//NSString *self.failedDefaultTitle         = @"加载失败";
-//NSString *self.successDefaultTitle = @"详情";
-
-//static const NSString *TWebViewDelegateKey = @"TWebViewDelegateKey";
-
-const float WebViewInitialProgressValue = 0.1f;
-const float WebViewInteractiveProgressValue = 0.5f;
-const float WebViewFinalProgressValue = 0.9f;
-
-@interface TWebView() <UIWebViewDelegate, WKNavigationDelegate, WKUIDelegate>
-
-@property (nonatomic, strong) WKWebView *wkWebView NS_AVAILABLE(10_10, 8_0);
 @property (nonatomic, strong) WKProcessPool *processPool;
+@property (nonatomic, strong) WKWebView *wkWebView NS_AVAILABLE(10_10, 8_0);
+@property (nonatomic, strong) TWKWebViewDelegate *wkWebViewDelegate;
 
 @property (nonatomic, strong) UIWebView *uiWebView;
+@property (nonatomic, strong) TUIWebViewDelegate *uiWebViewDelegate;
+
 @property (nonatomic, strong) UIProgressView *progressView;
-@property (nonatomic, assign, getter=isShowProgress) BOOL showProgress;
-@property (nonatomic, readonly) float progress; // 0.0..1.0
-@property (nonatomic, strong) NSURLRequest *request;
 @property (nonatomic, assign) BOOL forceOverrideCookie;
 
-@property (nonatomic, copy) NSString *confirmTitle;
-@property (nonatomic, copy) NSString *cancelTitle;
-@property (nonatomic, copy) NSString *lodingDefaultTitle;
-@property (nonatomic, copy) NSString *successDefaultTitle;
-@property (nonatomic, copy) NSString *failedDefaultTitle;
+@property (nonatomic, weak) NSLayoutConstraint *progressViewTopConstraint;
 
 @end
 
 @implementation TWebView
-{
-    NSUInteger _loadingCount;
-    NSUInteger _maxLoadCount;
-    NSURL *_currentURL;
-    BOOL _interactive;
-}
 
+
+#pragma mark - Memory
 - (void)dealloc {
     if (T_IS_ABOVE_IOS(8)) {
         [self.wkWebView removeObserver:self forKeyPath:@"estimatedProgress"];
@@ -157,6 +140,8 @@ const float WebViewFinalProgressValue = 0.9f;
     return self;
 }
 
+
+#pragma mark - Setter/Getter
 - (void)setCanScrollBack:(BOOL)canScrollBack {
     _canScrollBack = canScrollBack;
     if (T_IS_ABOVE_IOS(8)) {
@@ -178,7 +163,6 @@ const float WebViewFinalProgressValue = 0.9f;
     }
 }
 
-
 - (WKProcessPool *)processPool {
     WKProcessPool *processPool = objc_getAssociatedObject([UIApplication sharedApplication], &WKWebViewProcessPoolKey);
     if (!processPool) {
@@ -188,124 +172,6 @@ const float WebViewFinalProgressValue = 0.9f;
     _processPool = processPool;
     return _processPool;
 }
-
-- (void)setUI {
-    UIView *webView;
-    if (T_IS_ABOVE_IOS(8)) {
-        self.wkWebView = ({
-            // 设置cookie
-            WKUserContentController *userContentController = [[WKUserContentController alloc] init];
-            NSString *cookieJS = [self getSetCookieJSCodeWithForceOverride:_forceOverrideCookie];
-            WKUserScript *cookieInScript = [[WKUserScript alloc] initWithSource:cookieJS
-                                                                  injectionTime:WKUserScriptInjectionTimeAtDocumentStart
-                                                               forMainFrameOnly:NO];
-            [userContentController addUserScript:cookieInScript];
-            
-            WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-            config.userContentController = userContentController;
-            config.processPool = self.processPool;
-            WKWebView * webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
-            if (_canScrollBack) {
-                webView.allowsBackForwardNavigationGestures = YES;
-            } else {
-                webView.allowsBackForwardNavigationGestures = NO;
-            }
-            
-            webView.navigationDelegate = self;
-            webView.UIDelegate = self;
-            [webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
-            [webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
-            [webView addObserver:self forKeyPath:@"scrollView.contentInset" options:NSKeyValueObservingOptionNew context:nil];
-            webView;
-        });
-        webView = _wkWebView;
-        [self insertSubview:_wkWebView belowSubview:_progressView];
-    } else {
-        self.uiWebView = ({
-            UIWebView *webView = [[UIWebView alloc] init];
-            webView.delegate = self;
-            [webView addObserver:self forKeyPath:@"scrollView.contentInset" options:NSKeyValueObservingOptionNew context:nil];
-            webView;
-        });
-        webView = _uiWebView;
-        [self insertSubview:_uiWebView belowSubview:_progressView];
-    }
-    
-    [self addSubview:webView];
-    [webView twv_makeConstraint:Top equealTo:self];
-    [webView twv_makeConstraint:Left equealTo:self];
-    [webView twv_makeConstraint:Right equealTo:self];
-    [webView twv_makeConstraint:Bottom equealTo:self];
-    
-    self.progressView = [[UIProgressView alloc] init];
-    self.progressView.trackTintColor = [UIColor clearColor];
-    self.progressView.progressTintColor = _progressTintColor;
-    self.progressView.trackTintColor = [UIColor whiteColor];
-    
-    [self addSubview:self.progressView];
-    self.progressViewTopConstraint = [self.progressView twv_makeConstraint:Top equealTo:self];
-    [self.progressView twv_makeConstraint:Left equealTo:self];
-    [self.progressView twv_makeConstraint:Right equealTo:self];
-    [self.progressView twv_makeConstraint:Height is:2];
-    
-    [self resetCookieForceOverride:_forceOverrideCookie];
-}
-
-- (NSString *)getSetCookieJSCodeWithForceOverride:(BOOL)forceOverride {
-    
-    //取出cookie
-    //js函数,如果需要比较，不进行强制覆盖cookie，使用注释掉的js函数
-    NSString *JSFuncString;
-    if (forceOverride) {
-        JSFuncString = @"";
-    } else {
-        JSFuncString =
-        @"\
-        \n var cookieNames = document.cookie.split('; ').map(function(cookie) {\
-        \n     return cookie.split('=')[0] \
-        \n });\
-        \n";
-    }
-    
-    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    NSArray *cookies = [cookieStorage cookies];//ForURL:[NSURL URLWithString:domain]];
-    //拼凑js字符串
-    NSMutableString *JSCode = [JSFuncString mutableCopy];
-    for (NSHTTPCookie *cookie in cookies) {
-        NSString *string = [NSString stringWithFormat:@"%@=%@;domain=%@;path=%@",
-                            cookie.name,
-                            cookie.value,
-                            cookie.domain,
-                            cookie.path ?: @"/"];
-        
-        if (cookie.secure) {
-            string = [string stringByAppendingString:@";secure=true"];
-        }
-        NSString *setCookieString = nil;
-        if (forceOverride) {
-            setCookieString = [NSString stringWithFormat:
-                               @"\
-                               \n document.cookie='%@';\
-                               \n", string];
-        } else {
-            setCookieString = [NSString stringWithFormat:
-                               @"\
-                               \n if (cookieNames.indexOf('%@') == -1) {\
-                               \n     document.cookie='%@';\
-                               \n };\
-                               \n", cookie.name, string];
-        }
-        [JSCode appendString:setCookieString];
-    }
-    return JSCode;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-}
-
-
-#pragma mark - SETTER/GETTER
 
 - (void)setShowProgress:(BOOL)showProgress {
     _showProgress = showProgress;
@@ -337,6 +203,80 @@ const float WebViewFinalProgressValue = 0.9f;
     } else {
         return [_uiWebView isLoading];
     }
+}
+
+
+#pragma mark - Create UI
+- (void)setUI {
+    UIView *webView;
+    if (T_IS_ABOVE_IOS(8)) {
+        [self setUpWKWebView];
+        webView = _wkWebView;
+    } else {
+        [self setUpUIWebView];
+        webView = _uiWebView;
+    }
+    
+    [self addSubview:webView];
+    [webView twv_makeConstraint:Top equealTo:self];
+    [webView twv_makeConstraint:Left equealTo:self];
+    [webView twv_makeConstraint:Right equealTo:self];
+    [webView twv_makeConstraint:Bottom equealTo:self];
+    
+    self.progressView = [[UIProgressView alloc] init];
+    self.progressView.trackTintColor = [UIColor clearColor];
+    self.progressView.progressTintColor = _progressTintColor;
+    self.progressView.trackTintColor = [UIColor whiteColor];
+    
+    [self addSubview:self.progressView];
+    self.progressViewTopConstraint = [self.progressView twv_makeConstraint:Top equealTo:self];
+    [self.progressView twv_makeConstraint:Left equealTo:self];
+    [self.progressView twv_makeConstraint:Right equealTo:self];
+    [self.progressView twv_makeConstraint:Height is:2];
+    
+    [self resetCookieForceOverride:_forceOverrideCookie];
+}
+
+- (void)setUpWKWebView {
+    self.wkWebView = ({
+        // 设置cookie
+        WKUserContentController *userContentController = [[WKUserContentController alloc] init];
+        NSString *cookieJS = [self getSetCookieJSCodeWithForceOverride:_forceOverrideCookie];
+        WKUserScript *cookieInScript = [[WKUserScript alloc] initWithSource:cookieJS
+                                                              injectionTime:WKUserScriptInjectionTimeAtDocumentStart
+                                                           forMainFrameOnly:NO];
+        [userContentController addUserScript:cookieInScript];
+        
+        WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+        config.userContentController = userContentController;
+        config.processPool = self.processPool;
+        WKWebView * webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
+        if (_canScrollBack) {
+            webView.allowsBackForwardNavigationGestures = YES;
+        } else {
+            webView.allowsBackForwardNavigationGestures = NO;
+        }
+        
+        self.wkWebViewDelegate = [TWKWebViewDelegate getDelegateWith:self];
+        webView.navigationDelegate = self.wkWebViewDelegate;
+        webView.UIDelegate = self.wkWebViewDelegate;
+        [webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
+        [webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
+        [webView addObserver:self forKeyPath:@"scrollView.contentInset" options:NSKeyValueObservingOptionNew context:nil];
+        webView;
+    });
+    [self insertSubview:_wkWebView atIndex:0];
+}
+
+- (void)setUpUIWebView{
+    self.uiWebView = ({
+        UIWebView *webView = [[UIWebView alloc] init];
+        self.uiWebViewDelegate = [TUIWebViewDelegate getDelegateWith:self];
+        webView.delegate = self.uiWebViewDelegate;
+        [webView addObserver:self forKeyPath:@"scrollView.contentInset" options:NSKeyValueObservingOptionNew context:nil];
+        webView;
+    });
+    [self insertSubview:_uiWebView atIndex:0];
 }
 
 
@@ -374,7 +314,6 @@ const float WebViewFinalProgressValue = 0.9f;
 }
 
 - (void)loadRequest:(NSURLRequest *)request {
-    self.request = request;
     if (T_IS_ABOVE_IOS(8)) {
         [_wkWebView loadRequest:request];
     } else {
@@ -416,6 +355,71 @@ const float WebViewFinalProgressValue = 0.9f;
             }];
 }
 
+#pragma mark - Get Delegate
+- (id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel {
+    if ([self.delegate respondsToSelector:sel]) {
+        return self.delegate;
+    } else if ([self.commonDelegate respondsToSelector:sel]) {
+        return self.commonDelegate;
+    }
+    return nil;
+}
+
+#pragma mark - Observe
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+    
+    if ([keyPath isEqualToString:@"scrollView.contentInset"]) {
+        CGFloat constant = 0;
+        if (object == self.wkWebView) {
+            constant = self.wkWebView.scrollView.contentInset.top;
+        } else {
+            constant = self.uiWebView.scrollView.contentInset.top;
+        }
+        self.progressViewTopConstraint.constant = constant;
+    }
+    
+    if (object == self.wkWebView) {
+        if ([keyPath isEqualToString:@"estimatedProgress"]) {
+            double newprogress = [[change objectForKey:NSKeyValueChangeNewKey] doubleValue];
+            [self setProgress:newprogress animated:YES];
+        }
+        
+        if ([keyPath isEqualToString:@"title"]) {
+            NSString *newTitle = [change objectForKey:NSKeyValueChangeNewKey];
+            id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
+            [delegate webView:self
+                   loadStatus:TWebViewLoadStatusSuccess
+                        title:isNotEmptyString(newTitle) ? newTitle : self.successDefaultTitle];
+        }
+    }
+}
+
+
+#pragma mark - ProgressView
+- (void)setProgress:(double)progress
+           animated:(BOOL)animated {
+    if (!self.isShowProgress) {
+        return;
+    }
+    
+    if (progress == 1) {
+        self.progressView.hidden = NO;
+        [self.progressView setProgress:1 animated:animated];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.progressView.hidden = YES;
+            [self.progressView setProgress:0 animated:NO];
+        });
+    } else if (progress == 0) {
+        self.progressView.hidden = YES;
+        [self.progressView setProgress:0 animated:NO];
+    } else {
+        self.progressView.hidden = NO;
+        [self.progressView setProgress:progress animated:animated];
+    }
+}
+
+
+#pragma mark - Cookie & JS
 - (void)clearCache {
     NSString *iosVer;
     __block NSString *ms = @"清除列表:\n";
@@ -492,381 +496,54 @@ const float WebViewFinalProgressValue = 0.9f;
     });
 }
 
-#pragma mark - Observe & GetDelegate
-- (id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel {
-    if ([self.delegate respondsToSelector:sel]) {
-        return self.delegate;
-    } else if ([self.commonDelegate respondsToSelector:sel]) {
-        return self.commonDelegate;
-    }
-    return nil;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
+- (NSString *)getSetCookieJSCodeWithForceOverride:(BOOL)forceOverride {
     
-    if ([keyPath isEqualToString:@"scrollView.contentInset"]) {
-        CGFloat constant = 0;
-        if (object == self.wkWebView) {
-            constant = self.wkWebView.scrollView.contentInset.top;
-        } else {
-            constant = self.uiWebView.scrollView.contentInset.top;
-        }
-        self.progressViewTopConstraint.constant = constant;
+    //取出cookie
+    //js函数,如果需要比较，不进行强制覆盖cookie，使用注释掉的js函数
+    NSString *JSFuncString;
+    if (forceOverride) {
+        JSFuncString = @"";
+    } else {
+        JSFuncString =
+        @"\
+        \n var cookieNames = document.cookie.split('; ').map(function(cookie) {\
+        \n     return cookie.split('=')[0] \
+        \n });\
+        \n";
     }
     
-    if (object == self.wkWebView) {
-        if ([keyPath isEqualToString:@"estimatedProgress"]) {
-            double newprogress = [[change objectForKey:NSKeyValueChangeNewKey] doubleValue];
-            [self setProgressView:self.progressView progress:newprogress animated:YES];
-        }
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSArray *cookies = [cookieStorage cookies];//ForURL:[NSURL URLWithString:domain]];
+    //拼凑js字符串
+    NSMutableString *JSCode = [JSFuncString mutableCopy];
+    for (NSHTTPCookie *cookie in cookies) {
+        NSString *string = [NSString stringWithFormat:@"%@=%@;domain=%@;path=%@",
+                            cookie.name,
+                            cookie.value,
+                            cookie.domain,
+                            cookie.path ?: @"/"];
         
-        if ([keyPath isEqualToString:@"title"]) {
-            NSString *newTitle = [change objectForKey:NSKeyValueChangeNewKey];
-            id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-            [delegate webView:self
-                   loadStatus:TWebViewLoadStatusSuccess
-                        title:isNotEmptyString(newTitle) ? newTitle : self.successDefaultTitle];
+        if (cookie.secure) {
+            string = [string stringByAppendingString:@";secure=true"];
         }
-    }
-    
-    
-}
-
-
-#pragma mark - ProgressView
-- (void)setProgressView:(UIProgressView *)progressView
-               progress:(double)progress
-               animated:(BOOL)animated{
-    if (!self.isShowProgress) {
-        return;
-    }
-    
-    if (progress == 1) {
-        progressView.hidden = NO;
-        [progressView setProgress:1 animated:animated];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            progressView.hidden = YES;
-            [progressView setProgress:0 animated:NO];
-        });
-    } else if (progress == 0) {
-        progressView.hidden = YES;
-        [progressView setProgress:0 animated:NO];
-    } else {
-        progressView.hidden = NO;
-        [progressView setProgress:progress animated:animated];
-    }
-}
-
-
-#pragma mark - UIWebViewProgress
-- (void)incrementProgress {
-    float progress = self.progress;
-    float maxProgress = _interactive ? WebViewFinalProgressValue : WebViewInteractiveProgressValue;
-    float remainPercent = (float)_loadingCount / (float)_maxLoadCount;
-    float increment = (maxProgress - progress) * remainPercent;
-    progress += increment;
-    progress = fmin(progress, maxProgress);
-    [self setProgress:progress];
-}
-
-- (void)reset {
-    _maxLoadCount = _loadingCount = 0;
-    _interactive = NO;
-    [self setProgress:0.0];
-}
-
-- (void)completeProgress {
-    [self setProgress:1.0];
-}
-
-- (void)startProgress {
-    if (_progress < WebViewInitialProgressValue) {
-        [self setProgress:WebViewInitialProgressValue];
-    }
-}
-
-- (void)setProgress:(float)progress {
-    // progress should be incremental only
-    if (progress > _progress || progress == 0) {
-        _progress = progress;
-        [self setProgressView:_progressView progress:progress animated:YES];
-    }
-}
-
-#pragma mark - UIWebViewDelegate
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    self.request = request;
-    
-    if ([request.URL.absoluteString isEqualToString:@"webviewprogress:///complete"]) {
-        [self completeProgress];
-        return NO;
-    }
-    
-    BOOL ret = YES;
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:shouldStartLoadRequest:)];
-    if (delegate != nil) {
-        ret = [delegate webView:self shouldStartLoadRequest:self.request];
-    }
-    
-    BOOL isFragmentJump = NO;
-    if (request.URL.fragment) {
-        NSString *nonFragmentURL = [request.URL.absoluteString stringByReplacingOccurrencesOfString:[@"#" stringByAppendingString:request.URL.fragment] withString:@""];
-        isFragmentJump = [nonFragmentURL isEqualToString:webView.request.URL.absoluteString];
-    }
-    
-    BOOL isTopLevelNavigation = [request.mainDocumentURL isEqual:request.URL];
-    
-    BOOL isHTTP = [request.URL.scheme isEqualToString:@"http"] || [request.URL.scheme isEqualToString:@"https"];
-    if (ret && !isFragmentJump && isHTTP && isTopLevelNavigation) {
-        _currentURL = request.URL;
-        [self reset];
-    }
-    return ret;
-}
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:didStartLoadRequest:)];
-    [delegate webView:self didStartLoadRequest:self.request];
-    
-    delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [delegate webView:self
-           loadStatus:TWebViewLoadStatusIsLoding
-                title:self.lodingDefaultTitle];
-    
-    ++ _loadingCount;
-    _maxLoadCount = fmax(_maxLoadCount, _loadingCount);
-    [self startProgress];
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:didFinishLoadRequest:)];
-    [delegate webView:self didFinishLoadRequest:self.request];
-    
-    delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    @tweakify(self)
-    [self runJavascriptString:@"document.title" completionHandler:^(id _Nullable obj, NSError * _Nullable error) {
-        @tstrongify(self)
-        NSString *title = obj;
-        title = isNotEmptyString(title) ? title : self.successDefaultTitle;
-        [delegate webView:self
-               loadStatus:TWebViewLoadStatusSuccess
-                    title:title];
-        if (error != nil) {
-            TLog(@"%@", error);
+        NSString *setCookieString = nil;
+        if (forceOverride) {
+            setCookieString = [NSString stringWithFormat:
+                               @"\
+                               \n document.cookie='%@';\
+                               \n", string];
+        } else {
+            setCookieString = [NSString stringWithFormat:
+                               @"\
+                               \n if (cookieNames.indexOf('%@') == -1) {\
+                               \n     document.cookie='%@';\
+                               \n };\
+                               \n", cookie.name, string];
         }
-    }];
-    
-    if (self.blockActionSheet) {
-        [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='none';"];
-    } else {
-        [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='inherit';"];
+        [JSCode appendString:setCookieString];
     }
-    
-    [self reduceLoadingCount];
+    return JSCode;
 }
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    TLog(@"%@", error);
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:didFailedLoadRequest:withError:)];
-    [delegate webView:self didFailedLoadRequest:self.request withError:error];
-    
-    delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [delegate webView:self loadStatus:TWebViewLoadStatusFailed title:self.failedDefaultTitle];
-    
-    [self reduceLoadingCount];
-}
-
-// UIWebView Calculate Progress Func
-- (void)reduceLoadingCount {
-    --_loadingCount;
-    [self incrementProgress];
-    
-    NSString *readyState = [self.uiWebView stringByEvaluatingJavaScriptFromString:@"document.readyState"];
-    
-    BOOL interactive = [readyState isEqualToString:@"interactive"];
-    if (interactive) {
-        _interactive = YES;
-        NSString *waitForCompleteJS = [NSString stringWithFormat:@"\
-                                       \nwindow.addEventListener('load', function() {\
-                                       \n    var iframe = document.createElement('iframe');\
-                                       \n    iframe.style.display = 'none'; iframe.src = '%@';\
-                                       \n    document.body.appendChild(iframe);\
-                                       \n}, false);\
-                                       \n", @"webviewprogress:///complete"];
-        [self.uiWebView stringByEvaluatingJavaScriptFromString:waitForCompleteJS];
-    }
-    
-    BOOL isNotRedirect = _currentURL && [_currentURL isEqual:self.uiWebView.request.mainDocumentURL];
-    BOOL complete = [readyState isEqualToString:@"complete"];
-    if (complete && isNotRedirect) {
-        [self completeProgress];
-    }
-}
-
-
-#pragma mark - WKNavigationDelegate
-
-// 相当于 - webView:shouldStartLoadWithRequest:navigationType:
-- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-//    NSURL *url = navigationAction.request.URL;
-    self.request = navigationAction.request;
-//    if ([url.absoluteString isEqualToString:@"about:blank"]) {
-//        decisionHandler(WKNavigationActionPolicyCancel);
-//        return;
-//    }
-//
-//    if ([url.absoluteString rangeOfString:@"//itunes.apple.com"].location != NSNotFound) {
-//        if ([[UIApplication sharedApplication] canOpenURL:url]) {
-//            [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
-//        }
-//        decisionHandler(WKNavigationActionPolicyCancel);
-//        return;
-//    }
-//
-//    if ([url.scheme isEqualToString:@"tel"] || [url.scheme isEqualToString:@"sms"]) {
-//        if ([[UIApplication sharedApplication] canOpenURL:url]) {
-//            [[UIApplication sharedApplication] openURL:url];
-//        }
-//    }
-//
-    
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:shouldStartLoadRequest:)];
-    if (delegate != nil) {
-        BOOL isCanLoad = [delegate webView:self shouldStartLoadRequest:navigationAction.request];
-        if (!isCanLoad) {
-            decisionHandler(WKNavigationActionPolicyCancel);
-        }
-    }
-    decisionHandler(WKNavigationActionPolicyAllow);
-}
-
-- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:didStartLoadRequest:)];
-    [delegate webView:self didStartLoadRequest:self.request];
-    
-    delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [delegate webView:self loadStatus:TWebViewLoadStatusIsLoding title:self.lodingDefaultTitle];
-}
-
-- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [delegate webView:self loadStatus:TWebViewLoadStatusIsLoding title:self.lodingDefaultTitle];
-}
-
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    // 禁止放大缩小
-    if (!self.canScrollChangeSize) {
-        NSString *injectionJSString = @"\
-        \n var script = document.createElement('meta');\
-        \n script.name = 'viewport';\
-        \n script.content=\"width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no\";\
-        \n document.getElementsByTagName('head')[0].appendChild(script);\
-        \n ";
-        [webView evaluateJavaScript:injectionJSString completionHandler:nil];
-    }
-    
-    if (self.blockActionSheet) {
-        [webView evaluateJavaScript:@"document.body.style.webkitTouchCallout='none';" completionHandler:nil];
-    } else {
-        [webView evaluateJavaScript:@"document.body.style.webkitTouchCallout='inherit';" completionHandler:nil];
-    }
-    
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:didFinishLoadRequest:)];
-    [delegate webView:self didFinishLoadRequest:self.request];
-}
-
-
-- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
-    TLog(@"%@", error);
-    if (webView.isLoading) {
-        return;
-    }
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:didFailedLoadRequest:withError:)];
-    [delegate webView:self didFailedLoadRequest:self.request withError:error];
-    
-    delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [delegate webView:self loadStatus:TWebViewLoadStatusFailed title:self.failedDefaultTitle];
-}
-
-- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
-    TLog(@"%@", error);
-    if (webView.isLoading) {
-        return;
-    }
-    id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:didFailedLoadRequest:withError:)];
-    [delegate webView:self didFailedLoadRequest:self.request withError:error];
-    
-    delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [delegate webView:self loadStatus:TWebViewLoadStatusFailed title:self.failedDefaultTitle];
-}
-
-
-#pragma mark - WKUIDelegate
-// 一定是iOS8才会运行到此，使用UIAlertController
-- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
-    
-    UIAlertController *ac = [UIAlertController alertControllerWithTitle:webView.title
-                                                                message:message
-                                                         preferredStyle:UIAlertControllerStyleAlert];
-    [ac addAction:[UIAlertAction actionWithTitle:self.confirmTitle
-                                           style:UIAlertActionStyleCancel
-                                         handler:^(UIAlertAction * _Nonnull action) {
-                                             completionHandler();
-                                         }]];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:ac animated:YES completion:nil];
-    
-}
-
-- (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL))completionHandler {
-    UIAlertController *ac = [UIAlertController alertControllerWithTitle:webView.title
-                                                                message:message
-                                                         preferredStyle:UIAlertControllerStyleAlert];
-    [ac addAction:[UIAlertAction actionWithTitle:self.confirmTitle
-                                           style:UIAlertActionStyleDefault
-                                         handler:^(UIAlertAction * _Nonnull action) {
-                                             completionHandler(YES);
-                                         }]];
-    [ac addAction:[UIAlertAction actionWithTitle:self.cancelTitle
-                                           style:UIAlertActionStyleCancel
-                                         handler:^(UIAlertAction * _Nonnull action) {
-                                             completionHandler(NO);
-                                         }]];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:ac animated:YES completion:nil];
-}
-
-- (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable))completionHandler {
-    
-    UIAlertController *ac = [UIAlertController alertControllerWithTitle:webView.title
-                                                                message:prompt
-                                                         preferredStyle:UIAlertControllerStyleAlert];
-    [ac addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.text = defaultText;
-    }];
-    
-    [ac addAction:[UIAlertAction actionWithTitle: @"确定"
-                                           style:UIAlertActionStyleDefault
-                                         handler:^(UIAlertAction *action) {
-                                             NSString *input = ((UITextField *)ac.textFields.firstObject).text;
-                                             completionHandler(input);
-                                         }]];
-    [ac addAction:[UIAlertAction actionWithTitle: @"取消"
-                                           style:UIAlertActionStyleCancel
-                                         handler:^(UIAlertAction *action) {
-                                             completionHandler(nil);
-                                         }]];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:ac animated:YES completion:nil];
-}
-
-
--(WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
-    if (!navigationAction.targetFrame.isMainFrame) {
-        [webView loadRequest:navigationAction.request];
-    }
-    return nil;
-}
-
-#pragma mark - About Javascript Function
 
 + (NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data {
     if (function == nil) {
@@ -892,7 +569,7 @@ const float WebViewFinalProgressValue = 0.9f;
     return jsString;
 }
 
-- (void)runJavascriptString:(NSString *)js completionHandler:(void (^)(id obj, NSError *error))completionHandler {
+- (void)runJavascriptString:(NSString *)js completionHandler:(void (^__nullable)(id obj, NSError *error))completionHandler {
     if (T_IS_ABOVE_IOS(8)) {
         [_wkWebView evaluateJavaScript:js completionHandler:completionHandler];
     } else {

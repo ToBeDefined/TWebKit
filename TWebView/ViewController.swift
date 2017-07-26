@@ -27,7 +27,6 @@ class ViewController: UIViewController {
         webView.canScrollBack = true
         webView.blockActionSheet = true
         webView.block3DTouch = true
-        webView.progressViewTopConstraint?.constant = 0
         
     }
     override func viewDidAppear(_ animated: Bool) {
