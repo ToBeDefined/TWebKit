@@ -36,9 +36,6 @@
  UIWebViewDelegate       - webView:shouldStartLoadWithRequest:navigationType:
  WKNavigationDelegate    - webView:decidePolicyForNavigationAction:decisionHandler:
  */
- 
-
-
 
 #import <WebKit/WebKit.h>
 #import <objc/runtime.h>
@@ -289,7 +286,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     }
 }
 
-- (WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL {
+- (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL {
     if (T_IS_ABOVE_IOS(9)) {
         return [self.wkWebView loadFileURL:URL allowingReadAccessToURL:readAccessURL];
     } else {
@@ -306,7 +303,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 #pragma mark - Get Delegate
-- (id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel {
+- (nullable id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel {
     if ([self.delegate respondsToSelector:sel]) {
         return self.delegate;
     } else if ([self.commonDelegate respondsToSelector:sel]) {
@@ -355,7 +352,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     if (progress == 1) {
         self.progressView.hidden = NO;
         [self.progressView setProgress:1 animated:animated];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             self.progressView.hidden = YES;
             [self.progressView setProgress:0 animated:NO];
         });
@@ -494,7 +491,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     return JSCode;
 }
 
-+ (NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data {
++ (nullable NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data {
     if (function == nil) {
         return nil;
     }
@@ -536,7 +533,6 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
                 }
                 completion(nil, jsError);
             }
-            
         }
     }
 }

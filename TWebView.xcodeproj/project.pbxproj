@@ -11,6 +11,7 @@
 		D709E0391F283CA700F81DC8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D709E0381F283C8E00F81DC8 /* WebKit.framework */; };
 		D709E03C1F2890D700F81DC8 /* TWKWebViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D709E03B1F2890D700F81DC8 /* TWKWebViewDelegate.m */; };
 		D709E03F1F289C8200F81DC8 /* TUIWebViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D709E03E1F289C8200F81DC8 /* TUIWebViewDelegate.m */; };
+		D709E0431F2983DF00F81DC8 /* TWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D709E0421F2983DF00F81DC8 /* TWebViewController.m */; };
 		D79400651F236CF600740CE3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79400641F236CF600740CE3 /* AppDelegate.swift */; };
 		D79400671F236CF600740CE3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79400661F236CF600740CE3 /* ViewController.swift */; };
 		D794006C1F236CF600740CE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D794006B1F236CF600740CE3 /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 		D794007B1F236D7100740CE3 /* TWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = D794007A1F236D7100740CE3 /* TWebView.m */; };
 		D79400811F23803C00740CE3 /* TDefineAndCFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = D79400801F23803C00740CE3 /* TDefineAndCFunc.m */; };
 		D7B3E8EE1F24807900C9C576 /* TWebViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B3E8ED1F24807900C9C576 /* TWebViewConfig.m */; };
+		D7D150EE1F29B6AC00EAEE63 /* image.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D7D150ED1F29B6AC00EAEE63 /* image.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		D709E03D1F289C8200F81DC8 /* TUIWebViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIWebViewDelegate.h; sourceTree = "<group>"; };
 		D709E03E1F289C8200F81DC8 /* TUIWebViewDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIWebViewDelegate.m; sourceTree = "<group>"; };
 		D709E0401F29774B00F81DC8 /* TWebView_Inner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebView_Inner.h; sourceTree = "<group>"; };
+		D709E0411F2983DF00F81DC8 /* TWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebViewController.h; sourceTree = "<group>"; };
+		D709E0421F2983DF00F81DC8 /* TWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebViewController.m; sourceTree = "<group>"; };
 		D79400611F236CF600740CE3 /* TWebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TWebView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D79400641F236CF600740CE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D79400661F236CF600740CE3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -42,6 +46,7 @@
 		D79400801F23803C00740CE3 /* TDefineAndCFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDefineAndCFunc.m; sourceTree = "<group>"; };
 		D7B3E8EC1F24807900C9C576 /* TWebViewConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebViewConfig.h; sourceTree = "<group>"; };
 		D7B3E8ED1F24807900C9C576 /* TWebViewConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebViewConfig.m; sourceTree = "<group>"; };
+		D7D150ED1F29B6AC00EAEE63 /* image.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = image.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,18 +104,21 @@
 			isa = PBXGroup;
 			children = (
 				D794007D1F23751B00740CE3 /* TDefineAndCFunc.h */,
+				D79400801F23803C00740CE3 /* TDefineAndCFunc.m */,
 				D709E0341F282F0000F81DC8 /* UIView+TWVLayout.h */,
 				D709E0351F282F0000F81DC8 /* UIView+TWVLayout.m */,
-				D79400801F23803C00740CE3 /* TDefineAndCFunc.m */,
 				D7B3E8EC1F24807900C9C576 /* TWebViewConfig.h */,
 				D7B3E8ED1F24807900C9C576 /* TWebViewConfig.m */,
-				D79400791F236D7100740CE3 /* TWebView.h */,
-				D709E0401F29774B00F81DC8 /* TWebView_Inner.h */,
-				D794007A1F236D7100740CE3 /* TWebView.m */,
 				D709E03A1F2890D700F81DC8 /* TWKWebViewDelegate.h */,
 				D709E03B1F2890D700F81DC8 /* TWKWebViewDelegate.m */,
 				D709E03D1F289C8200F81DC8 /* TUIWebViewDelegate.h */,
 				D709E03E1F289C8200F81DC8 /* TUIWebViewDelegate.m */,
+				D79400791F236D7100740CE3 /* TWebView.h */,
+				D709E0401F29774B00F81DC8 /* TWebView_Inner.h */,
+				D794007A1F236D7100740CE3 /* TWebView.m */,
+				D709E0411F2983DF00F81DC8 /* TWebViewController.h */,
+				D709E0421F2983DF00F81DC8 /* TWebViewController.m */,
+				D7D150ED1F29B6AC00EAEE63 /* image.bundle */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -175,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D794006F1F236CF600740CE3 /* LaunchScreen.storyboard in Resources */,
+				D7D150EE1F29B6AC00EAEE63 /* image.bundle in Resources */,
 				D794006C1F236CF600740CE3 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,6 +201,7 @@
 				D79400671F236CF600740CE3 /* ViewController.swift in Sources */,
 				D709E0361F282F0000F81DC8 /* UIView+TWVLayout.m in Sources */,
 				D709E03F1F289C8200F81DC8 /* TUIWebViewDelegate.m in Sources */,
+				D709E0431F2983DF00F81DC8 /* TWebViewController.m in Sources */,
 				D79400651F236CF600740CE3 /* AppDelegate.swift in Sources */,
 				D7B3E8EE1F24807900C9C576 /* TWebViewConfig.m in Sources */,
 			);
@@ -325,7 +335,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = TS9WTSBK78;
 				INFOPLIST_FILE = TWebView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tech.tbd.TWebView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -343,7 +353,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = TS9WTSBK78;
 				INFOPLIST_FILE = TWebView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tech.tbd.TWebView;
 				PRODUCT_NAME = "$(TARGET_NAME)";

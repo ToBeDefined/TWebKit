@@ -14,36 +14,21 @@ class ViewController: UIViewController {
     var webView: TWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.automaticallyAdjustsScrollViewInsets = false
-        self.view.backgroundColor = UIColor.red
-        let webView = TWebView.init()
-        self.webView = webView
-        webView.delegate = self
-        webView.frame = CGRect.init(x: 0, y: 64,
-                                    width: UIScreen.main.bounds.width,
-                                    height: UIScreen.main.bounds.height-64)
-        self.view.addSubview(webView)
-        webView.load(URLRequest.init(url: URL.init(string: "https://c.163.com")!))
-        webView.canScrollBack = true
-        webView.blockActionSheet = true
-        webView.block3DTouch = true
+        self.view.backgroundColor = UIColor.white
+        let btn = UIButton.init(type: .system)
+        btn.setTitle("push", for: .normal)
+        btn.frame = CGRect.init(x: 30, y: 100, width: 100, height: 100)
+        btn.addTarget(self, action: #selector(self.push), for: .touchUpInside)
+        self.view.addSubview(btn)
         
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated);
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func push() {
+        let vc = TWebViewController()
+        vc.loadURL(from: "http://www.baidu.com")
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
-extension ViewController: TWebViewDelegate {
-    func webView(_ webView: TWebView, shouldStartLoad request: URLRequest) -> Bool {
-        print(request)
-        return true
-    }
-}
 
 

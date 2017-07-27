@@ -39,8 +39,8 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 @interface TWebView : UIView
 
-@property (nonatomic, weak) id<TWebViewDelegate> delegate;
-@property (nonatomic, weak) id<TWebViewDelegate> commonDelegate;
+@property (nonatomic, weak) id<TWebViewDelegate> _Nullable delegate;
+@property (nonatomic, weak) id<TWebViewDelegate> _Nullable commonDelegate;
 @property (nonatomic, readonly) BOOL canGoBack;
 @property (nonatomic, readonly) BOOL canGoForward;
 @property (nonatomic, readonly, getter=isLoading) BOOL loading;
@@ -64,7 +64,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 - (instancetype)init;
 - (instancetype)initWithConfig:(TWebViewConfig *)config;
-- (id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel;
+- (nullable id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel;
 
 - (void)reload;
 - (void)stopLoading;
@@ -73,7 +73,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 - (void)goForward;
 
 - (void)loadRequest:(NSURLRequest *)request;
-- (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL;
+- (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;
 
 - (void)clearCache;
 
@@ -83,9 +83,9 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 // 9.0以及之后，8.0之前可用
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL;
 // 9.0之后可用
-- (WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL NS_AVAILABLE(10_11, 9_0);
+- (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL NS_AVAILABLE(10_11, 9_0);
 
-+ (NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data;
++ (nullable NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data;
 
 - (void)runJavascript:(NSString *)js completion:(void (^__nullable)(id obj, NSError *error))completion;
 

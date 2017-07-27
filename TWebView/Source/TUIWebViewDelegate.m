@@ -10,6 +10,9 @@
 #import "TWebView_Inner.h"
 #import "TDefineAndCFunc.h"
 
+// use NJK Progress https://github.com/ninjinkun/NJKWebViewProgress
+NSString *completeRPCURLPath = @"/njkwebviewprogressproxy/complete";
+
 const float WebViewInitialProgressValue = 0.1f;
 const float WebViewInteractiveProgressValue = 0.5f;
 const float WebViewFinalProgressValue = 0.9f;
@@ -40,7 +43,7 @@ const float WebViewFinalProgressValue = 0.9f;
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     self.tWebView.request = request;
     
-    if ([request.URL.absoluteString isEqualToString:@"webviewprogress:///complete"]) {
+    if ([request.URL.path isEqualToString:completeRPCURLPath]) {
         [self completeProgress];
         return NO;
     }
@@ -59,9 +62,8 @@ const float WebViewFinalProgressValue = 0.9f;
     }
     
     BOOL isTopLevelNavigation = [request.mainDocumentURL isEqual:request.URL];
-    
-    BOOL isHTTP = [request.URL.scheme isEqualToString:@"http"] || [request.URL.scheme isEqualToString:@"https"];
-    if (ret && !isFragmentJump && isHTTP && isTopLevelNavigation) {
+    BOOL isHTTPOrLocalFile = [request.URL.scheme isEqualToString:@"http"] || [request.URL.scheme isEqualToString:@"https"] || [request.URL.scheme isEqualToString:@"file"];
+    if (ret && !isFragmentJump && isHTTPOrLocalFile && isTopLevelNavigation) {
         _currentURL = request.URL;
         [self reset];
     }
@@ -107,7 +109,7 @@ const float WebViewFinalProgressValue = 0.9f;
         [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='inherit';"];
     }
     
-    [self reduceLoadingCount];
+    [self reduceLoadingCount:nil];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -122,7 +124,7 @@ const float WebViewFinalProgressValue = 0.9f;
            loadStatus:TWebViewLoadStatusFailed
                 title:self.tWebView.failedDefaultTitle];
     
-    [self reduceLoadingCount];
+    [self reduceLoadingCount:error];
 }
 
 #pragma mark - Calculate Progress
@@ -161,37 +163,32 @@ const float WebViewFinalProgressValue = 0.9f;
 }
 
 // UIWebView Calculate Progress Func
-- (void)reduceLoadingCount {
-    --_loadingCount;
+- (void)reduceLoadingCount:(nullable NSError*)error {
+    -- _loadingCount;
     [self incrementProgress];
     @tweakify(self)
-    [self.tWebView runJavascript:@"document.readyState"
-                      completion:^(id  _Nonnull obj, NSError * _Nonnull error) {
-                          @tstrongify(self)
-                          NSString *readyString;
-                          if (obj != nil) {
-                              readyString = (NSString *)obj;
-                              BOOL interactive = [readyString isEqualToString:@"interactive"];
-                              if (interactive) {
-                                  _interactive = YES;
-                                  NSString *waitForCompleteJS = [NSString stringWithFormat:@"\
-                                                                 \nwindow.addEventListener('load', function() {\
-                                                                 \n    var iframe = document.createElement('iframe');\
-                                                                 \n    iframe.style.display = 'none'; iframe.src = '%@';\
-                                                                 \n    document.body.appendChild(iframe);\
-                                                                 \n}, false);\
-                                                                 \n", @"webviewprogress:///complete"];
-                                  [self.tWebView runJavascript:waitForCompleteJS
-                                                    completion:nil];
-                              }
-                          }
-                          BOOL isNotRedirect = _currentURL && [_currentURL isEqual:self.tWebView.request.mainDocumentURL];
-                          BOOL complete = [readyString isEqualToString:@"complete"];
-                          if (complete && isNotRedirect) {
-                              [self completeProgress];
-                          }
-                          
-                      }];
+    [self.tWebView runJavascript:@"document.readyState" completion:^(id  _Nonnull obj, NSError * _Nonnull error) {
+        @tstrongify(self)
+        if ([obj isEqualToString:@"interactive"]) {
+            _interactive = YES;
+            NSString *waitForCompleteJS = [NSString stringWithFormat:@"\
+                                           \n window.addEventListener('load',function() { \
+                                           \n   var iframe = document.createElement('iframe');\
+                                           \n   iframe.style.display = 'none'; \
+                                           \n   iframe.src = '%@://%@%@';\
+                                           \n   document.body.appendChild(iframe); \
+                                           \n }, false);",
+                                           self.tWebView.request.mainDocumentURL.scheme,
+                                           self.tWebView.request.mainDocumentURL.host,
+                                           completeRPCURLPath];
+            [self.tWebView runJavascript:waitForCompleteJS completion:nil];
+        }
+        BOOL isNotRedirect = _currentURL && [_currentURL isEqual:self.tWebView.request.mainDocumentURL];
+        BOOL complete = [obj isEqualToString:@"complete"];
+        if ((complete && isNotRedirect) || error) {
+            [self completeProgress];
+        }
+    }];
 }
 
 
