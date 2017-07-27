@@ -12,14 +12,19 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        self.view.backgroundColor = UIColor.white
+        let btn = UIButton.init(type: .system)
+        btn.setTitle("push", for: .normal)
+        btn.frame = CGRect.init(x: 30, y: 100, width: 100, height: 100)
+        btn.addTarget(self, action: #selector(self.push), for: .touchUpInside)
+        self.view.addSubview(btn)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func push() {
+        let vc = TWebViewController()
+        vc.loadURL(from: "http://www.baidu.com")
+        self.navigationController?.pushViewController(vc, animated: true)
     }
-
-
 }
 
