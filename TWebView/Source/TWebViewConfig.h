@@ -19,8 +19,8 @@
 @property (nonatomic, assign) BOOL showProgressView;
 @property (nonatomic, assign) UIColor *progressTintColor;
 @property (nonatomic, assign) BOOL canScrollChangeSize;
-@property (nonatomic, copy) NSString *confirmTitle;
-@property (nonatomic, copy) NSString *cancelTitle;
+@property (nonatomic, copy) NSString *confirmText;
+@property (nonatomic, copy) NSString *cancelText;
 @property (nonatomic, copy) NSString *lodingDefaultTitle;
 @property (nonatomic, copy) NSString *successDefaultTitle;
 @property (nonatomic, copy) NSString *failedDefaultTitle;

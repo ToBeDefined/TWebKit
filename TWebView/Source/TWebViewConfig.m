@@ -20,8 +20,8 @@
         _showProgressView = YES;
         _progressTintColor = [UIColor blueColor];
         _canScrollChangeSize = true;
-        _confirmTitle = @"OK";
-        _cancelTitle = @"Cancel";
+        _confirmText = @"OK";
+        _cancelText = @"Cancel";
         _lodingDefaultTitle = @"Loding...";
         _successDefaultTitle = @"Details";
         _failedDefaultTitle = @"Failed";

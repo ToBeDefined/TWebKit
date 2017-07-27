@@ -56,8 +56,8 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 @property (nonatomic, assign) BOOL block3DTouch;
 
 // Texts
-@property (nonatomic, copy) NSString *confirmTitle;
-@property (nonatomic, copy) NSString *cancelTitle;
+@property (nonatomic, copy) NSString *confirmText;
+@property (nonatomic, copy) NSString *cancelText;
 @property (nonatomic, copy) NSString *lodingDefaultTitle;
 @property (nonatomic, copy) NSString *successDefaultTitle;
 @property (nonatomic, copy) NSString *failedDefaultTitle;

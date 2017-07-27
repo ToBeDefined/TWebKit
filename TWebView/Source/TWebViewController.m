@@ -11,6 +11,7 @@
 #import "TWebViewController.h"
 #import "TWebViewConfig.h"
 #import "UIView+TWVLayout.h"
+#import "TWebViewCommonDelegate.h"
 
 static int AlertTagConfirmClearCache = 10001;
 static int AlertTagInputURL          = 10002;
@@ -30,7 +31,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
     self = [super init];
     if (self) {
         TWebViewConfig *config = [[TWebViewConfig alloc] init];
-        config.commonDelegate = nil;
+        config.commonDelegate = [TWebViewCommonDelegate sharedInstance];
         config.delegate = self;
         self.webView = [[TWebView alloc] initWithConfig:config];
     }
@@ -120,23 +121,6 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 
 
 #pragma mark - CommonWebViewDelegate
-- (BOOL)webView:(TWebView *)webView shouldStartLoadRequest:(NSURLRequest *)request {
-    TLog(@"%@", request.URL.absoluteString);
-    return YES;
-}
-
-- (void)webView:(TWebView *)webView didStartLoadRequest:(NSURLRequest *)request {
-    TLog(@"%@", request.URL.absoluteString);
-}
-
-- (void)webView:(TWebView *)webView didFinishLoadRequest:(NSURLRequest *)request {
-    TLog(@"%@", request.URL.absoluteString);
-}
-
-- (void)webView:(TWebView *)webView didFailedLoadRequest:(NSURLRequest *)request withError:(NSError *)error {
-    TLog(@"%@", request.URL.absoluteString);
-}
-
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title {
     TLog(@"%@", title);
     if (!isNotEmptyString(self.navTitle)) {

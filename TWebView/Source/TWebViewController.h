@@ -23,19 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)resetWebViewCookieForceOverride:(BOOL)forceOverride;
 
-#pragma mark - CommonWebViewDelegate
-
-- (BOOL)webView:(TWebView *)webView shouldStartLoadRequest:(NSURLRequest *)request;
-
-- (void)webView:(TWebView *)webView didStartLoadRequest:(NSURLRequest *)request;
-
-- (void)webView:(TWebView *)webView didFinishLoadRequest:(NSURLRequest *)request;
-
-- (void)webView:(TWebView *)webView didFailedLoadRequest:(NSURLRequest *)request withError:(NSError *)error;
-
-- (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title;
-
-
 @end
 
 NS_ASSUME_NONNULL_END

@@ -53,6 +53,7 @@
         BOOL isCanLoad = [delegate webView:self.tWebView shouldStartLoadRequest:navigationAction.request];
         if (!isCanLoad) {
             decisionHandler(WKNavigationActionPolicyCancel);
+            return;
         }
     }
     decisionHandler(WKNavigationActionPolicyAllow);
@@ -137,7 +138,7 @@
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:webView.title
                                                                 message:message
                                                          preferredStyle:UIAlertControllerStyleAlert];
-    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.confirmTitle
+    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.confirmText
                                            style:UIAlertActionStyleCancel
                                          handler:^(UIAlertAction * _Nonnull action) {
                                              completionHandler();
@@ -150,12 +151,12 @@
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:webView.title
                                                                 message:message
                                                          preferredStyle:UIAlertControllerStyleAlert];
-    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.confirmTitle
+    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.confirmText
                                            style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * _Nonnull action) {
                                              completionHandler(YES);
                                          }]];
-    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.cancelTitle
+    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.cancelText
                                            style:UIAlertActionStyleCancel
                                          handler:^(UIAlertAction * _Nonnull action) {
                                              completionHandler(NO);
@@ -172,13 +173,13 @@
         textField.text = defaultText;
     }];
     
-    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.confirmTitle
+    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.confirmText
                                            style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction *action) {
                                              NSString *input = ((UITextField *)ac.textFields.firstObject).text;
                                              completionHandler(input);
                                          }]];
-    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.cancelTitle
+    [ac addAction:[UIAlertAction actionWithTitle:self.tWebView.cancelText
                                            style:UIAlertActionStyleCancel
                                          handler:^(UIAlertAction *action) {
                                              completionHandler(nil);

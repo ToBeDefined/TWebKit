@@ -20,6 +20,7 @@
 		D79400811F23803C00740CE3 /* TDefineAndCFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = D79400801F23803C00740CE3 /* TDefineAndCFunc.m */; };
 		D7B3E8EE1F24807900C9C576 /* TWebViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B3E8ED1F24807900C9C576 /* TWebViewConfig.m */; };
 		D7D150EE1F29B6AC00EAEE63 /* image.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D7D150ED1F29B6AC00EAEE63 /* image.bundle */; };
+		D7D150F11F29D9DA00EAEE63 /* TWebViewCommonDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7D150F01F29D9DA00EAEE63 /* TWebViewCommonDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,8 @@
 		D7B3E8EC1F24807900C9C576 /* TWebViewConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebViewConfig.h; sourceTree = "<group>"; };
 		D7B3E8ED1F24807900C9C576 /* TWebViewConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebViewConfig.m; sourceTree = "<group>"; };
 		D7D150ED1F29B6AC00EAEE63 /* image.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = image.bundle; sourceTree = "<group>"; };
+		D7D150EF1F29D9DA00EAEE63 /* TWebViewCommonDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebViewCommonDelegate.h; sourceTree = "<group>"; };
+		D7D150F01F29D9DA00EAEE63 /* TWebViewCommonDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebViewCommonDelegate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +116,8 @@
 				D709E03B1F2890D700F81DC8 /* TWKWebViewDelegate.m */,
 				D709E03D1F289C8200F81DC8 /* TUIWebViewDelegate.h */,
 				D709E03E1F289C8200F81DC8 /* TUIWebViewDelegate.m */,
+				D7D150EF1F29D9DA00EAEE63 /* TWebViewCommonDelegate.h */,
+				D7D150F01F29D9DA00EAEE63 /* TWebViewCommonDelegate.m */,
 				D79400791F236D7100740CE3 /* TWebView.h */,
 				D709E0401F29774B00F81DC8 /* TWebView_Inner.h */,
 				D794007A1F236D7100740CE3 /* TWebView.m */,
@@ -195,6 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7D150F11F29D9DA00EAEE63 /* TWebViewCommonDelegate.m in Sources */,
 				D794007B1F236D7100740CE3 /* TWebView.m in Sources */,
 				D709E03C1F2890D700F81DC8 /* TWKWebViewDelegate.m in Sources */,
 				D79400811F23803C00740CE3 /* TDefineAndCFunc.m in Sources */,
