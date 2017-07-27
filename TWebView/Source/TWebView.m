@@ -349,10 +349,10 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)resetCookieForceOverride:(BOOL)forceOverride {
-    [self runJavascriptString:[self getSetCookieJSCodeWithForceOverride:forceOverride]
-            completionHandler:^(id obj, NSError *error) {
-                TLog(@"重设cookie成功");
-            }];
+    [self runJavascript:[self getSetCookieJSCodeWithForceOverride:forceOverride]
+             completion:^(id obj, NSError *error) {
+                 TLog(@"重设cookie成功");
+             }];
 }
 
 #pragma mark - Get Delegate
@@ -569,14 +569,14 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     return jsString;
 }
 
-- (void)runJavascriptString:(NSString *)js completionHandler:(void (^__nullable)(id obj, NSError *error))completionHandler {
+- (void)runJavascript:(NSString *)js completion:(void (^__nullable)(id obj, NSError *error))completion {
     if (T_IS_ABOVE_IOS(8)) {
-        [_wkWebView evaluateJavaScript:js completionHandler:completionHandler];
+        [_wkWebView evaluateJavaScript:js completionHandler:completion];
     } else {
         NSString *resultString = [_uiWebView stringByEvaluatingJavaScriptFromString:js];
-        if (completionHandler != nil) {
+        if (completion != nil) {
             if (resultString) {
-                completionHandler(resultString, nil);
+                completion(resultString, nil);
             } else {
                 NSDictionary *errorDict = @{@"WebViewType":@"UIWebView",
                                             @"WebView":self,
@@ -585,7 +585,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
                 if (jsError != nil) {
                     TLog(@"%@", jsError);
                 }
-                completionHandler(nil, jsError);
+                completion(nil, jsError);
             }
             
         }

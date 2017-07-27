@@ -91,17 +91,17 @@ const float WebViewFinalProgressValue = 0.9f;
     [delegate webView:self.tWebView didFinishLoadRequest:self.request];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [self.tWebView runJavascriptString:@"document.title"
-                     completionHandler:^(id _Nullable obj, NSError * _Nullable error) {
-                         NSString *title = obj;
-                         title = isNotEmptyString(title) ? title : self.tWebView.successDefaultTitle;
-                         [delegate webView:self.tWebView
-                                loadStatus:TWebViewLoadStatusSuccess
-                                     title:title];
-                         if (error != nil) {
-                             TLog(@"%@", error);
-                         }
-                     }];
+    [self.tWebView runJavascript:@"document.title"
+                      completion:^(id _Nullable obj, NSError * _Nullable error) {
+                          NSString *title = obj;
+                          title = isNotEmptyString(title) ? title : self.tWebView.successDefaultTitle;
+                          [delegate webView:self.tWebView
+                                 loadStatus:TWebViewLoadStatusSuccess
+                                      title:title];
+                          if (error != nil) {
+                              TLog(@"%@", error);
+                          }
+                      }];
     
     if (self.tWebView.blockActionSheet) {
         [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='none';"];
@@ -167,33 +167,33 @@ const float WebViewFinalProgressValue = 0.9f;
     --_loadingCount;
     [self incrementProgress];
     @tweakify(self)
-    [self.tWebView runJavascriptString:@"document.readyState"
-                     completionHandler:^(id  _Nonnull obj, NSError * _Nonnull error) {
-                         @tstrongify(self)
-                         NSString *readyString;
-                         if (obj != nil) {
-                             readyString = (NSString *)obj;
-                             BOOL interactive = [readyString isEqualToString:@"interactive"];
-                             if (interactive) {
-                                 _interactive = YES;
-                                 NSString *waitForCompleteJS = [NSString stringWithFormat:@"\
-                                                                \nwindow.addEventListener('load', function() {\
-                                                                \n    var iframe = document.createElement('iframe');\
-                                                                \n    iframe.style.display = 'none'; iframe.src = '%@';\
-                                                                \n    document.body.appendChild(iframe);\
-                                                                \n}, false);\
-                                                                \n", @"webviewprogress:///complete"];
-                                 [self.tWebView runJavascriptString:waitForCompleteJS
-                                                  completionHandler:nil];
-                             }
-                         }
-                         BOOL isNotRedirect = _currentURL && [_currentURL isEqual:self.request.mainDocumentURL];
-                         BOOL complete = [readyString isEqualToString:@"complete"];
-                         if (complete && isNotRedirect) {
-                             [self completeProgress];
-                         }
-                         
-                     }];
+    [self.tWebView runJavascript:@"document.readyState"
+                      completion:^(id  _Nonnull obj, NSError * _Nonnull error) {
+                          @tstrongify(self)
+                          NSString *readyString;
+                          if (obj != nil) {
+                              readyString = (NSString *)obj;
+                              BOOL interactive = [readyString isEqualToString:@"interactive"];
+                              if (interactive) {
+                                  _interactive = YES;
+                                  NSString *waitForCompleteJS = [NSString stringWithFormat:@"\
+                                                                 \nwindow.addEventListener('load', function() {\
+                                                                 \n    var iframe = document.createElement('iframe');\
+                                                                 \n    iframe.style.display = 'none'; iframe.src = '%@';\
+                                                                 \n    document.body.appendChild(iframe);\
+                                                                 \n}, false);\
+                                                                 \n", @"webviewprogress:///complete"];
+                                  [self.tWebView runJavascript:waitForCompleteJS
+                                                    completion:nil];
+                              }
+                          }
+                          BOOL isNotRedirect = _currentURL && [_currentURL isEqual:self.request.mainDocumentURL];
+                          BOOL complete = [readyString isEqualToString:@"complete"];
+                          if (complete && isNotRedirect) {
+                              [self completeProgress];
+                          }
+                          
+                      }];
 }
 
 
