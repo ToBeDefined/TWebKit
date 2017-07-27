@@ -89,7 +89,6 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 - (void)runJavascript:(NSString *)js completion:(void (^__nullable)(id obj, NSError *error))completion;
 
-- (void)setProgress:(double)progress animated:(BOOL)animated;
 @end
 
 NS_ASSUME_NONNULL_END

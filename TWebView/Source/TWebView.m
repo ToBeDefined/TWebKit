@@ -36,29 +36,13 @@
  UIWebViewDelegate       - webView:shouldStartLoadWithRequest:navigationType:
  WKNavigationDelegate    - webView:decidePolicyForNavigationAction:decisionHandler:
  */
-/**
  
- // WKWebView
- // 页面开始加载时调用
- - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation;
- // 当内容开始返回时调用
- -(void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation*)navigation;
- // 页面加载完成之后调用
- - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
- // 页面加载失败时调用
- - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation;
- // 接收到服务器跳转请求之后调用
- - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation;
- // 在收到响应后，决定是否跳转
- - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler;
- // 在发送请求之前，决定是否跳转
- - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
- */
+
 
 
 #import <WebKit/WebKit.h>
 #import <objc/runtime.h>
-#import "TWebView.h"
+#import "TWebView_Inner.h"
 #import "TWebViewConfig.h"
 #import "UIView+TWVLayout.h"
 #import "TWKWebViewDelegate.h"
@@ -66,24 +50,7 @@
 
 static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
-@interface TWebView()
-
-@property (nonatomic, strong) WKProcessPool *processPool;
-@property (nonatomic, strong) WKWebView *wkWebView NS_AVAILABLE(10_10, 8_0);
-@property (nonatomic, strong) TWKWebViewDelegate *wkWebViewDelegate;
-
-@property (nonatomic, strong) UIWebView *uiWebView;
-@property (nonatomic, strong) TUIWebViewDelegate *uiWebViewDelegate;
-
-@property (nonatomic, strong) UIProgressView *progressView;
-@property (nonatomic, assign) BOOL forceOverrideCookie;
-
-@property (nonatomic, weak) NSLayoutConstraint *progressViewTopConstraint;
-
-@end
-
 @implementation TWebView
-
 
 #pragma mark - Memory
 - (void)dealloc {
@@ -119,25 +86,8 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (instancetype)init {
-    self = [super init];
-    if (self) {
-        _commonDelegate = nil;
-        _delegate = nil;
-        _forceOverrideCookie = YES;
-        _showProgress = YES;
-        _progressTintColor = [UIColor blueColor];
-        _canScrollChangeSize = true;
-        _confirmTitle = @"OK";
-        _cancelTitle = @"Cancel";
-        _lodingDefaultTitle = @"Loding...";
-        _successDefaultTitle = @"Details";
-        _failedDefaultTitle = @"Failed";
-        _canScrollBack = true;
-        _blockActionSheet = false;
-        _block3DTouch = false;
-        [self setUI];
-    }
-    return self;
+    TWebViewConfig *config = [[TWebViewConfig alloc] init];
+    return [self initWithConfig:config];
 }
 
 
@@ -497,9 +447,8 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (NSString *)getSetCookieJSCodeWithForceOverride:(BOOL)forceOverride {
-    
-    //取出cookie
-    //js函数,如果需要比较，不进行强制覆盖cookie，使用注释掉的js函数
+    // 取出cookie
+    // js函数,如果需要比较，不进行强制覆盖cookie，使用注释掉的js函数
     NSString *JSFuncString;
     if (forceOverride) {
         JSFuncString = @"";

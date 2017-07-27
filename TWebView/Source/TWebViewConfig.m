@@ -10,4 +10,23 @@
 
 @implementation TWebViewConfig
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _commonDelegate = nil;
+        _delegate = nil;
+        _forceOverrideCookie = YES;
+        _showProgressView = YES;
+        _progressTintColor = [UIColor blueColor];
+        _canScrollChangeSize = true;
+        _confirmTitle = @"OK";
+        _cancelTitle = @"Cancel";
+        _lodingDefaultTitle = @"Loding...";
+        _successDefaultTitle = @"Details";
+        _failedDefaultTitle = @"Failed";
+    }
+    return self;
+}
+
 @end

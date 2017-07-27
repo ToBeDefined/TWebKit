@@ -25,4 +25,6 @@
 @property (nonatomic, copy) NSString *successDefaultTitle;
 @property (nonatomic, copy) NSString *failedDefaultTitle;
 
+- (instancetype)init;
+
 @end

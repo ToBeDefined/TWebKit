@@ -7,8 +7,7 @@
 //
 
 #import "TUIWebViewDelegate.h"
-#import <WebKit/WebKit.h>
-#import "TWebView.h"
+#import "TWebView_Inner.h"
 #import "TDefineAndCFunc.h"
 
 const float WebViewInitialProgressValue = 0.1f;
@@ -18,7 +17,6 @@ const float WebViewFinalProgressValue = 0.9f;
 @interface TUIWebViewDelegate()
 
 @property(nonatomic, weak) TWebView *tWebView;
-@property (nonatomic, strong) NSURLRequest *request;
 
 @property (nonatomic, readonly) float progress; // 0.0..1.0
 
@@ -40,7 +38,7 @@ const float WebViewFinalProgressValue = 0.9f;
 
 #pragma mark - UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    self.request = request;
+    self.tWebView.request = request;
     
     if ([request.URL.absoluteString isEqualToString:@"webviewprogress:///complete"]) {
         [self completeProgress];
@@ -51,7 +49,7 @@ const float WebViewFinalProgressValue = 0.9f;
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:shouldStartLoadRequest:)];
     if (delegate != nil) {
         ret = [delegate webView:self.tWebView
-         shouldStartLoadRequest:self.request];
+         shouldStartLoadRequest:self.tWebView.request];
     }
     
     BOOL isFragmentJump = NO;
@@ -74,7 +72,7 @@ const float WebViewFinalProgressValue = 0.9f;
     
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didStartLoadRequest:)];
     [delegate webView:self.tWebView
-  didStartLoadRequest:self.request];
+  didStartLoadRequest:self.tWebView.request];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
     [delegate webView:self.tWebView
@@ -88,7 +86,7 @@ const float WebViewFinalProgressValue = 0.9f;
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didFinishLoadRequest:)];
-    [delegate webView:self.tWebView didFinishLoadRequest:self.request];
+    [delegate webView:self.tWebView didFinishLoadRequest:self.tWebView.request];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
     [self.tWebView runJavascript:@"document.title"
@@ -116,7 +114,7 @@ const float WebViewFinalProgressValue = 0.9f;
     TLog(@"%@", error);
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didFailedLoadRequest:withError:)];
     [delegate webView:self.tWebView
- didFailedLoadRequest:self.request
+ didFailedLoadRequest:self.tWebView.request
             withError:error];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
@@ -187,7 +185,7 @@ const float WebViewFinalProgressValue = 0.9f;
                                                     completion:nil];
                               }
                           }
-                          BOOL isNotRedirect = _currentURL && [_currentURL isEqual:self.request.mainDocumentURL];
+                          BOOL isNotRedirect = _currentURL && [_currentURL isEqual:self.tWebView.request.mainDocumentURL];
                           BOOL complete = [readyString isEqualToString:@"complete"];
                           if (complete && isNotRedirect) {
                               [self completeProgress];

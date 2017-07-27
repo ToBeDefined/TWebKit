@@ -28,6 +28,7 @@
 		D709E03B1F2890D700F81DC8 /* TWKWebViewDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWKWebViewDelegate.m; sourceTree = "<group>"; };
 		D709E03D1F289C8200F81DC8 /* TUIWebViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIWebViewDelegate.h; sourceTree = "<group>"; };
 		D709E03E1F289C8200F81DC8 /* TUIWebViewDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIWebViewDelegate.m; sourceTree = "<group>"; };
+		D709E0401F29774B00F81DC8 /* TWebView_Inner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebView_Inner.h; sourceTree = "<group>"; };
 		D79400611F236CF600740CE3 /* TWebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TWebView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D79400641F236CF600740CE3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D79400661F236CF600740CE3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +105,7 @@
 				D7B3E8EC1F24807900C9C576 /* TWebViewConfig.h */,
 				D7B3E8ED1F24807900C9C576 /* TWebViewConfig.m */,
 				D79400791F236D7100740CE3 /* TWebView.h */,
+				D709E0401F29774B00F81DC8 /* TWebView_Inner.h */,
 				D794007A1F236D7100740CE3 /* TWebView.m */,
 				D709E03A1F2890D700F81DC8 /* TWKWebViewDelegate.h */,
 				D709E03B1F2890D700F81DC8 /* TWKWebViewDelegate.m */,

@@ -6,15 +6,31 @@
 //  Copyright © 2017年 邵伟男. All rights reserved.
 //
 
+/**
+// WKWebView
+// 页面开始加载时调用
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation;
+// 当内容开始返回时调用
+-(void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation*)navigation;
+// 页面加载完成之后调用
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation;
+// 页面加载失败时调用
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation;
+// 接收到服务器跳转请求之后调用
+- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation;
+// 在收到响应后，决定是否跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler;
+// 在发送请求之前，决定是否跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler;
+*/
+
 #import "TWKWebViewDelegate.h"
-#import <WebKit/WebKit.h>
-#import "TWebView.h"
+#import "TWebView_Inner.h"
 #import "TDefineAndCFunc.h"
 
 @interface TWKWebViewDelegate()
 
 @property(nonatomic, weak) TWebView *tWebView;
-@property (nonatomic, strong) NSURLRequest *request;
 
 @end
 
@@ -31,7 +47,7 @@
 
 // 相当于 - webView:shouldStartLoadWithRequest:navigationType:
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
-    self.request = navigationAction.request;
+    self.tWebView.request = navigationAction.request;
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:shouldStartLoadRequest:)];
     if (delegate != nil) {
         BOOL isCanLoad = [delegate webView:self.tWebView shouldStartLoadRequest:navigationAction.request];
@@ -44,7 +60,7 @@
 
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didStartLoadRequest:)];
-    [delegate webView:self.tWebView didStartLoadRequest:self.request];
+    [delegate webView:self.tWebView didStartLoadRequest:self.tWebView.request];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
     [delegate webView:self.tWebView
@@ -81,7 +97,7 @@
     }
     
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didFinishLoadRequest:)];
-    [delegate webView:self.tWebView didFinishLoadRequest:self.request];
+    [delegate webView:self.tWebView didFinishLoadRequest:self.tWebView.request];
 }
 
 
@@ -91,7 +107,7 @@
         return;
     }
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didFailedLoadRequest:withError:)];
-    [delegate webView:self.tWebView didFailedLoadRequest:self.request withError:error];
+    [delegate webView:self.tWebView didFailedLoadRequest:self.tWebView.request withError:error];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
     [delegate webView:self.tWebView
@@ -105,7 +121,7 @@
         return;
     }
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didFailedLoadRequest:withError:)];
-    [delegate webView:self.tWebView didFailedLoadRequest:self.request withError:error];
+    [delegate webView:self.tWebView didFailedLoadRequest:self.tWebView.request withError:error];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
     [delegate webView:self.tWebView
