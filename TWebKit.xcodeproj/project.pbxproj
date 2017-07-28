@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		D7650DEB1F29F7DF00BE988C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7650DEA1F29F7DA00BE988C /* Foundation.framework */; };
 		D7650DED1F29F7EA00BE988C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7650DEC1F29F7E600BE988C /* UIKit.framework */; };
-		D7650DEF1F29F7F700BE988C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7650DEE1F29F7F300BE988C /* WebKit.framework */; };
+		D7650DEF1F29F7F700BE988C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7650DEE1F29F7F300BE988C /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D7E84FB01F29F06700C64263 /* TWebKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FAE1F29F06700C64263 /* TWebKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D7E84FC91F29F08500C64263 /* image.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D7E84FB71F29F08500C64263 /* image.bundle */; };
+		D7E84FC91F29F08500C64263 /* TWebKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D7E84FB71F29F08500C64263 /* TWebKit.bundle */; };
 		D7E84FCA1F29F08500C64263 /* TDefineAndCFunc.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FB81F29F08500C64263 /* TDefineAndCFunc.h */; };
 		D7E84FCB1F29F08500C64263 /* TDefineAndCFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FB91F29F08500C64263 /* TDefineAndCFunc.m */; };
 		D7E84FCC1F29F08500C64263 /* TUIWebViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FBA1F29F08500C64263 /* TUIWebViewDelegate.h */; };
@@ -68,7 +68,7 @@
 		D7E84FAB1F29F06700C64263 /* TWebKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TWebKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7E84FAE1F29F06700C64263 /* TWebKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebKit.h; sourceTree = "<group>"; };
 		D7E84FAF1F29F06700C64263 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D7E84FB71F29F08500C64263 /* image.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = image.bundle; sourceTree = "<group>"; };
+		D7E84FB71F29F08500C64263 /* TWebKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TWebKit.bundle; sourceTree = "<group>"; };
 		D7E84FB81F29F08500C64263 /* TDefineAndCFunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDefineAndCFunc.h; sourceTree = "<group>"; };
 		D7E84FB91F29F08500C64263 /* TDefineAndCFunc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDefineAndCFunc.m; sourceTree = "<group>"; };
 		D7E84FBA1F29F08500C64263 /* TUIWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIWebViewDelegate.h; sourceTree = "<group>"; };
@@ -162,7 +162,7 @@
 				D7E84FDD1F29F1C900C64263 /* Dependence */,
 				D7E84FDC1F29F16700C64263 /* WebViewDelegate */,
 				D7E84FDB1F29F15000C64263 /* WebView */,
-				D7E84FB71F29F08500C64263 /* image.bundle */,
+				D7E84FB71F29F08500C64263 /* TWebKit.bundle */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -325,7 +325,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7E84FC91F29F08500C64263 /* image.bundle in Resources */,
+				D7E84FC91F29F08500C64263 /* TWebKit.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

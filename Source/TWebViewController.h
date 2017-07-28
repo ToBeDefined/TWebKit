@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) TWebView *webView;
 
 @property (nonatomic, copy) NSString * _Nullable navTitle;
+@property (nonatomic, strong) UIImage * _Nullable backImage;
 
 - (instancetype)init;
 

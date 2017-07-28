@@ -41,11 +41,23 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 - (void)dealloc {
     objc_removeAssociatedObjects(self);
 }
+
+- (UIImage *)backImage {
+    if (_backImage == nil) {
+        NSString *path = [[NSBundle bundleForClass:[TWebViewController class]] pathForResource:@"TWebKit"
+                                                                                        ofType:@".bundle"];
+        NSBundle *bundle = [NSBundle bundleWithPath:path];
+        UIImage *image = [UIImage imageWithContentsOfFile:[bundle pathForResource:@"back" ofType:@"png"]];
+        UIImage *backImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _backImage = backImage;
+    }
+    return _backImage;
+}
+
 #pragma mark - LifeCyle Methods
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIImage *backImage = [UIImage imageNamed:@"image.bundle/back"];
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:backImage
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:self.backImage
                                                                  style:UIBarButtonItemStylePlain
                                                                 target:self
                                                                 action:@selector(back)];
@@ -90,8 +102,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
     if ([self.webView canGoBack]) {
         [self.webView goBack];
         if (self.navigationItem.leftBarButtonItems.count < 2) {
-            UIImage *backImage = [UIImage imageNamed:@"image.bundle/back"];
-            UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:backImage
+            UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithImage:self.backImage
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(back)];
