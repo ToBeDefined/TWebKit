@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name                  = 'TWebKit'
-  s.version               = '1.0.0'
+  s.version               = '1.0.1'
   s.summary               = 'TWebKit unified the UIWebView and WKWebView'
   s.description           = <<-DESC
 TWebKit unified the UIWebView and WKWebView, 
@@ -36,12 +36,13 @@ github : https://github.com/tobedefined/TWebKit
 
   s.subspec 'Dependence' do |ss|
     ss.source_files = 'Source/Dependence/'
+    ss.private_header_files = 'Source/Dependence/*.h'
     ss.dependency 'TWebKit/Setting'
   end
 
   s.subspec 'WebView' do |ss|
-    ss.source_files         = "Source/WebView/", 'Source/WebViewDelegate/'
-    ss.public_header_files  = "Source/WebView/TWebView.h", "Source/WebView/TWebView{Config,Controller,CommonDelegate}.h"
+    ss.source_files         = 'Source/WebView/', 'Source/WebViewDelegate/'
+    ss.private_header_files = 'Source/WebView/TWebView_Inner.h'
     ss.dependency 'TWebKit/Setting'
     ss.dependency 'TWebKit/Dependence'
   end
