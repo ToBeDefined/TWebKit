@@ -13,6 +13,8 @@ class CustomWebViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.white
+        TWebKitSetting.showAllErrorLog(false)
         let config = TWebViewConfig.init()
         config.cancelText = "取消"
         config.confirmText = "确定"
@@ -21,15 +23,17 @@ class CustomWebViewController: UIViewController {
         config.canScrollChangeSize = false
         config.webViewCommonDelegate = TWebViewCommonDelegate.init()
         config.webViewDelegate = self
+        config.failedDefaultTitle = "加载失败"
+        config.lodingDefaultTitle = "加载中..."
+        config.successDefaultTitle = "加载成功"
         webView = TWebView.init(config: config)
         self.view.addSubview(webView);
         self.layoutWebView()
         if let url = URL.init(string: "http://www.qq.com/") {
             webView.load(URLRequest.init(url: url))
         }
-        
-        
     }
+    
     func layoutWebView() {
         webView.translatesAutoresizingMaskIntoConstraints = false
         let array: [NSLayoutAttribute] = [.left, .right, .top, .bottom]
@@ -47,5 +51,10 @@ class CustomWebViewController: UIViewController {
 }
 
 extension CustomWebViewController: TWebViewDelegate {
-    
+    func webView(_ webView: TWebView, loadStatus status: TWebViewLoadStatus, title: String) {
+        self.navigationItem.title = title
+    }
 }
+
+
+

@@ -7,12 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TWebKitSetting.h"
 
 #define T_OSVersion ([[UIDevice currentDevice].systemVersion floatValue])
 #define T_IS_ABOVE_IOS(v) (T_OSVersion >= v)
 
 #ifdef DEBUG
-    #define TLog(fmt, ...) NSLog((@"\n> FILE     : %s \n> FUNCTION : %s \n> LINE     : %d \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+    #define TLog(fmt, ...)  \
+    if ([TWebKitSetting isShowLog]) NSLog((@"\n> FILE     : %s \n> FUNCTION : %s \n> LINE     : %d \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+
     #define tweakify(object) autoreleasepool{} __weak __typeof__(object) weak##_##object = object;
     #define tstrongify(object) autoreleasepool{} __typeof__(object) object = weak##_##object;
 #else

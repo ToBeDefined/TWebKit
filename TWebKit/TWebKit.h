@@ -17,6 +17,7 @@ FOUNDATION_EXPORT const unsigned char TWebKitVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <TWebKit/PublicHeader.h>
 
 
+#import "TWebKitSetting.h"
 #import "TWebView.h"
 #import "TWebViewConfig.h"
 #import "TWebViewController.h"

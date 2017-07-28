@@ -372,7 +372,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
             id<TWebViewDelegate> delegate = [self getDelegateWithSEL:@selector(webView:loadStatus:title:)];
             [delegate webView:self
                    loadStatus:TWebViewLoadStatusSuccess
-                        title:isNotEmptyString(newTitle) ? newTitle : self.successDefaultTitle];
+                        title:isEmptyString(newTitle) ? self.successDefaultTitle : newTitle];
         }
     }
 }
