@@ -77,8 +77,6 @@
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    // 禁止放大缩小
-    NSString *injectionJSString;
     // reset canScrollChangeSize & blockActionSheet
     self.tWebView.canScrollChangeSize = self.tWebView.canScrollChangeSize;
     self.tWebView.blockActionSheet = self.tWebView.blockActionSheet;
