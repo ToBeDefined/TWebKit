@@ -10,7 +10,6 @@
 
 #define T_OSVersion ([[UIDevice currentDevice].systemVersion floatValue])
 #define T_IS_ABOVE_IOS(v) (T_OSVersion >= v)
-//#define T_IS_ABOVE_IOS(v) NO
 
 #ifdef DEBUG
     #define TLog(fmt, ...) NSLog((@"\n> FILE     : %s \n> FUNCTION : %s \n> LINE     : %d \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)

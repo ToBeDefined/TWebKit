@@ -35,6 +35,7 @@
 		D7E850131F29F48900C64263 /* TWebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E84FAB1F29F06700C64263 /* TWebKit.framework */; };
 		D7E850141F29F48900C64263 /* TWebKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7E84FAB1F29F06700C64263 /* TWebKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7E850191F29F51700C64263 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7E850181F29F51700C64263 /* Launch Screen.storyboard */; };
+		D7FF80C51F2ADD710033715E /* CustomWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80C41F2ADD710033715E /* CustomWebViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		D7E8500B1F29F32A00C64263 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7E8500F1F29F45E00C64263 /* Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		D7E850181F29F51700C64263 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		D7FF80C41F2ADD710033715E /* CustomWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWebViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 				D7E84FFF1F29F32A00C64263 /* AppDelegate.swift */,
 				D7E850181F29F51700C64263 /* Launch Screen.storyboard */,
 				D7E850011F29F32A00C64263 /* ViewController.swift */,
+				D7FF80C41F2ADD710033715E /* CustomWebViewController.swift */,
 				D7E850061F29F32A00C64263 /* Assets.xcassets */,
 				D7E8500B1F29F32A00C64263 /* Info.plist */,
 			);
@@ -362,6 +365,7 @@
 			files = (
 				D7E850021F29F32A00C64263 /* ViewController.swift in Sources */,
 				D7E850001F29F32A00C64263 /* AppDelegate.swift in Sources */,
+				D7FF80C51F2ADD710033715E /* CustomWebViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,17 +14,22 @@
 {
     self = [super init];
     if (self) {
-        _commonDelegate = nil;
-        _delegate = nil;
-        _forceOverrideCookie = YES;
-        _showProgressView = YES;
-        _progressTintColor = [UIColor blueColor];
-        _canScrollChangeSize = true;
-        _confirmText = @"OK";
-        _cancelText = @"Cancel";
-        _lodingDefaultTitle = @"Loding...";
-        _successDefaultTitle = @"Details";
-        _failedDefaultTitle = @"Failed";
+        _webViewCommonDelegate  = nil;
+        _webViewDelegate        = nil;
+        _forceOverrideCookie    = YES;
+        _showProgressView       = YES;
+        _progressTintColor      = [UIColor blueColor];
+        
+        _canScrollBack          = YES;
+        _canScrollChangeSize    = YES;
+        _blockActionSheet       = NO;
+        _block3DTouch           = NO;
+        
+        _confirmText            = @"OK";
+        _cancelText             = @"Cancel";
+        _lodingDefaultTitle     = @"Loding...";
+        _successDefaultTitle    = @"Details";
+        _failedDefaultTitle     = @"Failed";
     }
     return self;
 }

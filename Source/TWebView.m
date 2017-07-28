@@ -63,20 +63,21 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 - (instancetype)initWithConfig:(TWebViewConfig *)config {
     self = [super init];
     if (self) {
-        _commonDelegate = config.commonDelegate;
-        _delegate = config.delegate;
-        _forceOverrideCookie = config.forceOverrideCookie;
-        _showProgress = config.showProgressView;
-        _progressTintColor = config.progressTintColor;
-        _canScrollChangeSize = config.canScrollChangeSize;
-        _confirmText = config.confirmText;
-        _cancelText = config.cancelText;
-        _lodingDefaultTitle = config.lodingDefaultTitle;
-        _successDefaultTitle = config.successDefaultTitle;
-        _failedDefaultTitle = config.failedDefaultTitle;
-        _canScrollBack = true;
-        _blockActionSheet = false;
-        _block3DTouch = false;
+        _commonDelegate         = config.webViewCommonDelegate;
+        _delegate               = config.webViewDelegate;
+        _forceOverrideCookie    = config.forceOverrideCookie;
+        _showProgress           = config.showProgressView;
+        _progressTintColor      = config.progressTintColor;
+        _canScrollChangeSize    = config.canScrollChangeSize;
+        _confirmText            = config.confirmText;
+        _cancelText             = config.cancelText;
+        _lodingDefaultTitle     = config.lodingDefaultTitle;
+        _successDefaultTitle    = config.successDefaultTitle;
+        _failedDefaultTitle     = config.failedDefaultTitle;
+        _canScrollBack          = config.canScrollBack;
+        _canScrollChangeSize    = config.canScrollChangeSize;
+        _blockActionSheet       = config.blockActionSheet;
+        _block3DTouch           = config.block3DTouch;
         [self setUI];
     }
     return self;
@@ -91,22 +92,59 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 #pragma mark - Setter/Getter
 - (void)setCanScrollBack:(BOOL)canScrollBack {
     _canScrollBack = canScrollBack;
-    if (T_IS_ABOVE_IOS(8)) {
-        if (_canScrollBack) {
-            self.wkWebView.allowsBackForwardNavigationGestures = YES;
-        } else {
-            self.wkWebView.allowsBackForwardNavigationGestures = NO;
-        }
-    } else {
-        TLog("不支持iOS7");
+    if (!T_IS_ABOVE_IOS(8)) {
+        TLog(" canScrollBack 不支持iOS8以下机型");
+        return;
     }
+    
+    self.wkWebView.allowsBackForwardNavigationGestures = _canScrollBack;
+}
+
+- (void)setCanScrollChangeSize:(BOOL)canScrollChangeSize {
+    _canScrollChangeSize = canScrollChangeSize;
+    
+    NSString *injectionJSString;
+    if (self.canScrollChangeSize) {
+        injectionJSString = @"\
+        \n var script = document.createElement('meta');\
+        \n script.name = 'viewport';\
+        \n script.content=\"width=device-width, initial-scale=1.0,maximum-scale=10.0, minimum-scale=0.0, user-scalable=no\";\
+        \n document.getElementsByTagName('head')[0].appendChild(script);\
+        \n ";
+    } else {
+        injectionJSString = @"\
+        \n var script = document.createElement('meta');\
+        \n script.name = 'viewport';\
+        \n script.content=\"width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no\";\
+        \n document.getElementsByTagName('head')[0].appendChild(script);\
+        \n ";
+    }
+    [self runJavascript:injectionJSString
+             completion:nil];
 }
 
 - (void)setBlock3DTouch:(BOOL)block3DTouch {
-    if (T_IS_ABOVE_IOS(9)) {
-        self.wkWebView.allowsLinkPreview = false;
+    _block3DTouch = block3DTouch;
+    if (!T_IS_ABOVE_IOS(9)) {
+        TLog(" block3DTouch 不支持iOS9以下机型");
+        return;
+    }
+    self.wkWebView.allowsLinkPreview = !block3DTouch;
+    // 不会走到UIWebView的allowsLinkPreview属性
+}
+
+- (void)setBlockActionSheet:(BOOL)blockActionSheet {
+    _blockActionSheet = blockActionSheet;
+    if (!T_IS_ABOVE_IOS(8)) {
+        TLog(" blockActionSheet 不支持iOS8以下机型");
+        return;
+    }
+    if (blockActionSheet) {
+        [self runJavascript:@"document.body.style.webkitTouchCallout='none';"
+                 completion:nil];
     } else {
-        TLog("不支持iOS9以下机型");
+        [self runJavascript:@"document.body.style.webkitTouchCallout='inherit';"
+                 completion:nil];
     }
 }
 
@@ -197,12 +235,10 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
         config.userContentController = userContentController;
         config.processPool = self.processPool;
-        WKWebView * webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
-        if (_canScrollBack) {
-            webView.allowsBackForwardNavigationGestures = YES;
-        } else {
-            webView.allowsBackForwardNavigationGestures = NO;
-        }
+        WKWebView * webView = [[WKWebView alloc] initWithFrame:CGRectZero
+                                                 configuration:config];
+        webView.allowsBackForwardNavigationGestures = _canScrollBack;
+        webView.allowsLinkPreview = !_block3DTouch;
         
         self.wkWebViewDelegate = [TWKWebViewDelegate getDelegateWith:self];
         webView.navigationDelegate = self.wkWebViewDelegate;

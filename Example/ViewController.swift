@@ -8,22 +8,54 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.view.backgroundColor = UIColor.white
-        let btn = UIButton.init(type: .system)
-        btn.setTitle("push", for: .normal)
-        btn.frame = CGRect.init(x: 30, y: 100, width: 100, height: 100)
-        btn.addTarget(self, action: #selector(self.push), for: .touchUpInside)
-        self.view.addSubview(btn)
+        self.tableView.backgroundColor = UIColor.white
+        self.tableView.reloadData()
+    }
+}
+
+extension ViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
-    func push() {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell()
+        switch indexPath.row {
+        case 0:
+            cell.textLabel?.text = "打开TWebViewController"
+        default:
+            cell.textLabel?.text = "自定义TWebView"
+        }
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            self.pushTWebViewController()
+        default:
+            self.pushCustomViewController()
+        }
+    }
+}
+
+extension ViewController {
+    func pushTWebViewController() {
         let vc = TWebViewController()
         vc.loadURL(from: "http://www.baidu.com")
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func pushCustomViewController() {
+        let vc = CustomWebViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

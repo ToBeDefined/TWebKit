@@ -78,25 +78,10 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     // 禁止放大缩小
-    if (!self.tWebView.canScrollChangeSize) {
-        NSString *injectionJSString = @"\
-        \n var script = document.createElement('meta');\
-        \n script.name = 'viewport';\
-        \n script.content=\"width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no\";\
-        \n document.getElementsByTagName('head')[0].appendChild(script);\
-        \n ";
-        [webView evaluateJavaScript:injectionJSString
-                  completionHandler:nil];
-    }
-    
-    if (self.tWebView.blockActionSheet) {
-        [webView evaluateJavaScript:@"document.body.style.webkitTouchCallout='none';"
-                  completionHandler:nil];
-    } else {
-        [webView evaluateJavaScript:@"document.body.style.webkitTouchCallout='inherit';"
-                  completionHandler:nil];
-    }
-    
+    NSString *injectionJSString;
+    // reset canScrollChangeSize & blockActionSheet
+    self.tWebView.canScrollChangeSize = self.tWebView.canScrollChangeSize;
+    self.tWebView.blockActionSheet = self.tWebView.blockActionSheet;
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didFinishLoadRequest:)];
     [delegate webView:self.tWebView didFinishLoadRequest:self.tWebView.request];
 }

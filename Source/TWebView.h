@@ -50,9 +50,11 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 @property (nonatomic, strong) UIColor *progressTintColor;
 
 // User Interaction
+// only uper ios 8.0
 @property (nonatomic, assign) BOOL canScrollBack;
 @property (nonatomic, assign) BOOL canScrollChangeSize;
 @property (nonatomic, assign) BOOL blockActionSheet;
+// only uper ios 9.0
 @property (nonatomic, assign) BOOL block3DTouch;
 
 // Texts
