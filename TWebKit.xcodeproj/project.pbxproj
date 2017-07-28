@@ -7,28 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D70656641F2B212800E8A4F0 /* TWebKitSetting.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF810E1F2B10B80033715E /* TWebKitSetting.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7650DEB1F29F7DF00BE988C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7650DEA1F29F7DA00BE988C /* Foundation.framework */; };
 		D7650DED1F29F7EA00BE988C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7650DEC1F29F7E600BE988C /* UIKit.framework */; };
 		D7650DEF1F29F7F700BE988C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7650DEE1F29F7F300BE988C /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D7E84FB01F29F06700C64263 /* TWebKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FAE1F29F06700C64263 /* TWebKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7E84FC91F29F08500C64263 /* TWebKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D7E84FB71F29F08500C64263 /* TWebKit.bundle */; };
-		D7E84FCA1F29F08500C64263 /* TDefineAndCFunc.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FB81F29F08500C64263 /* TDefineAndCFunc.h */; };
-		D7E84FCB1F29F08500C64263 /* TDefineAndCFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FB91F29F08500C64263 /* TDefineAndCFunc.m */; };
-		D7E84FCC1F29F08500C64263 /* TUIWebViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FBA1F29F08500C64263 /* TUIWebViewDelegate.h */; };
-		D7E84FCD1F29F08500C64263 /* TUIWebViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FBB1F29F08500C64263 /* TUIWebViewDelegate.m */; };
-		D7E84FCE1F29F08500C64263 /* TWebView.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FBC1F29F08500C64263 /* TWebView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D7E84FCF1F29F08500C64263 /* TWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FBD1F29F08500C64263 /* TWebView.m */; };
-		D7E84FD01F29F08500C64263 /* TWebView_Inner.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FBE1F29F08500C64263 /* TWebView_Inner.h */; };
-		D7E84FD11F29F08500C64263 /* TWebViewCommonDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FBF1F29F08500C64263 /* TWebViewCommonDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D7E84FD21F29F08500C64263 /* TWebViewCommonDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FC01F29F08500C64263 /* TWebViewCommonDelegate.m */; };
-		D7E84FD31F29F08500C64263 /* TWebViewConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FC11F29F08500C64263 /* TWebViewConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D7E84FD41F29F08500C64263 /* TWebViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FC21F29F08500C64263 /* TWebViewConfig.m */; };
-		D7E84FD51F29F08500C64263 /* TWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FC31F29F08500C64263 /* TWebViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D7E84FD61F29F08500C64263 /* TWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FC41F29F08500C64263 /* TWebViewController.m */; };
-		D7E84FD71F29F08500C64263 /* TWKWebViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FC51F29F08500C64263 /* TWKWebViewDelegate.h */; };
-		D7E84FD81F29F08500C64263 /* TWKWebViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FC61F29F08500C64263 /* TWKWebViewDelegate.m */; };
-		D7E84FD91F29F08500C64263 /* UIView+TWVLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = D7E84FC71F29F08500C64263 /* UIView+TWVLayout.h */; };
-		D7E84FDA1F29F08500C64263 /* UIView+TWVLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FC81F29F08500C64263 /* UIView+TWVLayout.m */; };
 		D7E850001F29F32A00C64263 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E84FFF1F29F32A00C64263 /* AppDelegate.swift */; };
 		D7E850021F29F32A00C64263 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E850011F29F32A00C64263 /* ViewController.swift */; };
 		D7E850071F29F32A00C64263 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7E850061F29F32A00C64263 /* Assets.xcassets */; };
@@ -36,8 +20,23 @@
 		D7E850141F29F48900C64263 /* TWebKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7E84FAB1F29F06700C64263 /* TWebKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7E850191F29F51700C64263 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7E850181F29F51700C64263 /* Launch Screen.storyboard */; };
 		D7FF80C51F2ADD710033715E /* CustomWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80C41F2ADD710033715E /* CustomWebViewController.swift */; };
-		D7FF80CD1F2AF9BE0033715E /* TWebKitSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80CB1F2AF9BE0033715E /* TWebKitSetting.m */; };
-		D7FF80CE1F2AFC170033715E /* TWebKitSetting.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF80CA1F2AF9BE0033715E /* TWebKitSetting.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D7FF80F21F2B0FCF0033715E /* TWebView.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF80E81F2B0FC30033715E /* TWebView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D7FF80F31F2B0FD30033715E /* TWebViewCommonDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF80EB1F2B0FC30033715E /* TWebViewCommonDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D7FF80F41F2B0FD50033715E /* TWebViewConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF80ED1F2B0FC30033715E /* TWebViewConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D7FF80F51F2B0FD80033715E /* TWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF80EF1F2B0FC30033715E /* TWebViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D7FF80F61F2B0FE00033715E /* TUIWebViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF80D01F2B0F9C0033715E /* TUIWebViewDelegate.h */; };
+		D7FF80F71F2B0FE30033715E /* TWKWebViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF80D21F2B0F9C0033715E /* TWKWebViewDelegate.h */; };
+		D7FF80F81F2B0FE80033715E /* TDefineAndCFunc.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF80E11F2B0F9C0033715E /* TDefineAndCFunc.h */; };
+		D7FF80F91F2B0FEB0033715E /* UIView+TWVLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF80E31F2B0F9C0033715E /* UIView+TWVLayout.h */; };
+		D7FF80FB1F2B10010033715E /* TDefineAndCFunc.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80E21F2B0F9C0033715E /* TDefineAndCFunc.m */; };
+		D7FF80FD1F2B10010033715E /* UIView+TWVLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80E41F2B0F9C0033715E /* UIView+TWVLayout.m */; };
+		D7FF80FF1F2B10010033715E /* TUIWebViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80D11F2B0F9C0033715E /* TUIWebViewDelegate.m */; };
+		D7FF81011F2B10010033715E /* TWKWebViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80D31F2B0F9C0033715E /* TWKWebViewDelegate.m */; };
+		D7FF81051F2B10010033715E /* TWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80E91F2B0FC30033715E /* TWebView.m */; };
+		D7FF81081F2B10010033715E /* TWebViewCommonDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80EC1F2B0FC30033715E /* TWebViewCommonDelegate.m */; };
+		D7FF810A1F2B10010033715E /* TWebViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80EE1F2B0FC30033715E /* TWebViewConfig.m */; };
+		D7FF810C1F2B10010033715E /* TWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF80F01F2B0FC30033715E /* TWebViewController.m */; };
+		D7FF810F1F2B10C10033715E /* TWebKitSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FF810D1F2B10B80033715E /* TWebKitSetting.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,23 +71,6 @@
 		D7E84FAE1F29F06700C64263 /* TWebKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebKit.h; sourceTree = "<group>"; };
 		D7E84FAF1F29F06700C64263 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7E84FB71F29F08500C64263 /* TWebKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TWebKit.bundle; sourceTree = "<group>"; };
-		D7E84FB81F29F08500C64263 /* TDefineAndCFunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDefineAndCFunc.h; sourceTree = "<group>"; };
-		D7E84FB91F29F08500C64263 /* TDefineAndCFunc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDefineAndCFunc.m; sourceTree = "<group>"; };
-		D7E84FBA1F29F08500C64263 /* TUIWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUIWebViewDelegate.h; sourceTree = "<group>"; };
-		D7E84FBB1F29F08500C64263 /* TUIWebViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TUIWebViewDelegate.m; sourceTree = "<group>"; };
-		D7E84FBC1F29F08500C64263 /* TWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWebView.h; sourceTree = "<group>"; };
-		D7E84FBD1F29F08500C64263 /* TWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWebView.m; sourceTree = "<group>"; };
-		D7E84FBE1F29F08500C64263 /* TWebView_Inner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWebView_Inner.h; sourceTree = "<group>"; };
-		D7E84FBF1F29F08500C64263 /* TWebViewCommonDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWebViewCommonDelegate.h; sourceTree = "<group>"; };
-		D7E84FC01F29F08500C64263 /* TWebViewCommonDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWebViewCommonDelegate.m; sourceTree = "<group>"; };
-		D7E84FC11F29F08500C64263 /* TWebViewConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWebViewConfig.h; sourceTree = "<group>"; };
-		D7E84FC21F29F08500C64263 /* TWebViewConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWebViewConfig.m; sourceTree = "<group>"; };
-		D7E84FC31F29F08500C64263 /* TWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWebViewController.h; sourceTree = "<group>"; };
-		D7E84FC41F29F08500C64263 /* TWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWebViewController.m; sourceTree = "<group>"; };
-		D7E84FC51F29F08500C64263 /* TWKWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TWKWebViewDelegate.h; sourceTree = "<group>"; };
-		D7E84FC61F29F08500C64263 /* TWKWebViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWKWebViewDelegate.m; sourceTree = "<group>"; };
-		D7E84FC71F29F08500C64263 /* UIView+TWVLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+TWVLayout.h"; sourceTree = "<group>"; };
-		D7E84FC81F29F08500C64263 /* UIView+TWVLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+TWVLayout.m"; sourceTree = "<group>"; };
 		D7E84FFD1F29F32A00C64263 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7E84FFF1F29F32A00C64263 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D7E850011F29F32A00C64263 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -97,8 +79,25 @@
 		D7E8500F1F29F45E00C64263 /* Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		D7E850181F29F51700C64263 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		D7FF80C41F2ADD710033715E /* CustomWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWebViewController.swift; sourceTree = "<group>"; };
-		D7FF80CA1F2AF9BE0033715E /* TWebKitSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebKitSetting.h; sourceTree = "<group>"; };
-		D7FF80CB1F2AF9BE0033715E /* TWebKitSetting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebKitSetting.m; sourceTree = "<group>"; };
+		D7FF80D01F2B0F9C0033715E /* TUIWebViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIWebViewDelegate.h; sourceTree = "<group>"; };
+		D7FF80D11F2B0F9C0033715E /* TUIWebViewDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TUIWebViewDelegate.m; sourceTree = "<group>"; };
+		D7FF80D21F2B0F9C0033715E /* TWKWebViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWKWebViewDelegate.h; sourceTree = "<group>"; };
+		D7FF80D31F2B0F9C0033715E /* TWKWebViewDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWKWebViewDelegate.m; sourceTree = "<group>"; };
+		D7FF80E11F2B0F9C0033715E /* TDefineAndCFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDefineAndCFunc.h; sourceTree = "<group>"; };
+		D7FF80E21F2B0F9C0033715E /* TDefineAndCFunc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDefineAndCFunc.m; sourceTree = "<group>"; };
+		D7FF80E31F2B0F9C0033715E /* UIView+TWVLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+TWVLayout.h"; sourceTree = "<group>"; };
+		D7FF80E41F2B0F9C0033715E /* UIView+TWVLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+TWVLayout.m"; sourceTree = "<group>"; };
+		D7FF80E81F2B0FC30033715E /* TWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebView.h; sourceTree = "<group>"; };
+		D7FF80E91F2B0FC30033715E /* TWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebView.m; sourceTree = "<group>"; };
+		D7FF80EA1F2B0FC30033715E /* TWebView_Inner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebView_Inner.h; sourceTree = "<group>"; };
+		D7FF80EB1F2B0FC30033715E /* TWebViewCommonDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebViewCommonDelegate.h; sourceTree = "<group>"; };
+		D7FF80EC1F2B0FC30033715E /* TWebViewCommonDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebViewCommonDelegate.m; sourceTree = "<group>"; };
+		D7FF80ED1F2B0FC30033715E /* TWebViewConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebViewConfig.h; sourceTree = "<group>"; };
+		D7FF80EE1F2B0FC30033715E /* TWebViewConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebViewConfig.m; sourceTree = "<group>"; };
+		D7FF80EF1F2B0FC30033715E /* TWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebViewController.h; sourceTree = "<group>"; };
+		D7FF80F01F2B0FC30033715E /* TWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebViewController.m; sourceTree = "<group>"; };
+		D7FF810D1F2B10B80033715E /* TWebKitSetting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TWebKitSetting.m; sourceTree = "<group>"; };
+		D7FF810E1F2B10B80033715E /* TWebKitSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TWebKitSetting.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,52 +164,14 @@
 		D7E84FB61F29F08500C64263 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				D7FF80CA1F2AF9BE0033715E /* TWebKitSetting.h */,
-				D7FF80CB1F2AF9BE0033715E /* TWebKitSetting.m */,
-				D7E84FDD1F29F1C900C64263 /* Dependence */,
-				D7E84FDC1F29F16700C64263 /* WebViewDelegate */,
-				D7E84FDB1F29F15000C64263 /* WebView */,
+				D7FF810E1F2B10B80033715E /* TWebKitSetting.h */,
+				D7FF810D1F2B10B80033715E /* TWebKitSetting.m */,
+				D7FF80E01F2B0F9C0033715E /* Dependence */,
+				D7FF80CF1F2B0F9C0033715E /* WebViewDelegate */,
+				D7FF80E51F2B0FC30033715E /* WebView */,
 				D7E84FB71F29F08500C64263 /* TWebKit.bundle */,
 			);
 			path = Source;
-			sourceTree = "<group>";
-		};
-		D7E84FDB1F29F15000C64263 /* WebView */ = {
-			isa = PBXGroup;
-			children = (
-				D7E84FC11F29F08500C64263 /* TWebViewConfig.h */,
-				D7E84FC21F29F08500C64263 /* TWebViewConfig.m */,
-				D7E84FBC1F29F08500C64263 /* TWebView.h */,
-				D7E84FBE1F29F08500C64263 /* TWebView_Inner.h */,
-				D7E84FBD1F29F08500C64263 /* TWebView.m */,
-				D7E84FC31F29F08500C64263 /* TWebViewController.h */,
-				D7E84FC41F29F08500C64263 /* TWebViewController.m */,
-				D7E84FBF1F29F08500C64263 /* TWebViewCommonDelegate.h */,
-				D7E84FC01F29F08500C64263 /* TWebViewCommonDelegate.m */,
-			);
-			name = WebView;
-			sourceTree = "<group>";
-		};
-		D7E84FDC1F29F16700C64263 /* WebViewDelegate */ = {
-			isa = PBXGroup;
-			children = (
-				D7E84FBA1F29F08500C64263 /* TUIWebViewDelegate.h */,
-				D7E84FBB1F29F08500C64263 /* TUIWebViewDelegate.m */,
-				D7E84FC51F29F08500C64263 /* TWKWebViewDelegate.h */,
-				D7E84FC61F29F08500C64263 /* TWKWebViewDelegate.m */,
-			);
-			name = WebViewDelegate;
-			sourceTree = "<group>";
-		};
-		D7E84FDD1F29F1C900C64263 /* Dependence */ = {
-			isa = PBXGroup;
-			children = (
-				D7E84FB81F29F08500C64263 /* TDefineAndCFunc.h */,
-				D7E84FB91F29F08500C64263 /* TDefineAndCFunc.m */,
-				D7E84FC71F29F08500C64263 /* UIView+TWVLayout.h */,
-				D7E84FC81F29F08500C64263 /* UIView+TWVLayout.m */,
-			);
-			name = Dependence;
 			sourceTree = "<group>";
 		};
 		D7E84FFE1F29F32A00C64263 /* Example */ = {
@@ -227,6 +188,44 @@
 			path = Example;
 			sourceTree = "<group>";
 		};
+		D7FF80CF1F2B0F9C0033715E /* WebViewDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				D7FF80D01F2B0F9C0033715E /* TUIWebViewDelegate.h */,
+				D7FF80D11F2B0F9C0033715E /* TUIWebViewDelegate.m */,
+				D7FF80D21F2B0F9C0033715E /* TWKWebViewDelegate.h */,
+				D7FF80D31F2B0F9C0033715E /* TWKWebViewDelegate.m */,
+			);
+			path = WebViewDelegate;
+			sourceTree = "<group>";
+		};
+		D7FF80E01F2B0F9C0033715E /* Dependence */ = {
+			isa = PBXGroup;
+			children = (
+				D7FF80E11F2B0F9C0033715E /* TDefineAndCFunc.h */,
+				D7FF80E21F2B0F9C0033715E /* TDefineAndCFunc.m */,
+				D7FF80E31F2B0F9C0033715E /* UIView+TWVLayout.h */,
+				D7FF80E41F2B0F9C0033715E /* UIView+TWVLayout.m */,
+			);
+			path = Dependence;
+			sourceTree = "<group>";
+		};
+		D7FF80E51F2B0FC30033715E /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				D7FF80E81F2B0FC30033715E /* TWebView.h */,
+				D7FF80E91F2B0FC30033715E /* TWebView.m */,
+				D7FF80EA1F2B0FC30033715E /* TWebView_Inner.h */,
+				D7FF80EB1F2B0FC30033715E /* TWebViewCommonDelegate.h */,
+				D7FF80EC1F2B0FC30033715E /* TWebViewCommonDelegate.m */,
+				D7FF80ED1F2B0FC30033715E /* TWebViewConfig.h */,
+				D7FF80EE1F2B0FC30033715E /* TWebViewConfig.m */,
+				D7FF80EF1F2B0FC30033715E /* TWebViewController.h */,
+				D7FF80F01F2B0FC30033715E /* TWebViewController.m */,
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -235,16 +234,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7E84FB01F29F06700C64263 /* TWebKit.h in Headers */,
-				D7E84FCE1F29F08500C64263 /* TWebView.h in Headers */,
-				D7FF80CE1F2AFC170033715E /* TWebKitSetting.h in Headers */,
-				D7E84FD31F29F08500C64263 /* TWebViewConfig.h in Headers */,
-				D7E84FD71F29F08500C64263 /* TWKWebViewDelegate.h in Headers */,
-				D7E84FD51F29F08500C64263 /* TWebViewController.h in Headers */,
-				D7E84FD11F29F08500C64263 /* TWebViewCommonDelegate.h in Headers */,
-				D7E84FD01F29F08500C64263 /* TWebView_Inner.h in Headers */,
-				D7E84FCA1F29F08500C64263 /* TDefineAndCFunc.h in Headers */,
-				D7E84FD91F29F08500C64263 /* UIView+TWVLayout.h in Headers */,
-				D7E84FCC1F29F08500C64263 /* TUIWebViewDelegate.h in Headers */,
+				D7FF80F21F2B0FCF0033715E /* TWebView.h in Headers */,
+				D70656641F2B212800E8A4F0 /* TWebKitSetting.h in Headers */,
+				D7FF80F41F2B0FD50033715E /* TWebViewConfig.h in Headers */,
+				D7FF80F51F2B0FD80033715E /* TWebViewController.h in Headers */,
+				D7FF80F31F2B0FD30033715E /* TWebViewCommonDelegate.h in Headers */,
+				D7FF80F61F2B0FE00033715E /* TUIWebViewDelegate.h in Headers */,
+				D7FF80F71F2B0FE30033715E /* TWKWebViewDelegate.h in Headers */,
+				D7FF80F81F2B0FE80033715E /* TDefineAndCFunc.h in Headers */,
+				D7FF80F91F2B0FEB0033715E /* UIView+TWVLayout.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,15 +353,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7E84FDA1F29F08500C64263 /* UIView+TWVLayout.m in Sources */,
-				D7E84FD61F29F08500C64263 /* TWebViewController.m in Sources */,
-				D7E84FD81F29F08500C64263 /* TWKWebViewDelegate.m in Sources */,
-				D7FF80CD1F2AF9BE0033715E /* TWebKitSetting.m in Sources */,
-				D7E84FD21F29F08500C64263 /* TWebViewCommonDelegate.m in Sources */,
-				D7E84FCF1F29F08500C64263 /* TWebView.m in Sources */,
-				D7E84FCB1F29F08500C64263 /* TDefineAndCFunc.m in Sources */,
-				D7E84FCD1F29F08500C64263 /* TUIWebViewDelegate.m in Sources */,
-				D7E84FD41F29F08500C64263 /* TWebViewConfig.m in Sources */,
+				D7FF810F1F2B10C10033715E /* TWebKitSetting.m in Sources */,
+				D7FF80FB1F2B10010033715E /* TDefineAndCFunc.m in Sources */,
+				D7FF80FD1F2B10010033715E /* UIView+TWVLayout.m in Sources */,
+				D7FF80FF1F2B10010033715E /* TUIWebViewDelegate.m in Sources */,
+				D7FF81011F2B10010033715E /* TWKWebViewDelegate.m in Sources */,
+				D7FF81051F2B10010033715E /* TWebView.m in Sources */,
+				D7FF81081F2B10010033715E /* TWebViewCommonDelegate.m in Sources */,
+				D7FF810A1F2B10010033715E /* TWebViewConfig.m in Sources */,
+				D7FF810C1F2B10010033715E /* TWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
