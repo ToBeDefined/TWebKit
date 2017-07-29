@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name                  = 'TWebKit'
-  s.version               = '1.0.2'
+  s.version               = '1.0.3'
   s.summary               = 'TWebKit unified the UIWebView and WKWebView'
   s.description           = <<-DESC
 TWebKit unified the UIWebView and WKWebView, 
@@ -22,8 +22,8 @@ github : https://github.com/tobedefined/TWebKit
   s.social_media_url      = 'http://tbd.tech/'
   s.ios.deployment_target = '6.0'
   s.source                = { :git => 'https://github.com/tobedefined/TWebKit.git', :tag => s.version}
-  s.public_header_files   = 'TWebKit/TWebKit.h', 
-  s.source_files          = 'TWebKit/TWebKit.h', 
+  s.public_header_files   = 'TWebKit/TWebKit.h'
+  s.source_files          = 'TWebKit/TWebKit.h'
   s.frameworks            = 'Foundation', 'UIKit'
   s.weak_framework        = 'WebKit'
   s.resource              = 'Source/TWebKit.bundle'
