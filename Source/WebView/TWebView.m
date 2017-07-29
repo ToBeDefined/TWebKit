@@ -75,7 +75,6 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         _successDefaultTitle    = config.successDefaultTitle;
         _failedDefaultTitle     = config.failedDefaultTitle;
         _canScrollBack          = config.canScrollBack;
-        _canScrollChangeSize    = config.canScrollChangeSize;
         _blockActionSheet       = config.blockActionSheet;
         _block3DTouch           = config.block3DTouch;
         [self setUI];
@@ -90,6 +89,13 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 
 #pragma mark - Setter/Getter
+
+- (void)setProgressTintColor:(UIColor *)progressTintColor {
+    _progressTintColor = progressTintColor;
+    self.showProgress = YES;
+    self.progressView.progressTintColor = progressTintColor;
+}
+
 - (void)setCanScrollBack:(BOOL)canScrollBack {
     _canScrollBack = canScrollBack;
     if (!T_IS_ABOVE_IOS(8)) {
@@ -159,10 +165,22 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)setShowProgress:(BOOL)showProgress {
-    _showProgress = showProgress;
+    if (_showProgress == showProgress) {
+        return;
+    }
+    
     if (showProgress == NO) {
         [self.progressView removeFromSuperview];
         self.progressView = nil;
+        self.progressViewTopConstraint = nil;
+        _showProgress = showProgress;
+        return;
+    }
+    
+    if (showProgress == YES && self.progressView == nil) {
+        [self setUpProgressView];
+        _showProgress = showProgress;
+        return;
     }
 }
 
@@ -208,16 +226,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     [webView twv_makeConstraint:Right equealTo:self];
     [webView twv_makeConstraint:Bottom equealTo:self];
     
-    self.progressView = [[UIProgressView alloc] init];
-    self.progressView.trackTintColor = [UIColor clearColor];
-    self.progressView.progressTintColor = _progressTintColor;
-    self.progressView.trackTintColor = [UIColor whiteColor];
-    
-    [self addSubview:self.progressView];
-    self.progressViewTopConstraint = [self.progressView twv_makeConstraint:Top equealTo:self];
-    [self.progressView twv_makeConstraint:Left equealTo:self];
-    [self.progressView twv_makeConstraint:Right equealTo:self];
-    [self.progressView twv_makeConstraint:Height is:2];
+    [self setUpProgressView];
     
     [self resetCookieForceOverride:_forceOverrideCookie];
 }
@@ -251,7 +260,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     [self insertSubview:_wkWebView atIndex:0];
 }
 
-- (void)setUpUIWebView{
+- (void)setUpUIWebView {
     self.uiWebView = ({
         UIWebView *webView = [[UIWebView alloc] init];
         self.uiWebViewDelegate = [TUIWebViewDelegate getDelegateWith:self];
@@ -260,6 +269,22 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         webView;
     });
     [self insertSubview:_uiWebView atIndex:0];
+}
+
+- (void)setUpProgressView {
+    if (self.progressView != nil) {
+        return;
+    }
+    self.progressView = [[UIProgressView alloc] init];
+    self.progressView.trackTintColor = [UIColor clearColor];
+    self.progressView.progressTintColor = _progressTintColor;
+    self.progressView.trackTintColor = [UIColor whiteColor];
+    
+    [self addSubview:self.progressView];
+    self.progressViewTopConstraint = [self.progressView twv_makeConstraint:Top equealTo:self];
+    [self.progressView twv_makeConstraint:Left equealTo:self];
+    [self.progressView twv_makeConstraint:Right equealTo:self];
+    [self.progressView twv_makeConstraint:Height is:2];
 }
 
 

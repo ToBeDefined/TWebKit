@@ -51,11 +51,11 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 // User Interaction
 // only uper ios 8.0
-@property (nonatomic, assign) BOOL canScrollBack;
-@property (nonatomic, assign) BOOL canScrollChangeSize;
-@property (nonatomic, assign) BOOL blockActionSheet;
+@property (nonatomic, assign) BOOL canScrollBack API_AVAILABLE(ios(8.0));
+@property (nonatomic, assign) BOOL canScrollChangeSize API_AVAILABLE(ios(8.0));
+@property (nonatomic, assign) BOOL blockActionSheet API_AVAILABLE(ios(8.0));
 // only uper ios 9.0
-@property (nonatomic, assign) BOOL block3DTouch;
+@property (nonatomic, assign) BOOL block3DTouch API_AVAILABLE(ios(9.0));
 
 // Texts
 @property (nonatomic, copy) NSString *confirmText;
@@ -85,7 +85,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 // 9.0以及之后，8.0之前可用
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL;
 // 9.0之后可用
-- (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL NS_AVAILABLE(10_11, 9_0);
+- (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL API_AVAILABLE(ios(9.0));
 
 + (nullable NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data;
 

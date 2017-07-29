@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithConfig:(TWebViewConfig *)config;
 
 - (void)loadURLFromString:(NSString *)urlString;
+- (void)loadURLAndAutoConversionFromString:(NSString *)urlString;
 
 - (void)resetWebViewCookieForceOverride:(BOOL)forceOverride;
 

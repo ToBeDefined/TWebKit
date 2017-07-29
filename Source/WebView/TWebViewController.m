@@ -97,8 +97,12 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 }
 
 - (void)loadURLFromString:(NSString *)urlString {
-    urlString = trueURLString(urlString);
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+}
+
+- (void)loadURLAndAutoConversionFromString:(NSString *)urlString {
+    urlString = trueURLString(urlString);
+    [self loadURLFromString:urlString];
 }
 
 - (void)resetWebViewCookieForceOverride:(BOOL)forceOverride {
@@ -141,7 +145,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 #pragma mark - CommonWebViewDelegate
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title {
     TLog(@"%@", title);
-    if (!isNotEmptyString(self.navTitle)) {
+    if (isEmptyString(self.navTitle)) {
         self.navigationItem.title = title;
     }
 }
