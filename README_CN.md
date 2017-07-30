@@ -105,7 +105,7 @@ github "tobedefined/TWebKit" ~> 1.0.3
 
 在swift的`<Your Target Name>-Bridging-Header.h`中加入
 
-```swif
+```objc
 #import <TWebKit/TWebKit.h>
 ```
 

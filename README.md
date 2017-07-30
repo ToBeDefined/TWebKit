@@ -104,7 +104,7 @@ Run `carthage update` to build the framework and drag the built `TWebKit.framewo
 
 in swift, add following code in `<Your Target Name>-Bridging-Header.h` file: 
 
-```swif
+```objc
 #import <TWebKit/TWebKit.h>
 ```
 
