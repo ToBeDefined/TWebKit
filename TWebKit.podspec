@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name                  = 'TWebKit'
-  s.version               = '1.0.3'
+  s.version               = '1.0.4'
   s.summary               = 'TWebKit unified the UIWebView and WKWebView'
   s.description           = <<-DESC
 TWebKit unified the UIWebView and WKWebView, 
