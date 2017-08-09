@@ -89,7 +89,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 + (nullable NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data;
 
-- (void)runJavascript:(NSString *)js completion:(void (^__nullable)(id obj, NSError *error))completion;
+- (void)runJavascript:(NSString *)js completion:(void (^ _Nullable)(_Nullable id, NSError * _Nullable error))completion;
 
 @end
 

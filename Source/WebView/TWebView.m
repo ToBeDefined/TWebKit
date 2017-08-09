@@ -576,7 +576,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     return jsString;
 }
 
-- (void)runJavascript:(NSString *)js completion:(void (^__nullable)(id obj, NSError *error))completion {
+- (void)runJavascript:(NSString *)js completion:(void (^ _Nullable)(_Nullable id, NSError * _Nullable error))completion {
     if (T_IS_ABOVE_IOS(8)) {
         [_wkWebView evaluateJavaScript:js completionHandler:completion];
     } else {
