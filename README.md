@@ -7,10 +7,11 @@ TWebKit
 
 <div align="center">
 
-[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/tobedefined/TWebKit/blob/master/LICENSE)&nbsp;
+![platform](https://img.shields.io/badge/Platform-iOS%E2%89%A56.0-orange.svg?style=flat)&nbsp;
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)&nbsp;
 [![CocoaPods](https://img.shields.io/badge/Cocoapods-compatible-brightgreen.svg?style=flat)](http://cocoapods.org/)&nbsp;
-![platform](https://img.shields.io/badge/Platform-iOS%E2%89%A56.0-orange.svg?style=flat)
+[![Build Status](https://travis-ci.org/tobedefined/TWebKit.svg?branch=master)](https://travis-ci.org/tobedefined/TWebKit)&nbsp;
+[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/tobedefined/TWebKit/blob/master/LICENSE)
 
 </div>
 
