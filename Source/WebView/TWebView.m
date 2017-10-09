@@ -287,6 +287,31 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     [self.progressView twv_makeConstraint:Height is:2];
 }
 
+- (void)safeAreaInsetsDidChange {
+    [self resetProgressViewTopInsert];
+}
+
+- (CGFloat)getTopInset {
+#ifdef __IPHONE_11_0
+    if (T_IS_ABOVE_IOS(11)) {
+        CGFloat selfSafeTop = self.safeAreaInsets.top;
+        CGFloat scrollViewSafeTop = self.wkWebView.scrollView.safeAreaInsets.top;
+        CGFloat scrollViewContentTop = self.wkWebView.scrollView.contentInset.top;
+        return (selfSafeTop + scrollViewSafeTop + scrollViewContentTop);
+    }
+#endif
+    if (T_IS_ABOVE_IOS(8)) {
+        return self.wkWebView.scrollView.contentInset.top;
+    } else {
+        return self.uiWebView.scrollView.contentInset.top;
+    }
+}
+
+- (void)resetProgressViewTopInsert {
+    CGFloat constant = [self getTopInset];
+    self.progressViewTopConstraint.constant = constant;
+}
+
 
 #pragma mark - Function
 - (void)reload {
@@ -377,13 +402,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context {
     
     if ([keyPath isEqualToString:@"scrollView.contentInset"]) {
-        CGFloat constant = 0;
-        if (object == self.wkWebView) {
-            constant = self.wkWebView.scrollView.contentInset.top;
-        } else {
-            constant = self.uiWebView.scrollView.contentInset.top;
-        }
-        self.progressViewTopConstraint.constant = constant;
+        [self resetProgressViewTopInsert];
     }
     
     if (object == self.wkWebView) {

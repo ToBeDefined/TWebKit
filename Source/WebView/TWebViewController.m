@@ -52,7 +52,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 - (UIImage *)backImage {
     if (_backImage == nil) {
         NSString *path = [[NSBundle bundleForClass:[TWebViewController class]] pathForResource:@"TWebKit"
-                                                                                        ofType:@".bundle"];
+                                                                                        ofType:@"bundle"];
         NSBundle *bundle = [NSBundle bundleWithPath:path];
         UIImage *image = [UIImage imageWithContentsOfFile:[bundle pathForResource:@"back" ofType:@"png"]];
         UIImage *backImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
