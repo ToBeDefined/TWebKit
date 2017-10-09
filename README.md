@@ -93,7 +93,7 @@ $ brew install carthage
 To integrate `TWebKit` into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ruby
-github "tobedefined/TWebKit" ~> 1.0.4
+github "tobedefined/TWebKit" ~> 1.1.0
 ```
 
 Run `carthage update` to build the framework and drag the built `TWebKit.framework` into your Xcode project.
