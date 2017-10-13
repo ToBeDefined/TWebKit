@@ -55,7 +55,7 @@ TWebKit
 
 #### Source File
 
-If your project support `iOS 7` or older, please download all files in the `Source` directory and put them in your project, No other configuration can be used.
+If your project support `iOS 7` or older, please download all files in the `Source` directory and `TWebKit.bundle`, then put them in your project, No other configuration can be used.
 
 If your project just support `iOS 8+`, it is recommended to use `CocoaPods` or `Carthage`.
 
