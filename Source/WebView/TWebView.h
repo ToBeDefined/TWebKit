@@ -72,10 +72,11 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 @property (nonatomic, strong) UIColor *progressTintColor;
 
 // User Interaction
+@property (nonatomic, assign) BOOL canSelectContent;    // if set NO, Block most of the pages select content.
+@property (nonatomic, assign) BOOL canScrollChangeSize;
+@property (nonatomic, assign) BOOL blockTouchCallout;   // Block ActionSheet & Long Press Menus
 // only uper ios 8.0
 @property (nonatomic, assign) BOOL canScrollBack API_AVAILABLE(ios(8.0));
-@property (nonatomic, assign) BOOL canScrollChangeSize API_AVAILABLE(ios(8.0));
-@property (nonatomic, assign) BOOL blockActionSheet API_AVAILABLE(ios(8.0));
 // only uper ios 9.0
 @property (nonatomic, assign) BOOL block3DTouch API_AVAILABLE(ios(9.0));
 

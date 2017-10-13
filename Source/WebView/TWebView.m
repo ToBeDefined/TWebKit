@@ -68,15 +68,19 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         _forceOverrideCookie    = config.forceOverrideCookie;
         _showProgress           = config.showProgressView;
         _progressTintColor      = config.progressTintColor;
+        
+        _canSelectContent       = config.canSelectContent;
         _canScrollChangeSize    = config.canScrollChangeSize;
+        _blockTouchCallout      = config.blockTouchCallout;
+        _canScrollBack          = config.canScrollBack;
+        _block3DTouch           = config.block3DTouch;
+        
         _confirmText            = config.confirmText;
         _cancelText             = config.cancelText;
         _lodingDefaultTitle     = config.lodingDefaultTitle;
         _successDefaultTitle    = config.successDefaultTitle;
         _failedDefaultTitle     = config.failedDefaultTitle;
-        _canScrollBack          = config.canScrollBack;
-        _blockActionSheet       = config.blockActionSheet;
-        _block3DTouch           = config.block3DTouch;
+        
         [self setUI];
     }
     return self;
@@ -94,6 +98,29 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     _progressTintColor = progressTintColor;
     self.showProgress = YES;
     self.progressView.progressTintColor = progressTintColor;
+}
+
+- (void)setCanSelectContent:(BOOL)canSelectContent {
+    _canSelectContent = canSelectContent;
+    if (canSelectContent) {
+        [self runJavascript:@"\
+         \n document.documentElement.style.webkitUserSelect='all'; \
+         \n document.documentElement.style.khtmlUserSelect='all'; \
+         \n document.documentElement.style.mozUserSelect='all'; \
+         \n document.documentElement.style.msUserSelect='all'; \
+         \n document.documentElement.style.userSelect='all'; \
+         \n"
+                 completion:nil];
+    } else {
+        [self runJavascript:@"\
+         \n document.documentElement.style.webkitUserSelect='none'; \
+         \n document.documentElement.style.khtmlUserSelect='none'; \
+         \n document.documentElement.style.mozUserSelect='none'; \
+         \n document.documentElement.style.msUserSelect='none'; \
+         \n document.documentElement.style.userSelect='none'; \
+         \n"
+                 completion:nil];
+    }
 }
 
 - (void)setCanScrollBack:(BOOL)canScrollBack {
@@ -139,17 +166,13 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     // 不会走到UIWebView的allowsLinkPreview属性
 }
 
-- (void)setBlockActionSheet:(BOOL)blockActionSheet {
-    _blockActionSheet = blockActionSheet;
-    if (!T_IS_ABOVE_IOS(8)) {
-        TLog(" blockActionSheet 不支持iOS8以下机型");
-        return;
-    }
-    if (blockActionSheet) {
-        [self runJavascript:@"document.body.style.webkitTouchCallout='none';"
+- (void)setBlockTouchCallout:(BOOL)blockTouchCallout {
+    _blockTouchCallout = blockTouchCallout;
+    if (blockTouchCallout) {
+        [self runJavascript:@"document.documentElement.style.webkitTouchCallout='none';"
                  completion:nil];
     } else {
-        [self runJavascript:@"document.body.style.webkitTouchCallout='inherit';"
+        [self runJavascript:@"document.documentElement.style.webkitTouchCallout='inherit';"
                  completion:nil];
     }
 }

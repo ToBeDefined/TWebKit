@@ -78,9 +78,11 @@
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    // reset canScrollChangeSize & blockActionSheet
+    // 使用set方法重新注入js
+    self.tWebView.canSelectContent = self.tWebView.canSelectContent;
     self.tWebView.canScrollChangeSize = self.tWebView.canScrollChangeSize;
-    self.tWebView.blockActionSheet = self.tWebView.blockActionSheet;
+    self.tWebView.blockTouchCallout = self.tWebView.blockTouchCallout;
+    
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didFinishLoadRequest:)];
     [delegate webView:self.tWebView didFinishLoadRequest:self.tWebView.request];
 }

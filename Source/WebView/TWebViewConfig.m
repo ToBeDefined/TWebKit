@@ -20,9 +20,10 @@
         _showProgressView       = YES;
         _progressTintColor      = [UIColor blueColor];
         
+        _canSelectContent       = YES;
         _canScrollBack          = YES;
         _canScrollChangeSize    = YES;
-        _blockActionSheet       = NO;
+        _blockTouchCallout      = NO;
         _block3DTouch           = NO;
         
         _confirmText            = @"OK";

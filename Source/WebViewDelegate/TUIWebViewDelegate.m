@@ -103,12 +103,10 @@ const float WebViewFinalProgressValue = 0.9f;
                           }
                       }];
     
-    if (self.tWebView.blockActionSheet) {
-        [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='none';"];
-    } else {
-        [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='inherit';"];
-    }
-    
+    // 使用set方法重新注入js
+    self.tWebView.canSelectContent = self.tWebView.canSelectContent;
+    self.tWebView.canScrollChangeSize = self.tWebView.canScrollChangeSize;
+    self.tWebView.blockTouchCallout = self.tWebView.blockTouchCallout;
     [self reduceLoadingCount:nil];
 }
 
