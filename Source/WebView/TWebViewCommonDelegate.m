@@ -117,10 +117,7 @@ static TWebViewCommonDelegate *__staticInstance;
     TWebViewController *previewViewController = [[TWebViewController alloc] init];
     previewViewController.view.backgroundColor = [UIColor whiteColor];
     if (previewViewController.previewActions == nil) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wc++98-c++11-compat"
-        previewViewController.previewActions = actions;
-#pragma clang diagnostic pop
+        previewViewController.previewActions = (NSArray<id<UIPreviewActionItem>> *)actions;
         [previewViewController loadURLFromString:url.absoluteString];
     }
     return previewViewController;

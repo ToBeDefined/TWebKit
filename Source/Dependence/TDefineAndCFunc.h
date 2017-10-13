@@ -35,6 +35,6 @@ NSString *trueURLString(NSString *urlString);
 // 递归查找该controller所显示在顶层的controller
 UIViewController *findShowingViewController(UIViewController *controller);
 // 返回AppDelegate的window的rootViewController所显示在顶层的controller
-UIViewController *getCurrentViewController();
+UIViewController *getCurrentViewController(void);
 
 
