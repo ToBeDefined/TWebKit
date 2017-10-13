@@ -43,7 +43,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 // Set whether to allow preview url;
 // If you return to NO, the following two methods will not run;
 // If you return to YES, The following two methods will be run when pressed.
-- (BOOL)webView:(TWebView *)webView shouldPreviewURL:(nullable NSURL *)url; API_AVAILABLE(ios(10.0));
+- (BOOL)webView:(TWebView *)webView shouldPreviewURL:(nullable NSURL *)url API_AVAILABLE(ios(10.0));
 
 // If you return to NO, the preview link will be made in Safari
 // If you do not want to preview the url, please return NO at method "- webView:shouldPreviewURL:"

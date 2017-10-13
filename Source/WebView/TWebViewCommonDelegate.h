@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title;
 
 #pragma mark - 3D Touch Peek & Pop; iOS 10+ available
-- (BOOL)webView:(TWebView *)webView shouldPreviewURL:(nullable NSURL *)url; API_AVAILABLE(ios(10.0));
+- (BOOL)webView:(TWebView *)webView shouldPreviewURL:(nullable NSURL *)url API_AVAILABLE(ios(10.0));
 
 - (nullable UIViewController *)webView:(TWebView *)webView previewingViewControllerForURL:(nullable NSURL *)url defaultActions:(NSArray<id <WKPreviewActionItem>> *)actions API_AVAILABLE(ios(10.0));
 
