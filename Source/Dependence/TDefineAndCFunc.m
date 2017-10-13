@@ -83,4 +83,34 @@ NSString *trueURLString(NSString *urlString) {
     return urlString;
 }
 
+UIViewController *findShowingViewController(UIViewController *controller) {
+    if (controller.presentedViewController) {
+        return findShowingViewController(controller.presentedViewController);
+    } else if ([controller isKindOfClass:[UISplitViewController class]]) {
+        UISplitViewController *svc = (UISplitViewController*)controller;
+        if (svc.viewControllers.count > 0)
+            return findShowingViewController(svc.viewControllers.lastObject);
+        else
+            return controller;
+    } else if ([controller isKindOfClass:[UINavigationController class]]) {
+        UINavigationController *nvc = (UINavigationController*)controller;
+        if (nvc.viewControllers.count > 0)
+            return findShowingViewController(nvc.topViewController);
+        else
+            return controller;
+    } else if ([controller isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *tvc = (UITabBarController*)controller;
+        if (tvc.viewControllers.count > 0)
+            return findShowingViewController(tvc.selectedViewController);
+        else
+            return controller;
+    } else {
+        return controller;
+    }
+}
+
+UIViewController *getCurrentViewController() {
+    return findShowingViewController([UIApplication sharedApplication].delegate.window.rootViewController);
+}
+
 

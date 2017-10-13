@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "TWebKitSetting.h"
 
 #define T_OSVersion ([[UIDevice currentDevice].systemVersion floatValue])
@@ -31,4 +32,9 @@ BOOL isEmptyString(NSString *string);
 BOOL isNotEmptyString(NSString *string);
 // 返回真正的url
 NSString *trueURLString(NSString *urlString);
+// 递归查找该controller所显示在顶层的controller
+UIViewController *findShowingViewController(UIViewController *controller);
+// 返回AppDelegate的window的rootViewController所显示在顶层的controller
+UIViewController *getCurrentViewController();
+
 

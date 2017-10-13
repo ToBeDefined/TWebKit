@@ -9,6 +9,7 @@
 #import "TWebViewCommonDelegate.h"
 #import "TDefineAndCFunc.h"
 #import "TWebViewController.h"
+#import <UIKit/UIKit.h>
 
 static TWebViewCommonDelegate *__staticInstance;
 
@@ -115,15 +116,25 @@ static TWebViewCommonDelegate *__staticInstance;
 - (UIViewController *)webView:(TWebView *)webView previewingViewControllerForURL:(NSURL *)url defaultActions:(NSArray<id<WKPreviewActionItem>> *)actions {
     TWebViewController *previewViewController = [[TWebViewController alloc] init];
     previewViewController.view.backgroundColor = [UIColor whiteColor];
-    previewViewController.previewActions = actions;
-    [previewViewController loadURLFromString:url.absoluteString];
+    if (previewViewController.previewActions == nil) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wc++98-c++11-compat"
+        previewViewController.previewActions = actions;
+#pragma clang diagnostic pop
+        [previewViewController loadURLFromString:url.absoluteString];
+    }
     return previewViewController;
 }
 
 - (void)webView:(TWebView *)webView commitPreviewingURL:(NSURL *)url controller:(UIViewController *)controller {
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
     // Test
-    [[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentViewController:nav animated:true completion:nil];
+    UIViewController *currentVC = getCurrentViewController();
+    if (currentVC.navigationController != nil) {
+        [currentVC.navigationController pushViewController:controller animated:true];
+    } else {
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+        [currentVC presentViewController:nav animated:YES completion:nil];
+    }
 }
 
 
