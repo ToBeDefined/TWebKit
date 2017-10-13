@@ -36,7 +36,7 @@ TWebKit
 - supports `ProgressView`, `UIWebView` uses part of the code in [NJKWebViewProgress](https://github.com/ninjinkun/NJKWebViewProgress) to simulate the progress of the configuration, support the configuration ProgressView color
 - Support the configuration is allowed to slide back (`canScrollBack`)
 - Support the configuration can zoom in and out of the page (`canScrollChangeSize`)
-- Support configuration is masked long press the link to display ActionSheet (`blockActionSheet`)
+- Support configuration is masked long press the link to display ActionSheet & MenuController (`blockTouchCallout`)
 - Support configuration for blocking links 3DTouch preview (`block3DTouch`)
 
 #### TWebViewController
@@ -52,6 +52,12 @@ TWebKit
 
 
 ### Installation
+
+#### Source File
+
+If your project support `iOS 7` or older, please download all files in the `Source` directory and put them in your project, No other configuration can be used.
+
+If your project just support `iOS 8+`, it is recommended to use `CocoaPods` or `Carthage`.
 
 #### CocoaPods
 
@@ -127,9 +133,10 @@ Most of the parameters and methods are same like UIWebView, the following descri
 - commonDelegate: `id <TWebViewDelegate>`, any object that obeys the `TWebViewDelegate` protocol, is recommended to use a singleton object as a commonDelegate.
 - showProgress: `BOOL`, `getter=isShowProgress`, whether to display the progress view.
 - progressTintColor: `UIColor`, progress color, if setting, the `showProgress` become `YES/true` now.
+- canSelectContent: `BOOL`, set whether you can long press to select the contents of the page.
+- canScrollChangeSize: `BOOL`, whether you can drag to change the page size.
+- blockTouchCallout: `BOOL`, whether to block the long press link appears actionSheet and menuController.
 - canScrollBack: `BOOL`, iOS8+ support, whether it can slide back to the previous page.
-- canScrollChangeSize: `BOOL`, iOS8+ support, whether you can drag to change the page size.
-- blockActionSheet: `BOOL`, iOS8+ support, whether to block the long press link appears actionSheet.
 - block3DTouch: `BOOL`, iOS9+ support, whether to block 3DTouch preview links.
 - confirmText: `NSString`, the confirm button text of web page pop-up box.
 - cancelText: `NSString`, the cancel button text of web page pop-up box.
@@ -175,15 +182,16 @@ In order to make the configuration parameters more clear, so add the `TWebViewCo
 | forceOverrideCookie       | ->  | forceOverrideCookie |
 | showProgressView          | ->  |        showProgress |
 | progressTintColor         | ->  |   progressTintColor |
+| canSelectContent          | ->  |    canSelectContent |
 | canScrollChangeSize       | ->  | canScrollChangeSize |
+| blockTouchCallout         | ->  |   blockTouchCallout |
+| canScrollBack             | ->  |       canScrollBack |
+| block3DTouch              | ->  |        block3DTouch |
 | confirmText               | ->  |         confirmText |
 | cancelText                | ->  |          cancelText |
 | lodingDefaultTitle        | ->  |  lodingDefaultTitle |
 | successDefaultTitle       | ->  | successDefaultTitle |
 | failedDefaultTitle        | ->  |  failedDefaultTitle |
-| canScrollBack             | ->  |       canScrollBack |
-| blockActionSheet          | ->  |    blockActionSheet |
-| block3DTouch              | ->  |        block3DTouch |
 
 #### TWebViewDelegate
 
@@ -213,9 +221,23 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 // Current status: status, current default use of the title, 
 // You can determination title to the ViewController based on the status. Or you can set the title parameter to the title of the ViewController.
 // TWebViewLoadStatusIsLoding => return TWebView's lodingDefaultTitle
-// TWebViewLoadStatusSuccess  => get web page's title, return it if not empty；if empty, return TWebView's successDefaultTitle
+// TWebViewLoadStatusSuccess  => get web page's title, return it if not empty; if empty, return TWebView's successDefaultTitle
 // TWebViewLoadStatusFailed   => return TWebView's failedDefaultTitle
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title;
+
+#pragma mark - 3D Touch Peek & Pop; iOS 10+ available
+// Set whether to allow preview url;
+// If you return to NO, the following two methods will not run;
+// If you return to YES, The following two methods will be run when hard pressed.
+- (BOOL)webView:(TWebView *)webView shouldPreviewURL:(nullable NSURL *)url API_AVAILABLE(ios(10.0));
+
+// If you return to nil, the preview link will be made in Safari
+// If you do not want to preview the url, please return NO at method "- webView:shouldPreviewURL:"
+// param "actions" is the iOS default support actions
+- (nullable UIViewController *)webView:(TWebView *)webView previewingViewControllerForURL:(nullable NSURL *)url defaultActions:(NSArray<id <WKPreviewActionItem>> *)actions API_AVAILABLE(ios(10.0));
+
+// Pop the previewing ViewController and then run this method
+- (void)webView:(TWebView *)webView commitPreviewingURL:(nullable NSURL *)url controller:(UIViewController *)controller API_AVAILABLE(ios(10.0));
 
 @end
 

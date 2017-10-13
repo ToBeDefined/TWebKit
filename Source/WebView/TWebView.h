@@ -42,10 +42,10 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 #pragma mark - 3D Touch Peek & Pop; iOS 10+ available
 // Set whether to allow preview url;
 // If you return to NO, the following two methods will not run;
-// If you return to YES, The following two methods will be run when pressed.
+// If you return to YES, The following two methods will be run when hard pressed.
 - (BOOL)webView:(TWebView *)webView shouldPreviewURL:(nullable NSURL *)url API_AVAILABLE(ios(10.0));
 
-// If you return to NO, the preview link will be made in Safari
+// If you return to nil, the preview link will be made in Safari
 // If you do not want to preview the url, please return NO at method "- webView:shouldPreviewURL:"
 // param "actions" is the iOS default support actions
 - (nullable UIViewController *)webView:(TWebView *)webView previewingViewControllerForURL:(nullable NSURL *)url defaultActions:(NSArray<id <WKPreviewActionItem>> *)actions API_AVAILABLE(ios(10.0));

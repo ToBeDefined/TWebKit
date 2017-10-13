@@ -36,7 +36,7 @@ TWebKit
 - 支持显示`ProgressView`，`UIWebView`的Progress使用了[NJKWebViewProgress](https://github.com/ninjinkun/NJKWebViewProgress)中的部分代码进行模拟进度，支持配置ProgressView的颜色
 - 支持配置是否允许滑动返回(`canScrollBack`)
 - 支持配置是否可以放大缩小网页(`canScrollChangeSize`)
-- 支持配置是否屏蔽长按链接显示ActionSheet(`blockActionSheet`)
+- 支持配置是否屏蔽长按链接显示ActionSheet和MenuController(`blockTouchCallout`)
 - 支持配置是否屏蔽链接的3DTouch预览(`block3DTouch`)
 
 #### TWebViewController
@@ -52,6 +52,12 @@ TWebKit
 
 
 ### 导入项目
+
+#### 源文件
+
+如果你的项目支持`iOS 7`以及之前版本，请下载`Source`目录中的所有文件拖放入你的项目中，无须其他配置即可使用。
+
+如果你的项目仅支持`iOS 8+`，建议使用`CocoaPods`或者`Carthage`方式。
 
 #### CocoaPods
 
@@ -128,9 +134,10 @@ github "tobedefined/TWebKit" ~> 1.1.0
 - commonDelegate：`id <TWebViewDelegate>`，通用代理，遵守`TWebViewDelegate`协议的任何对象，建议使用singleton的对象作为通用代理
 - showProgress：`BOOL`，`getter=isShowProgress`，是否显示进度条
 - progressTintColor：`UIColor`，进度条颜色，配置之后会使`showProgress`为`YES/true`
+- canSelectContent：`BOOL`，设置是否可以长按选择网页中的内容
+- canScrollChangeSize：`BOOL`，是否可以拖动改变网页大小
+- blockTouchCallout：`BOOL`，是否屏蔽长按链接出现actionSheet和menuController
 - canScrollBack：`BOOL`，iOS8+支持，是否可以滑动返回上一个网页
-- canScrollChangeSize：`BOOL`，iOS8+支持，是否可以拖动改变网页大小
-- blockActionSheet：`BOOL`，iOS8+支持，是否屏蔽长按链接出现actionSheet
 - block3DTouch：`BOOL`，iOS9+支持，是否屏蔽3DTouch预览链接
 - confirmText：`NSString`，网页弹出框的确定按钮文字
 - cancelText：`NSString`，网页弹出框的取消按钮文字
@@ -176,15 +183,16 @@ github "tobedefined/TWebKit" ~> 1.1.0
 | forceOverrideCookie   | ->  | forceOverrideCookie |
 | showProgressView      | ->  |        showProgress |
 | progressTintColor     | ->  |   progressTintColor |
+| canSelectContent      | ->  |    canSelectContent |
 | canScrollChangeSize   | ->  | canScrollChangeSize |
+| blockTouchCallout     | ->  |   blockTouchCallout |
+| canScrollBack         | ->  |       canScrollBack |
+| block3DTouch          | ->  |        block3DTouch |
 | confirmText           | ->  |         confirmText |
 | cancelText            | ->  |          cancelText |
 | lodingDefaultTitle    | ->  |  lodingDefaultTitle |
 | successDefaultTitle   | ->  | successDefaultTitle |
 | failedDefaultTitle    | ->  |  failedDefaultTitle |
-| canScrollBack         | ->  |       canScrollBack |
-| blockActionSheet      | ->  |    blockActionSheet |
-| block3DTouch          | ->  |        block3DTouch |
 
 #### TWebViewDelegate
 
@@ -217,6 +225,20 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 // TWebViewLoadStatusSuccess  => 获取网页的title，如果不为空返回；为空返回TWebView的successDefaultTitle
 // TWebViewLoadStatusFailed   => 返回TWebView的failedDefaultTitle
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title;
+
+#pragma mark - 3D Touch Peek & Pop; iOS 10+ available
+// 设置是否允许url进行预览;
+// 如果返回NO，下面的两个方法将不会执行
+// 如果返回YES，下面的两个方法将会在用户用力按压时候执行
+- (BOOL)webView:(TWebView *)webView shouldPreviewURL:(nullable NSURL *)url API_AVAILABLE(ios(10.0));
+
+// 如果返回NO, 将会在Safari中预览链接
+// 如果你不想预览这个url, 请在 "- webView:shouldPreviewURL:" 方法中返回NO
+// 参数 "actions" 是iOS默认支持的actions
+- (nullable UIViewController *)webView:(TWebView *)webView previewingViewControllerForURL:(nullable NSURL *)url defaultActions:(NSArray<id <WKPreviewActionItem>> *)actions API_AVAILABLE(ios(10.0));
+
+// 打开预览的ViewController
+- (void)webView:(TWebView *)webView commitPreviewingURL:(nullable NSURL *)url controller:(UIViewController *)controller API_AVAILABLE(ios(10.0));
 
 @end
 
