@@ -94,7 +94,7 @@ $ brew install carthage
 要将`TWebKit`集成到使用Carthage的Xcode项目中，请在`Cartfile`中加入：
 
 ```ruby
-github "tobedefined/TWebKit" ~> 1.1.0
+github "tobedefined/TWebKit" ~> 1.1.1
 ```
 
 运行`carthage update`构建framework，并将编译的`TWebKit.framework`拖入Xcode项目中。
