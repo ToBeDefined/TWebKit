@@ -61,6 +61,10 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
     return _backImage;
 }
 
+- (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
+    return self.previewActions;
+}
+
 #pragma mark - LifeCyle Methods
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -139,10 +143,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 }
 
 
-
-
-
-#pragma mark - CommonWebViewDelegate
+#pragma mark - TWebViewDelegate
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title {
     TLog(@"%@", title);
     if (isEmptyString(self.navTitle)) {

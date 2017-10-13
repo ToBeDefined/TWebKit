@@ -14,12 +14,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class TWebView;
 @class WKNavigation;
+@protocol WKPreviewActionItem;
 
 typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
     TWebViewLoadStatusIsLoding = 1,
     TWebViewLoadStatusSuccess  = 2,
     TWebViewLoadStatusFailed   = 3,
 };
+
+
+#pragma mark - TWebViewDelegate
 
 @protocol TWebViewDelegate <NSObject>
 
@@ -35,10 +39,28 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title;
 
+#pragma mark - 3D Touch Peek & Pop; iOS 10+ available
+// Set whether to allow preview url;
+// If you return to NO, the following two methods will not run;
+// If you return to YES, The following two methods will be run when pressed.
+- (BOOL)webView:(TWebView *)webView shouldPreviewURL:(nullable NSURL *)url; API_AVAILABLE(ios(10.0));
+
+// If you return to NO, the preview link will be made in Safari
+// If you do not want to preview the url, please return NO at method "- webView:shouldPreviewURL:"
+// param "actions" is the iOS default support actions
+- (nullable UIViewController *)webView:(TWebView *)webView previewingViewControllerForURL:(nullable NSURL *)url defaultActions:(NSArray<id <WKPreviewActionItem>> *)actions API_AVAILABLE(ios(10.0));
+
+// Pop the previewing ViewController and then run this method
+- (void)webView:(TWebView *)webView commitPreviewingURL:(nullable NSURL *)url controller:(UIViewController *)controller API_AVAILABLE(ios(10.0));
+
 @end
+
+
+#pragma mark - TWebView
 
 @interface TWebView : UIView
 
+#pragma mark - TWebView Property
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable delegate;
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable commonDelegate;
 @property (nonatomic, readonly) BOOL canGoBack;
@@ -64,6 +86,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 @property (nonatomic, copy) NSString *successDefaultTitle;
 @property (nonatomic, copy) NSString *failedDefaultTitle;
 
+#pragma mark - TWebView Function
 - (instancetype)init;
 - (instancetype)initWithConfig:(TWebViewConfig *)config;
 - (nullable id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel;

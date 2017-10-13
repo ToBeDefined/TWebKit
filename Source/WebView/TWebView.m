@@ -294,10 +294,9 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 - (CGFloat)getTopInset {
 #ifdef __IPHONE_11_0
     if (T_IS_ABOVE_IOS(11)) {
-        CGFloat selfSafeTop = self.safeAreaInsets.top;
-        CGFloat scrollViewSafeTop = self.wkWebView.scrollView.safeAreaInsets.top;
+        CGFloat safeTop = self.safeAreaInsets.top;
         CGFloat scrollViewContentTop = self.wkWebView.scrollView.contentInset.top;
-        return (selfSafeTop + scrollViewSafeTop + scrollViewContentTop);
+        return (safeTop + scrollViewContentTop);
     }
 #endif
     if (T_IS_ABOVE_IOS(8)) {

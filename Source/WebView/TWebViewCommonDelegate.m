@@ -8,6 +8,7 @@
 
 #import "TWebViewCommonDelegate.h"
 #import "TDefineAndCFunc.h"
+#import "TWebViewController.h"
 
 static TWebViewCommonDelegate *__staticInstance;
 
@@ -105,6 +106,25 @@ static TWebViewCommonDelegate *__staticInstance;
     
 }
 
+#pragma mark - 3D Touch Peek & Pop; iOS 10+ available
+
+- (BOOL)webView:(TWebView *)webView shouldPreviewURL:(NSURL *)url {
+    return true;
+}
+
+- (UIViewController *)webView:(TWebView *)webView previewingViewControllerForURL:(NSURL *)url defaultActions:(NSArray<id<WKPreviewActionItem>> *)actions {
+    TWebViewController *previewViewController = [[TWebViewController alloc] init];
+    previewViewController.view.backgroundColor = [UIColor whiteColor];
+    previewViewController.previewActions = actions;
+    [previewViewController loadURLFromString:url.absoluteString];
+    return previewViewController;
+}
+
+- (void)webView:(TWebView *)webView commitPreviewingURL:(NSURL *)url controller:(UIViewController *)controller {
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
+    // Test
+    [[[[[UIApplication sharedApplication] delegate] window] rootViewController] presentViewController:nav animated:true completion:nil];
+}
 
 
 @end

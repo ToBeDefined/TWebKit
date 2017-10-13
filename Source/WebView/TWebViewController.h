@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * _Nullable navTitle;
 @property (nonatomic, strong) UIImage * _Nullable backImage;
 
+@property (nonatomic, strong) NSArray<id<UIPreviewActionItem>> * _Nonnull previewActions;
+
 - (instancetype)init;
 
 - (instancetype)initWithConfig:(TWebViewConfig *)config;
