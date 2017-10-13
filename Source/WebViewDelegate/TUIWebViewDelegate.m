@@ -103,11 +103,9 @@ const float WebViewFinalProgressValue = 0.9f;
                           }
                       }];
     
-    if (self.tWebView.blockActionSheet) {
-        [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='none';"];
-    } else {
-        [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.webkitTouchCallout='inherit';"];
-    }
+    // reset canScrollChangeSize & blockActionSheet
+    self.tWebView.canScrollChangeSize = self.tWebView.canScrollChangeSize;
+    self.tWebView.blockActionSheet = self.tWebView.blockActionSheet;
     
     [self reduceLoadingCount:nil];
 }

@@ -52,8 +52,8 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 // User Interaction
 // only uper ios 8.0
 @property (nonatomic, assign) BOOL canScrollBack API_AVAILABLE(ios(8.0));
-@property (nonatomic, assign) BOOL canScrollChangeSize API_AVAILABLE(ios(8.0));
-@property (nonatomic, assign) BOOL blockActionSheet API_AVAILABLE(ios(8.0));
+@property (nonatomic, assign) BOOL canScrollChangeSize;
+@property (nonatomic, assign) BOOL blockActionSheet;
 // only uper ios 9.0
 @property (nonatomic, assign) BOOL block3DTouch API_AVAILABLE(ios(9.0));
 

@@ -128,8 +128,8 @@ Most of the parameters and methods are same like UIWebView, the following descri
 - showProgress: `BOOL`, `getter=isShowProgress`, whether to display the progress view.
 - progressTintColor: `UIColor`, progress color, if setting, the `showProgress` become `YES/true` now.
 - canScrollBack: `BOOL`, iOS8+ support, whether it can slide back to the previous page.
-- canScrollChangeSize: `BOOL`, iOS8+ support, whether you can drag to change the page size.
-- blockActionSheet: `BOOL`, iOS8+ support, whether to block the long press link appears actionSheet.
+- canScrollChangeSize: `BOOL`, whether you can drag to change the page size.
+- blockActionSheet: `BOOL`, whether to block the long press link appears actionSheet.
 - block3DTouch: `BOOL`, iOS9+ support, whether to block 3DTouch preview links.
 - confirmText: `NSString`, the confirm button text of web page pop-up box.
 - cancelText: `NSString`, the cancel button text of web page pop-up box.

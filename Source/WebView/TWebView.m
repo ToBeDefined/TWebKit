@@ -146,10 +146,10 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         return;
     }
     if (blockActionSheet) {
-        [self runJavascript:@"document.body.style.webkitTouchCallout='none';"
+        [self runJavascript:@"document.documentElement.style.webkitTouchCallout='none';"
                  completion:nil];
     } else {
-        [self runJavascript:@"document.body.style.webkitTouchCallout='inherit';"
+        [self runJavascript:@"document.documentElement.style.webkitTouchCallout='inherit';"
                  completion:nil];
     }
 }

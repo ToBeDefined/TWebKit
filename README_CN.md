@@ -129,8 +129,8 @@ github "tobedefined/TWebKit" ~> 1.1.1
 - showProgress：`BOOL`，`getter=isShowProgress`，是否显示进度条
 - progressTintColor：`UIColor`，进度条颜色，配置之后会使`showProgress`为`YES/true`
 - canScrollBack：`BOOL`，iOS8+支持，是否可以滑动返回上一个网页
-- canScrollChangeSize：`BOOL`，iOS8+支持，是否可以拖动改变网页大小
-- blockActionSheet：`BOOL`，iOS8+支持，是否屏蔽长按链接出现actionSheet
+- canScrollChangeSize：`BOOL`，是否可以拖动改变网页大小
+- blockActionSheet：`BOOL`，是否屏蔽长按链接出现actionSheet
 - block3DTouch：`BOOL`，iOS9+支持，是否屏蔽3DTouch预览链接
 - confirmText：`NSString`，网页弹出框的确定按钮文字
 - cancelText：`NSString`，网页弹出框的取消按钮文字
