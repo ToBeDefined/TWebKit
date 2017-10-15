@@ -20,11 +20,13 @@ static int TextFieldTagInputURL      = 20002;
 static NSString *T_TESTURL_LASTINPUTURL = @"T_TESTURL_LASTINPUTURL";
 static NSString *TInputURLAlertView = @"TInputURLAlertView";
 
-@interface TWebViewController () <TWebViewDelegate, UITextFieldDelegate>
+@interface TWebViewController () <TWebViewDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate>
 
 @end
 
-@implementation TWebViewController
+@implementation TWebViewController {
+    id<UIGestureRecognizerDelegate> _grDelegate;
+}
 
 - (instancetype)init {
     self = [super init];
@@ -86,6 +88,10 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
+    if (self.navigationController.viewControllers.count > 1) {
+        _grDelegate = self.navigationController.interactivePopGestureRecognizer.delegate;
+        self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -94,6 +100,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    self.navigationController.interactivePopGestureRecognizer.delegate = _grDelegate;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -149,6 +156,15 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
     if (isEmptyString(self.navTitle)) {
         self.navigationItem.title = title;
     }
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    return self.navigationController.childViewControllers.count > 1;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return self.navigationController.viewControllers.count > 1;
 }
 
 
