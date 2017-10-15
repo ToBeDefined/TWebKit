@@ -162,6 +162,10 @@ Most of the parameters and methods are same like UIWebView, the following descri
 
     > Get cookies in `NSHTTPCookieStorage` and set the cookie for TWebView, the `forceOverride` parameter control use the cookie value in `NSHTTPCookieStorage` to reset the cookie of the same name that existed before TWebView, if `forceOverride` is `NO/false`, will don't reset the same name cookie.
 
+- `- (void)getDocumentTitle:(void (^)(NSString * _Nullable))completion`
+
+    > Take out the page's `title` to `completion`(it was use `JavaScript` to get the web page in the `document.title`)
+
 - `+ (nullable NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data`
 
     > Class method to get `JavaScript function`, `function` parameter to access the JavaScript method name (no need to add brackets), `data` parameters can be `JSON Object` or ordinary `NSString`, will automatically convert Stitching; returns a function call string after splicing.

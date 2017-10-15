@@ -410,6 +410,19 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
              }];
 }
 
+
+- (void)getDocumentTitle:(void (^)(NSString * _Nullable))completion {
+    [self runJavascript:@"document.title" completion:^(id _Nullable obj, NSError * _Nullable error) {
+        if (error != nil) {
+            TLog(@"%@", error);
+        }
+        if ([obj isKindOfClass:[NSString class]]) {
+            completion((NSString *)obj);
+        } else {
+            completion(nil);
+        }
+    }];
+}
 #pragma mark - Get Delegate
 - (nullable id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel {
     if ([self.delegate respondsToSelector:sel]) {

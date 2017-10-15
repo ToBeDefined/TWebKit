@@ -106,6 +106,8 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 // this forceOverride just once valid
 - (void)resetCookieForceOverride:(BOOL)forceOverride;
 
+- (void)getDocumentTitle:(void (^)(NSString * _Nullable title))completion;
+
 // 9.0以及之后，8.0之前可用
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL;
 // 9.0之后可用
@@ -113,7 +115,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 + (nullable NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data;
 
-- (void)runJavascript:(NSString *)js completion:(void (^ _Nullable)(_Nullable id, NSError * _Nullable error))completion;
+- (void)runJavascript:(NSString *)js completion:(void (^ _Nullable)(_Nullable id obj, NSError * _Nullable error))completion;
 
 @end
 

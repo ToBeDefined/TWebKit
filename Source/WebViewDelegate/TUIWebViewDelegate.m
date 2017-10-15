@@ -118,10 +118,11 @@ const float WebViewFinalProgressValue = 0.9f;
             withError:error];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [delegate webView:self.tWebView
-           loadStatus:TWebViewLoadStatusFailed
-                title:self.tWebView.failedDefaultTitle];
-    
+    [self.tWebView getDocumentTitle:^(NSString * _Nullable title) {
+        [delegate webView:self.tWebView
+               loadStatus:TWebViewLoadStatusFailed
+                    title:isNotEmptyString(title) ? title : self.tWebView.failedDefaultTitle];
+    }];
     [self reduceLoadingCount:error];
 }
 
