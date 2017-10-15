@@ -94,9 +94,11 @@
     [delegate webView:self.tWebView didFailedLoadRequest:self.tWebView.request withError:error];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [delegate webView:self.tWebView
-           loadStatus:TWebViewLoadStatusFailed
-                title:self.tWebView.failedDefaultTitle];
+    [self.tWebView getDocumentTitle:^(NSString * _Nullable title) {
+        [delegate webView:self.tWebView
+               loadStatus:TWebViewLoadStatusFailed
+                    title:isNotEmptyString(title) ? title : self.tWebView.failedDefaultTitle];
+    }];
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
@@ -108,9 +110,11 @@
     [delegate webView:self.tWebView didFailedLoadRequest:self.tWebView.request withError:error];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [delegate webView:self.tWebView
-           loadStatus:TWebViewLoadStatusFailed
-                title:self.tWebView.failedDefaultTitle];
+    [self.tWebView getDocumentTitle:^(NSString * _Nullable title) {
+        [delegate webView:self.tWebView
+               loadStatus:TWebViewLoadStatusFailed
+                    title:isNotEmptyString(title) ? title : self.tWebView.failedDefaultTitle];
+    }];
 }
 
 
