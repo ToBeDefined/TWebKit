@@ -156,6 +156,10 @@ github "tobedefined/TWebKit" ~> 1.1.1
 
     > 取出`NSHTTPCookieStorage`中的cookies设置TWebView的cookie，`forceOverride`参数控制是否强制使用`NSHTTPCookieStorage`中的cookie值重设TWebView之前存在的同名的cookie
 
+- `- (void)getDocumentTitle:(void (^)(NSString * _Nullable))completion`
+
+    > 取出网页的`title`放入block `completion`，使用`JavaScript`获得网页HTML中的`document.title`
+
 - `+ (nullable NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data`
 
     > 类方法提供拼接JavaScript函数功能，`function`参数为要访问的JavaScript的方法名(不需要添加括号)，`data`参数可以为`JSON Object`或者为普通的`NSString`，会自动进行转换拼接；返回拼接后的函数调用字符串。
