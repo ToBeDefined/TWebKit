@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol WKPreviewActionItem;
 
 typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
-    TWebViewLoadStatusIsLoding = 1,
+    TWebViewLoadStatusIsLoading = 1,
     TWebViewLoadStatusSuccess  = 2,
     TWebViewLoadStatusFailed   = 3,
 };
@@ -83,7 +83,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 // Texts
 @property (nonatomic, copy) NSString *confirmText;
 @property (nonatomic, copy) NSString *cancelText;
-@property (nonatomic, copy) NSString *lodingDefaultTitle;
+@property (nonatomic, copy) NSString *loadingDefaultTitle;
 @property (nonatomic, copy) NSString *successDefaultTitle;
 @property (nonatomic, copy) NSString *failedDefaultTitle;
 

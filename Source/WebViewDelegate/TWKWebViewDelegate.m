@@ -66,15 +66,15 @@
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
     [delegate webView:self.tWebView
-           loadStatus:TWebViewLoadStatusIsLoding
-                title:self.tWebView.lodingDefaultTitle];
+           loadStatus:TWebViewLoadStatusIsLoading
+                title:self.tWebView.loadingDefaultTitle];
 }
 
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
     [delegate webView:self.tWebView
-           loadStatus:TWebViewLoadStatusIsLoding
-                title:self.tWebView.lodingDefaultTitle];
+           loadStatus:TWebViewLoadStatusIsLoading
+                title:self.tWebView.loadingDefaultTitle];
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {

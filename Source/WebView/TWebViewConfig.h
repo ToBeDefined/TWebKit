@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *confirmText;
 @property (nonatomic, copy) NSString *cancelText;
-@property (nonatomic, copy) NSString *lodingDefaultTitle;
+@property (nonatomic, copy) NSString *loadingDefaultTitle;
 @property (nonatomic, copy) NSString *successDefaultTitle;
 @property (nonatomic, copy) NSString *failedDefaultTitle;
 

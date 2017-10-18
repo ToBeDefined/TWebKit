@@ -78,8 +78,8 @@ const float WebViewFinalProgressValue = 0.9f;
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
     [delegate webView:self.tWebView
-           loadStatus:TWebViewLoadStatusIsLoding
-                title:self.tWebView.lodingDefaultTitle];
+           loadStatus:TWebViewLoadStatusIsLoading
+                title:self.tWebView.loadingDefaultTitle];
     
     ++ _loadingCount;
     _maxLoadCount = fmax(_maxLoadCount, _loadingCount);

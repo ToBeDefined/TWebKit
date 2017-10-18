@@ -24,7 +24,7 @@ class CustomWebViewController: UIViewController {
         config.webViewCommonDelegate = TWebViewCommonDelegate.init()
         config.webViewDelegate = self
         config.failedDefaultTitle = "加载失败"
-        config.lodingDefaultTitle = "加载中..."
+        config.loadingDefaultTitle = "加载中..."
         config.successDefaultTitle = "加载成功"
         webView = TWebView.init(config: config)
         self.view.addSubview(webView);
