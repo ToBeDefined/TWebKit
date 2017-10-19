@@ -77,7 +77,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         
         _confirmText            = config.confirmText;
         _cancelText             = config.cancelText;
-        _loadingDefaultTitle     = config.loadingDefaultTitle;
+        _loadingDefaultTitle    = config.loadingDefaultTitle;
         _successDefaultTitle    = config.successDefaultTitle;
         _failedDefaultTitle     = config.failedDefaultTitle;
         

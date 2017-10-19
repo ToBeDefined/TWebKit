@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
     TWebViewLoadStatusIsLoading = 1,
-    TWebViewLoadStatusSuccess  = 2,
-    TWebViewLoadStatusFailed   = 3,
+    TWebViewLoadStatusSuccess   = 2,
+    TWebViewLoadStatusFailed    = 3,
 };
 
 
