@@ -28,7 +28,7 @@
         
         _confirmText            = @"OK";
         _cancelText             = @"Cancel";
-        _lodingDefaultTitle     = @"Loding...";
+        _loadingDefaultTitle    = @"Loading...";
         _successDefaultTitle    = @"Details";
         _failedDefaultTitle     = @"Failed";
     }

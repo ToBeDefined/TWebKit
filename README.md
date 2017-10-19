@@ -140,7 +140,7 @@ Most of the parameters and methods are same like UIWebView, the following descri
 - block3DTouch: `BOOL`, iOS9+ support, whether to block 3DTouch preview links.
 - confirmText: `NSString`, the confirm button text of web page pop-up box.
 - cancelText: `NSString`, the cancel button text of web page pop-up box.
-- lodingDefaultTitle: `NSString`, the title text returned by default in the page loading.
+- loadingDefaultTitle: `NSString`, the title text returned by default in the page loading.
 - successDefaultTitle: `NSString`, the title text returned by default in the page load succesed.
 - failedDefaultTitle: `NSString`, the title text returned by default in the page load failed.
 
@@ -193,7 +193,7 @@ In order to make the configuration parameters more clear, so add the `TWebViewCo
 | block3DTouch              | ->  |        block3DTouch |
 | confirmText               | ->  |         confirmText |
 | cancelText                | ->  |          cancelText |
-| lodingDefaultTitle        | ->  |  lodingDefaultTitle |
+| loadingDefaultTitle       | ->  |  loadingDefaultTitle|
 | successDefaultTitle       | ->  | successDefaultTitle |
 | failedDefaultTitle        | ->  |  failedDefaultTitle |
 
@@ -201,9 +201,9 @@ In order to make the configuration parameters more clear, so add the `TWebViewCo
 
 ```objc
 typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
-    TWebViewLoadStatusIsLoding = 1,
-    TWebViewLoadStatusSuccess  = 2,
-    TWebViewLoadStatusFailed   = 3,
+    TWebViewLoadStatusIsLoading = 1,
+    TWebViewLoadStatusSuccess   = 2,
+    TWebViewLoadStatusFailed    = 3,
 };
 
 @protocol TWebViewDelegate <NSObject>
@@ -224,9 +224,9 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 // Current status: status, current default use of the title, 
 // You can determination title to the ViewController based on the status. Or you can set the title parameter to the title of the ViewController.
-// TWebViewLoadStatusIsLoding => return TWebView's lodingDefaultTitle
-// TWebViewLoadStatusSuccess  => get web page's title, return it if not empty; if empty, return TWebView's successDefaultTitle
-// TWebViewLoadStatusFailed   => return TWebView's failedDefaultTitle
+// TWebViewLoadStatusIsLoading  => return TWebView's loadingDefaultTitle
+// TWebViewLoadStatusSuccess    => get web page's title, return it if not empty; if empty, return TWebView's successDefaultTitle
+// TWebViewLoadStatusFailed     => return TWebView's failedDefaultTitle
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title;
 
 #pragma mark - 3D Touch Peek & Pop; iOS 10+ available

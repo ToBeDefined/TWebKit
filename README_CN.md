@@ -141,7 +141,7 @@ github "tobedefined/TWebKit" ~> 1.2.1
 - block3DTouch：`BOOL`，iOS9+支持，是否屏蔽3DTouch预览链接
 - confirmText：`NSString`，网页弹出框的确定按钮文字
 - cancelText：`NSString`，网页弹出框的取消按钮文字
-- lodingDefaultTitle：`NSString`，网页加载中默认返回的title文字
+- loadingDefaultTitle：`NSString`，网页加载中默认返回的title文字
 - successDefaultTitle：`NSString`，网页加载成功默认返回的title文字
 - failedDefaultTitle：`NSString`，网页加载失败默认返回的title文字
 
@@ -180,7 +180,7 @@ github "tobedefined/TWebKit" ~> 1.2.1
 
 为了将配置参数更加清晰，所以添加了这个类，参数与`TWebView`的各个配置参数对应，你可以使用`TWebViewConfig`创建配置，然后使用配置来创建`TWebView`；也可以直接创建`TWebView`，然后对创建的对象进行参数赋值。
 
-| TWebViewConfig参数      | ->  |          TWebView参数 |
+| TWebViewConfig参数     | ->  |          TWebView参数 |
 |-----------------------|-----|--------------------:|
 | webViewCommonDelegate | ->  |      commonDelegate |
 | webViewDelegate       | ->  |            delegate |
@@ -194,7 +194,7 @@ github "tobedefined/TWebKit" ~> 1.2.1
 | block3DTouch          | ->  |        block3DTouch |
 | confirmText           | ->  |         confirmText |
 | cancelText            | ->  |          cancelText |
-| lodingDefaultTitle    | ->  |  lodingDefaultTitle |
+| loadingDefaultTitle   | ->  |  loadingDefaultTitle|
 | successDefaultTitle   | ->  | successDefaultTitle |
 | failedDefaultTitle    | ->  |  failedDefaultTitle |
 
@@ -202,9 +202,9 @@ github "tobedefined/TWebKit" ~> 1.2.1
 
 ```objc
 typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
-    TWebViewLoadStatusIsLoding = 1,
-    TWebViewLoadStatusSuccess  = 2,
-    TWebViewLoadStatusFailed   = 3,
+    TWebViewLoadStatusIsLoading = 1,
+    TWebViewLoadStatusSuccess   = 2,
+    TWebViewLoadStatusFailed    = 3,
 };
 
 @protocol TWebViewDelegate <NSObject>
@@ -225,9 +225,9 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 // 当前状态：status，当前默认使用的title，
 // 可以选择使用根据状态判断设定ViewController的title。或者可以将title字段设为ViewController的title。
-// TWebViewLoadStatusIsLoding => 返回TWebView的lodingDefaultTitle
-// TWebViewLoadStatusSuccess  => 获取网页的title，如果不为空返回；为空返回TWebView的successDefaultTitle
-// TWebViewLoadStatusFailed   => 返回TWebView的failedDefaultTitle
+// TWebViewLoadStatusIsLoading  => 返回TWebView的loadingDefaultTitle
+// TWebViewLoadStatusSuccess    => 获取网页的title，如果不为空返回；为空返回TWebView的successDefaultTitle
+// TWebViewLoadStatusFailed     => 返回TWebView的failedDefaultTitle
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title;
 
 #pragma mark - 3D Touch Peek & Pop; iOS 10+ available
