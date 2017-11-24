@@ -27,22 +27,22 @@ github : https://github.com/tobedefined/TWebKit
   s.frameworks            = 'Foundation', 'UIKit'
   s.weak_framework        = 'WebKit'
   s.resource              = 'Source/TWebKit.bundle'
-  s.requires_arc = true
+  s.requires_arc          = true
 
   s.subspec 'Setting' do |ss|
-    ss.public_header_files = 'Source/TWebKitSetting.h'
-    ss.source_files = 'Source/TWebKitSetting.{h,m}'
+    ss.public_header_files  = 'Source/TWebKitSetting.h'
+    ss.source_files         = 'Source/TWebKitSetting.{h,m}'
   end
 
   s.subspec 'Dependence' do |ss|
-    ss.source_files = 'Source/Dependence/'
     ss.private_header_files = 'Source/Dependence/*.h'
+    ss.source_files         = 'Source/Dependence/'
     ss.dependency 'TWebKit/Setting'
   end
 
   s.subspec 'WebView' do |ss|
-    ss.source_files         = 'Source/WebView/', 'Source/WebViewDelegate/'
     ss.private_header_files = 'Source/WebView/TWebView_Inner.h', 'Source/WebViewDelegate/*.h'
+    ss.source_files         = 'Source/WebView/', 'Source/WebViewDelegate/'
     ss.dependency 'TWebKit/Setting'
     ss.dependency 'TWebKit/Dependence'
   end
