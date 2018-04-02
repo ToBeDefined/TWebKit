@@ -169,7 +169,7 @@ const float WebViewFinalProgressValue = 0.9f;
     [self.tWebView runJavascript:@"document.readyState" completion:^(id  _Nonnull obj, NSError * _Nonnull error) {
         @tstrongify(self)
         if ([obj isEqualToString:@"interactive"]) {
-            _interactive = YES;
+            self->_interactive = YES;
             NSString *waitForCompleteJS = [NSString stringWithFormat:@"\
                                            \n window.addEventListener('load',function() { \
                                            \n   var iframe = document.createElement('iframe');\
@@ -182,7 +182,7 @@ const float WebViewFinalProgressValue = 0.9f;
                                            completeRPCURLPath];
             [self.tWebView runJavascript:waitForCompleteJS completion:nil];
         }
-        BOOL isNotRedirect = _currentURL && [_currentURL isEqual:self.tWebView.request.mainDocumentURL];
+        BOOL isNotRedirect = self->_currentURL && [self->_currentURL isEqual:self.tWebView.request.mainDocumentURL];
         BOOL complete = [obj isEqualToString:@"complete"];
         if ((complete && isNotRedirect) || error) {
             [self completeProgress];
