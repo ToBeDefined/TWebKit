@@ -32,12 +32,30 @@
             return NSLayoutAttributeCenterX;
         case CenterY:
             return NSLayoutAttributeCenterY;
+            
+        case LeftMargin:
+            return NSLayoutAttributeLeftMargin;
+        case RightMargin:
+            return NSLayoutAttributeRightMargin;
+        case TopMargin:
+            return NSLayoutAttributeTopMargin;
+        case BottomMargin:
+            return NSLayoutAttributeBottomMargin;
+        case LeadingMargin:
+            return NSLayoutAttributeLeadingMargin;
+        case TrailingMargin:
+            return NSLayoutAttributeTrailingMargin;
+        case CenterXWithinMargins:
+            return NSLayoutAttributeCenterXWithinMargins;
+        case CenterYWithinMargins:
+            return NSLayoutAttributeCenterYWithinMargins;
+            
         default:
             return NSLayoutAttributeNotAnAttribute;
     }
 }
 
-- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute) attr
+- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute)attr
                                         is:(CGFloat)constant {
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     NSLayoutAttribute attribute = [self getLayoutAttribute:attr];
@@ -52,12 +70,12 @@
     return constraint;
 }
 
-- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute) attr
+- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute)attr
                                   equealTo:(UIView *)view {
     return [self twv_makeConstraint:attr equealTo:view multiplier:1.0 constant:0.0];
 }
 
-- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute) attr
+- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute)attr
                                   equealTo:(UIView *)view
                                 multiplier:(CGFloat)multiplier
                                   constant:(CGFloat)constant {
@@ -87,9 +105,9 @@
     return constraint;
 }
 
-- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute) attr
+- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute)attr
                                   equealTo:(UIView *)view
-                                 attribute:(TWVLayoutAttribute) attr2 {
+                                 attribute:(TWVLayoutAttribute)attr2 {
     return [self twv_makeConstraint:attr
                            equealTo:view
                           attribute:attr2
@@ -97,9 +115,9 @@
                            constant:0.0];
 }
 
-- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute) attr
+- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute)attr
                                   equealTo:(UIView *)view
-                                 attribute:(TWVLayoutAttribute) attr2
+                                 attribute:(TWVLayoutAttribute)attr2
                                 multiplier:(CGFloat)multiplier
                                   constant:(CGFloat)constant {
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];

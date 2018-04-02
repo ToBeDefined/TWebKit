@@ -63,6 +63,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 #pragma mark - TWebView Property
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable delegate;
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable commonDelegate;
+@property (nonatomic, readonly, strong) UIScrollView *scrollView;
 @property (nonatomic, readonly) BOOL canGoBack;
 @property (nonatomic, readonly) BOOL canGoForward;
 @property (nonatomic, readonly, getter=isLoading) BOOL loading;

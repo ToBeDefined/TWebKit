@@ -36,7 +36,7 @@ class CustomWebViewController: UIViewController {
     
     func layoutWebView() {
         webView.translatesAutoresizingMaskIntoConstraints = false
-        let array: [NSLayoutAttribute] = [.left, .right, .top, .bottom]
+        let array: [NSLayoutAttribute] = [.left, .right, .bottom]
         for attr in array {
             let constraint = NSLayoutConstraint.init(item: webView,
                                                      attribute: attr,
@@ -47,6 +47,15 @@ class CustomWebViewController: UIViewController {
                                                      constant: 0)
             self.view.addConstraint(constraint);
         }
+        
+        let constraint = NSLayoutConstraint.init(item: webView,
+                                                 attribute: .top,
+                                                 relatedBy: .equal,
+                                                 toItem: self.view,
+                                                 attribute: .topMargin,
+                                                 multiplier: 1.0,
+                                                 constant: 0)
+        self.view.addConstraint(constraint);
     }
 }
 

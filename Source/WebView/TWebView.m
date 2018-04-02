@@ -201,9 +201,17 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     }
     
     if (showProgress == YES && self.progressView == nil) {
-        [self setUpProgressView];
+        [self setupProgressView];
         _showProgress = showProgress;
         return;
+    }
+}
+
+- (UIScrollView *)scrollView {
+    if (T_IS_ABOVE_IOS(8)) {
+        return [_wkWebView scrollView];
+    } else {
+        return [_uiWebView scrollView];
     }
 }
 
@@ -236,10 +244,10 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 - (void)setUI {
     UIView *webView;
     if (T_IS_ABOVE_IOS(8)) {
-        [self setUpWKWebView];
+        [self setupWKWebView];
         webView = _wkWebView;
     } else {
-        [self setUpUIWebView];
+        [self setupUIWebView];
         webView = _uiWebView;
     }
     
@@ -249,12 +257,12 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     [webView twv_makeConstraint:Right equealTo:self];
     [webView twv_makeConstraint:Bottom equealTo:self];
     
-    [self setUpProgressView];
+    [self setupProgressView];
     
     [self resetCookieForceOverride:_forceOverrideCookie];
 }
 
-- (void)setUpWKWebView {
+- (void)setupWKWebView {
     self.wkWebView = ({
         // 设置cookie
         WKUserContentController *userContentController = [[WKUserContentController alloc] init];
@@ -280,10 +288,9 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         [webView addObserver:self forKeyPath:@"scrollView.contentInset" options:NSKeyValueObservingOptionNew context:nil];
         webView;
     });
-    [self insertSubview:_wkWebView atIndex:0];
 }
 
-- (void)setUpUIWebView {
+- (void)setupUIWebView {
     self.uiWebView = ({
         UIWebView *webView = [[UIWebView alloc] init];
         self.uiWebViewDelegate = [TUIWebViewDelegate getDelegateWith:self];
@@ -291,10 +298,9 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         [webView addObserver:self forKeyPath:@"scrollView.contentInset" options:NSKeyValueObservingOptionNew context:nil];
         webView;
     });
-    [self insertSubview:_uiWebView atIndex:0];
 }
 
-- (void)setUpProgressView {
+- (void)setupProgressView {
     if (self.progressView != nil) {
         return;
     }
@@ -304,10 +310,12 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     self.progressView.trackTintColor = [UIColor whiteColor];
     
     [self addSubview:self.progressView];
-    self.progressViewTopConstraint = [self.progressView twv_makeConstraint:Top equealTo:self];
+    
+    self.progressViewTopConstraint =
+    [self.progressView twv_makeConstraint:Top equealTo:self];
     [self.progressView twv_makeConstraint:Left equealTo:self];
     [self.progressView twv_makeConstraint:Right equealTo:self];
-    [self.progressView twv_makeConstraint:Height is:2];
+    [self.progressView twv_makeConstraint:Height is:1];
 }
 
 - (void)safeAreaInsetsDidChange {
@@ -317,9 +325,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 - (CGFloat)getTopInset {
 #ifdef __IPHONE_11_0
     if (@available(iOS 11.0, *)) {
-        CGFloat safeTop = self.safeAreaInsets.top;
-        CGFloat scrollViewContentTop = self.wkWebView.scrollView.contentInset.top;
-        return (safeTop + scrollViewContentTop);
+        return self.safeAreaInsets.top;
     }
 #endif
     if (T_IS_ABOVE_IOS(8)) {
