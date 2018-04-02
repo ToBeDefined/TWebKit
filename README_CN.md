@@ -132,6 +132,7 @@ github "tobedefined/TWebKit" ~> 1.2.2
 
 - delegate：`id <TWebViewDelegate>`，代理，遵守`TWebViewDelegate`协议的任何对象，若设置，则其实现的方法优先级高于commonDelegate中的方法
 - commonDelegate：`id <TWebViewDelegate>`，通用代理，遵守`TWebViewDelegate`协议的任何对象，建议使用singleton的对象作为通用代理
+- scrollView: `UIScrollView`，网页的 `scrollView` ， `readonly` ，返回`UIWebView` 或者 `WKWebView` 的 `scrollView`
 - showProgress：`BOOL`，`getter=isShowProgress`，是否显示进度条
 - progressTintColor：`UIColor`，进度条颜色，配置之后会使`showProgress`为`YES/true`
 - canSelectContent：`BOOL`，设置是否可以长按选择网页中的内容

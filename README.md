@@ -131,6 +131,7 @@ Most of the parameters and methods are same like UIWebView, the following descri
 
 - delegate: `id <TWebViewDelegate>`, any object that confirm the `TWebViewDelegate` protocol, if set, has a higher priority than the commonDelegate method.
 - commonDelegate: `id <TWebViewDelegate>`, any object that obeys the `TWebViewDelegate` protocol, is recommended to use a singleton object as a commonDelegate.
+- scrollView: `UIScrollView`, web page's `scrollView`, `readonly`, return `scrollView` of `UIWebView` or `WKWebView`
 - showProgress: `BOOL`, `getter=isShowProgress`, whether to display the progress view.
 - progressTintColor: `UIColor`, progress color, if setting, the `showProgress` become `YES/true` now.
 - canSelectContent: `BOOL`, set whether you can long press to select the contents of the page.
