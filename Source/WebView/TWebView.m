@@ -111,7 +111,6 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 - (void)setProgressTintColor:(UIColor *)progressTintColor {
     _progressTintColor = progressTintColor;
-    self.showProgress = YES;
     self.progressView.progressTintColor = progressTintColor;
 }
 
@@ -211,20 +210,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     if (_showProgress == showProgress) {
         return;
     }
-    
-    if (showProgress == NO) {
-        [self.progressView removeFromSuperview];
-        self.progressView = nil;
-        self.progressViewTopConstraint = nil;
-        _showProgress = showProgress;
-        return;
-    }
-    
-    if (showProgress == YES && self.progressView == nil) {
-        [self setupProgressView];
-        _showProgress = showProgress;
-        return;
-    }
+    self.progressView.hidden = !showProgress;
 }
 
 - (UIScrollView *)scrollView {
@@ -337,6 +323,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     [self.progressView twv_makeConstraint:Right equealTo:self];
     self.progressViewHeightConstraint =
     [self.progressView twv_makeConstraint:Height is:self.progressViewHeight];
+    self.progressView.hidden = !self.isShowProgress;
 }
 
 - (void)safeAreaInsetsDidChange {
