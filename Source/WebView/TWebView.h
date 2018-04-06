@@ -68,6 +68,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 #pragma mark - TWebView Property
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable delegate;
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable commonDelegate;
+@property (nonatomic, readonly, strong) UIView *contentWebView;
 @property (nonatomic, readonly, strong) UIWebView *uiWebView API_DEPRECATED("Use wkWebView instead, above iOS 8.0, return nil", ios(2.0, 8.0));
 @property (nonatomic, readonly, strong) WKWebView *wkWebView API_AVAILABLE(ios(8.0));
 @property (nonatomic, readonly, strong) UIScrollView *scrollView;

@@ -131,8 +131,9 @@ Most of the parameters and methods are same like UIWebView, the following descri
 
 - delegate: `id <TWebViewDelegate>`, any object that confirm the `TWebViewDelegate` protocol, if set, has a higher priority than the commonDelegate method.
 - commonDelegate: `id <TWebViewDelegate>`, any object that obeys the `TWebViewDelegate` protocol, is recommended to use a singleton object as a commonDelegate.
-- uiWebView: if `< iOS 8.0`, return `TWebView`'s `UIWebView`, if `≥ iOS 8.0`, return `nil`.
-- wkWebView: if `< iOS 8.0`, return `nil`, if `≥ iOS 8.0`, return `TWebView`'s `WKWebView`.
+- contentWebView: `UIView`, if `< iOS 8.0`, return `TWebView`'s `UIWebView`; if `≥ iOS 8.0`, return `TWebView`'s `WKWebView`.
+- uiWebView: `UIWebView`, if `< iOS 8.0`, return `TWebView`'s `UIWebView`; if `≥ iOS 8.0`, return `nil`.
+- wkWebView: `WKWebView`, if `< iOS 8.0`, return `nil`; if `≥ iOS 8.0`, return `TWebView`'s `WKWebView`.
 - scrollView: `UIScrollView`, web page's `scrollView`, `readonly`, return `scrollView` of `UIWebView` or `WKWebView`
 - showProgress: `BOOL`, `getter=isShowProgress`, whether to display the progress view.
 - progressTintColor: `UIColor`, progress color.

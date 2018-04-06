@@ -213,6 +213,14 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     self.progressView.hidden = !showProgress;
 }
 
+- (UIView *)contentWebView {
+    if (T_IS_ABOVE_IOS(8)) {
+        return _wkWebView;
+    } else {
+        return _uiWebView;
+    }
+}
+
 - (UIScrollView *)scrollView {
     if (T_IS_ABOVE_IOS(8)) {
         return [_wkWebView scrollView];

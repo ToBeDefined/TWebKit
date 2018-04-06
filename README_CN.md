@@ -132,8 +132,9 @@ github "tobedefined/TWebKit"
 
 - delegate：`id <TWebViewDelegate>`，代理，遵守`TWebViewDelegate`协议的任何对象，若设置，则其实现的方法优先级高于commonDelegate中的方法
 - commonDelegate：`id <TWebViewDelegate>`，通用代理，遵守`TWebViewDelegate`协议的任何对象，建议使用singleton的对象作为通用代理
-- uiWebView: 如果 `< iOS 8.0`，返回 `TWebView` 中的 `UIWebView`；如果 `≥ iOS 8.0`，返回 `nil`
-- wkWebView: 如果 `< iOS 8.0`，返回 `nil`；如果 `≥ iOS 8.0`，返回 `TWebView` 中的 `WKWebView`
+- contentWebView: `UIView`，如果 `< iOS 8.0`，返回 `TWebView` 中的 `UIWebView`；如果 `≥ iOS 8.0`，返回 `TWebView` 中的 `WKWebView`
+- uiWebView: `UIWebView`，如果 `< iOS 8.0`，返回 `TWebView` 中的 `UIWebView`；如果 `≥ iOS 8.0`，返回 `nil`
+- wkWebView: `WKWebView`，如果 `< iOS 8.0`，返回 `nil`；如果 `≥ iOS 8.0`，返回 `TWebView` 中的 `WKWebView`
 - scrollView: `UIScrollView`，网页的 `scrollView` ， `readonly` ，返回`UIWebView` 或者 `WKWebView` 的 `scrollView`
 - showProgress：`BOOL`，`getter=isShowProgress`，是否显示进度条
 - progressTintColor：`UIColor`，进度条颜色
