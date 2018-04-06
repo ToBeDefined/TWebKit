@@ -132,9 +132,12 @@ github "tobedefined/TWebKit"
 
 - delegate：`id <TWebViewDelegate>`，代理，遵守`TWebViewDelegate`协议的任何对象，若设置，则其实现的方法优先级高于commonDelegate中的方法
 - commonDelegate：`id <TWebViewDelegate>`，通用代理，遵守`TWebViewDelegate`协议的任何对象，建议使用singleton的对象作为通用代理
+- uiWebView: 如果 `< iOS 8.0`，返回 `TWebView` 中的 `UIWebView`；如果 `≥ iOS 8.0`，返回 `nil`
+- wkWebView: 如果 `< iOS 8.0`，返回 `nil`；如果 `≥ iOS 8.0`，返回 `TWebView` 中的 `WKWebView`
 - scrollView: `UIScrollView`，网页的 `scrollView` ， `readonly` ，返回`UIWebView` 或者 `WKWebView` 的 `scrollView`
 - showProgress：`BOOL`，`getter=isShowProgress`，是否显示进度条
-- progressTintColor：`UIColor`，进度条颜色，配置之后会使`showProgress`为`YES/true`
+- progressTintColor：`UIColor`，进度条颜色
+- progressViewHeight: `CGFloat`, 设置进度条的高度
 - canSelectContent：`BOOL`，设置是否可以长按选择网页中的内容
 - canScrollChangeSize：`BOOL`，是否可以拖动改变网页大小
 - blockTouchCallout：`BOOL`，是否屏蔽长按链接出现actionSheet和menuController
@@ -188,6 +191,7 @@ github "tobedefined/TWebKit"
 | forceOverrideCookie   | ->  | forceOverrideCookie |
 | showProgressView      | ->  |        showProgress |
 | progressTintColor     | ->  |   progressTintColor |
+| progressViewHeight    | ->  |  progressViewHeight |
 | canSelectContent      | ->  |    canSelectContent |
 | canScrollChangeSize   | ->  | canScrollChangeSize |
 | blockTouchCallout     | ->  |   blockTouchCallout |
