@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL forceOverrideCookie;
 @property (nonatomic, assign) BOOL showProgressView;
 @property (nonatomic, strong) UIColor *progressTintColor;
+@property (nonatomic, assign) CGFloat progressViewHeight;
 
 // User Interaction
 @property (nonatomic, assign) BOOL canSelectContent;        // if set NO, Block most of the pages select content.

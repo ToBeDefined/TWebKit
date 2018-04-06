@@ -9,10 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "TWebViewConfig.h"
 
+#ifdef __IPHONE_8_0
+#import <WebKit/WebKit.h>
+#endif
+
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class TWebView;
+@class WKWebView;
 @class WKNavigation;
 @protocol WKPreviewActionItem;
 
@@ -63,6 +68,8 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 #pragma mark - TWebView Property
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable delegate;
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable commonDelegate;
+@property (nonatomic, readonly, strong) UIWebView *uiWebView API_DEPRECATED("Use wkWebView instead, above iOS 8.0, return nil", ios(2.0, 8.0));
+@property (nonatomic, readonly, strong) WKWebView *wkWebView API_AVAILABLE(ios(8.0));
 @property (nonatomic, readonly, strong) UIScrollView *scrollView;
 @property (nonatomic, readonly) BOOL canGoBack;
 @property (nonatomic, readonly) BOOL canGoForward;
@@ -71,6 +78,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 // Progress View
 @property (nonatomic, assign, getter=isShowProgress) BOOL showProgress;
 @property (nonatomic, strong) UIColor *progressTintColor;
+@property (nonatomic, assign) CGFloat progressViewHeight;
 
 // User Interaction
 @property (nonatomic, assign) BOOL canSelectContent;    // if set NO, Block most of the pages select content.

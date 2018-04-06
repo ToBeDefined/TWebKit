@@ -47,16 +47,30 @@
 
 static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
+@interface TWebView()
+
+@property (nonatomic, strong) TWKWebViewDelegate *wkWebViewDelegate;
+@property (nonatomic, strong) TUIWebViewDelegate *uiWebViewDelegate;
+
+@property (nonatomic, weak) NSLayoutConstraint *progressViewTopConstraint;
+@property (nonatomic, weak) NSLayoutConstraint *progressViewHeightConstraint;
+
+@property (nonatomic, assign) BOOL forceOverrideCookie;
+@property (nonatomic, strong) UIProgressView *progressView;
+@property (nonatomic, strong) WKProcessPool *processPool;
+
+@end
+
 @implementation TWebView
 
 #pragma mark - Memory
 - (void)dealloc {
     if (T_IS_ABOVE_IOS(8)) {
-        [self.wkWebView removeObserver:self forKeyPath:@"estimatedProgress"];
-        [self.wkWebView removeObserver:self forKeyPath:@"title"];
-        [self.wkWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
+        [_wkWebView removeObserver:self forKeyPath:@"estimatedProgress"];
+        [_wkWebView removeObserver:self forKeyPath:@"title"];
+        [_wkWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
     } else {
-        [self.uiWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
+        [_uiWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
     }
 }
 
@@ -68,6 +82,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         _forceOverrideCookie    = config.forceOverrideCookie;
         _showProgress           = config.showProgressView;
         _progressTintColor      = config.progressTintColor;
+        _progressViewHeight     = config.progressViewHeight;
         
         _canSelectContent       = config.canSelectContent;
         _canScrollChangeSize    = config.canScrollChangeSize;
@@ -100,6 +115,11 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     self.progressView.progressTintColor = progressTintColor;
 }
 
+- (void)setProgressViewHeight:(CGFloat)progressViewHeight {
+    _progressViewHeight = progressViewHeight;
+    self.progressViewHeightConstraint.constant = progressViewHeight;
+}
+
 - (void)setCanSelectContent:(BOOL)canSelectContent {
     _canSelectContent = canSelectContent;
     if (canSelectContent) {
@@ -130,7 +150,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         return;
     }
     
-    self.wkWebView.allowsBackForwardNavigationGestures = _canScrollBack;
+    _wkWebView.allowsBackForwardNavigationGestures = _canScrollBack;
 }
 
 - (void)setCanScrollChangeSize:(BOOL)canScrollChangeSize {
@@ -162,7 +182,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         TLog(" block3DTouch 不支持iOS9以下机型");
         return;
     }
-    self.wkWebView.allowsLinkPreview = !block3DTouch;
+    _wkWebView.allowsLinkPreview = !block3DTouch;
     // 不会走到UIWebView的allowsLinkPreview属性
 }
 
@@ -263,7 +283,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)setupWKWebView {
-    self.wkWebView = ({
+    _wkWebView = ({
         // 设置cookie
         WKUserContentController *userContentController = [[WKUserContentController alloc] init];
         NSString *cookieJS = [self getSetCookieJSCodeWithForceOverride:_forceOverrideCookie];
@@ -291,7 +311,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)setupUIWebView {
-    self.uiWebView = ({
+    _uiWebView = ({
         UIWebView *webView = [[UIWebView alloc] init];
         self.uiWebViewDelegate = [TUIWebViewDelegate getDelegateWith:self];
         webView.delegate = self.uiWebViewDelegate;
@@ -315,7 +335,8 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     [self.progressView twv_makeConstraint:Top equealTo:self];
     [self.progressView twv_makeConstraint:Left equealTo:self];
     [self.progressView twv_makeConstraint:Right equealTo:self];
-    [self.progressView twv_makeConstraint:Height is:1];
+    self.progressViewHeightConstraint =
+    [self.progressView twv_makeConstraint:Height is:self.progressViewHeight];
 }
 
 - (void)safeAreaInsetsDidChange {
@@ -329,9 +350,9 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     }
 #endif
     if (T_IS_ABOVE_IOS(8)) {
-        return self.wkWebView.scrollView.contentInset.top;
+        return _wkWebView.scrollView.contentInset.top;
     } else {
-        return self.uiWebView.scrollView.contentInset.top;
+        return _uiWebView.scrollView.contentInset.top;
     }
 }
 
@@ -402,7 +423,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 - (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL {
     if (T_IS_ABOVE_IOS(9)) {
-        return [self.wkWebView loadFileURL:URL allowingReadAccessToURL:readAccessURL];
+        return [_wkWebView loadFileURL:URL allowingReadAccessToURL:readAccessURL];
     } else {
         TLog(@"支持9.0以上");
         return nil;
@@ -446,7 +467,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         [self resetProgressViewTopInsert];
     }
     
-    if (object == self.wkWebView) {
+    if (object == _wkWebView) {
         if ([keyPath isEqualToString:@"estimatedProgress"]) {
             double newprogress = [[change objectForKey:NSKeyValueChangeNewKey] doubleValue];
             [self setProgress:newprogress animated:YES];
@@ -636,24 +657,48 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     return jsString;
 }
 
-- (void)runJavascript:(NSString *)js completion:(void (^ _Nullable)(_Nullable id, NSError * _Nullable error))completion {
+- (void)runJavascript:(NSString *)js completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion {
     if (T_IS_ABOVE_IOS(8)) {
-        [_wkWebView evaluateJavaScript:js completionHandler:completion];
+        void (^completionBlock)(id _Nullable, NSError * _Nullable) = ^(id _Nullable obj, NSError * _Nullable error) {
+            if (completion == nil) {
+                return;
+            }
+            
+            if (error != nil) {
+                NSMutableDictionary *errorDict = [@{@"WebView":self,
+                                                    @"WebViewType":@"WKWebView",
+                                                    @"ErrorJSString":js} mutableCopy];
+                [errorDict addEntriesFromDictionary:error.userInfo];
+                
+                NSError *jsError = [NSError errorWithDomain:error.domain
+                                                       code:error.code
+                                                   userInfo:errorDict];
+                TLog(@"%@", jsError);
+                completion(obj, jsError);
+            } else {
+                completion(obj, nil);
+            }
+        };
+        
+        [_wkWebView evaluateJavaScript:js
+                     completionHandler:completionBlock];
     } else {
         NSString *resultString = [_uiWebView stringByEvaluatingJavaScriptFromString:js];
-        if (completion != nil) {
-            if (resultString) {
-                completion(resultString, nil);
-            } else {
-                NSDictionary *errorDict = @{@"WebViewType":@"UIWebView",
-                                            @"WebView":self,
-                                            @"ErrorJSString":js};
-                NSError *jsError = [NSError errorWithDomain:@"Result_NULL" code:-1 userInfo:errorDict];
-                if (jsError != nil) {
-                    TLog(@"%@", jsError);
-                }
-                completion(nil, jsError);
-            }
+        if (completion == nil) {
+            return;
+        }
+        
+        if (resultString) {
+            completion(resultString, nil);
+        } else {
+            NSDictionary *errorDict = @{@"WebView":self,
+                                        @"WebViewType":@"UIWebView",
+                                        @"ErrorJSString":js};
+            NSError *jsError = [NSError errorWithDomain:@"Result_NULL"
+                                                   code:-1
+                                               userInfo:errorDict];
+            TLog(@"%@", jsError);
+            completion(nil, jsError);
         }
     }
 }

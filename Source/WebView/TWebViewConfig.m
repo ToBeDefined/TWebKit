@@ -19,6 +19,7 @@
         _forceOverrideCookie    = YES;
         _showProgressView       = YES;
         _progressTintColor      = [UIColor blueColor];
+        _progressViewHeight     = 1.0;
         
         _canSelectContent       = YES;
         _canScrollBack          = YES;

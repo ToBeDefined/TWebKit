@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 class CustomWebViewController: UIViewController {
     var webView: TWebView!
@@ -26,6 +27,7 @@ class CustomWebViewController: UIViewController {
         config.failedDefaultTitle = "加载失败"
         config.loadingDefaultTitle = "加载中..."
         config.successDefaultTitle = "加载成功"
+        config.progressViewHeight = 2
         webView = TWebView.init(config: config)
         self.view.addSubview(webView);
         self.layoutWebView()
