@@ -28,7 +28,11 @@ class CustomWebViewController: UIViewController {
         config.loadingDefaultTitle = "加载中..."
         config.successDefaultTitle = "加载成功"
         config.progressViewHeight = 2
+//        webView = TWebView.init()
         webView = TWebView.init(config: config)
+//        webView = TWebView.init(frame: CGRect.init(x: 0, y: 0, width: 20, height: 20));
+//        webView = TWebView.init(config: config, frame: CGRect.init(x: 0, y: 0, width: 20, height: 20))
+        
         self.view.addSubview(webView);
         self.layoutWebView()
         if let url = URL.init(string: "http://www.qq.com/") {

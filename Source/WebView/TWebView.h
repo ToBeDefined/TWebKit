@@ -100,6 +100,10 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 #pragma mark - TWebView Function
 - (instancetype)init;
 - (instancetype)initWithConfig:(TWebViewConfig *)config;
+- (instancetype)initWithFrame:(CGRect)frame;
+- (instancetype)initWithConfig:(TWebViewConfig *)config
+                         frame:(CGRect)frame;
+
 - (nullable id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel;
 
 - (void)reload;

@@ -74,8 +74,10 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     }
 }
 
-- (instancetype)initWithConfig:(TWebViewConfig *)config {
-    self = [super init];
+#pragma mark - Init
+- (instancetype)initWithConfig:(TWebViewConfig *)config
+                         frame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
         _commonDelegate         = config.webViewCommonDelegate;
         _delegate               = config.webViewDelegate;
@@ -101,10 +103,20 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     return self;
 }
 
+- (instancetype)initWithConfig:(TWebViewConfig *)config {
+    return [self initWithConfig:config frame:CGRectZero];
+}
+
 - (instancetype)init {
     TWebViewConfig *config = [[TWebViewConfig alloc] init];
-    return [self initWithConfig:config];
+    return [self initWithConfig:config frame:CGRectZero];
 }
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    TWebViewConfig *config = [[TWebViewConfig alloc] init];
+    return [self initWithConfig:config frame:frame];
+}
+
 
 
 #pragma mark - Setter/Getter
