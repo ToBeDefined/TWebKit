@@ -66,10 +66,15 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 #pragma mark - Memory
 - (void)dealloc {
     if (T_IS_ABOVE_IOS(8)) {
+        [_wkWebView stopLoading];
+        _wkWebView.UIDelegate = nil;
+        _wkWebView.navigationDelegate = nil;
         [_wkWebView removeObserver:self forKeyPath:@"estimatedProgress"];
         [_wkWebView removeObserver:self forKeyPath:@"title"];
         [_wkWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
     } else {
+        [_uiWebView stopLoading];
+        _uiWebView.delegate = nil;
         [_uiWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
     }
 }
