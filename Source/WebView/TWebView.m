@@ -49,15 +49,16 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 @interface TWebView()
 
+@property (nonatomic, strong) WKProcessPool *processPool;
+
+@property (nonatomic, assign) BOOL forceOverrideCookie;
+
 @property (nonatomic, strong) TWKWebViewDelegate *wkWebViewDelegate;
 @property (nonatomic, strong) TUIWebViewDelegate *uiWebViewDelegate;
 
+@property (nonatomic, strong) UIProgressView *progressView;
 @property (nonatomic, weak) NSLayoutConstraint *progressViewTopConstraint;
 @property (nonatomic, weak) NSLayoutConstraint *progressViewHeightConstraint;
-
-@property (nonatomic, assign) BOOL forceOverrideCookie;
-@property (nonatomic, strong) UIProgressView *progressView;
-@property (nonatomic, strong) WKProcessPool *processPool;
 
 @end
 

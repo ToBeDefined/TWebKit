@@ -68,10 +68,12 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 #pragma mark - TWebView Property
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable delegate;
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable commonDelegate;
+
 @property (nonatomic, readonly, strong) UIView *contentWebView;
 @property (nonatomic, readonly, strong) UIWebView *uiWebView API_DEPRECATED("Use wkWebView instead, above iOS 8.0, return nil", ios(2.0, 8.0));
 @property (nonatomic, readonly, strong) WKWebView *wkWebView API_AVAILABLE(ios(8.0));
 @property (nonatomic, readonly, strong) UIScrollView *scrollView;
+
 @property (nonatomic, readonly) BOOL canGoBack;
 @property (nonatomic, readonly) BOOL canGoForward;
 @property (nonatomic, readonly, getter=isLoading) BOOL loading;
@@ -85,9 +87,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 @property (nonatomic, assign) BOOL canSelectContent;    // if set NO, Block most of the pages select content.
 @property (nonatomic, assign) BOOL canScrollChangeSize;
 @property (nonatomic, assign) BOOL blockTouchCallout;   // Block ActionSheet & Long Press Menus
-// only uper ios 8.0
 @property (nonatomic, assign) BOOL canScrollBack API_AVAILABLE(ios(8.0));
-// only uper ios 9.0
 @property (nonatomic, assign) BOOL block3DTouch API_AVAILABLE(ios(9.0));
 
 // Texts
