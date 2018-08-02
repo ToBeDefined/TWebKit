@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import WebKit
+import TWebKit
 
 class CustomWebViewController: UIViewController {
     var webView: TWebView!

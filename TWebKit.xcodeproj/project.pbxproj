@@ -76,7 +76,6 @@
 		D7E850011F29F32A00C64263 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D7E850061F29F32A00C64263 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D7E8500B1F29F32A00C64263 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D7E8500F1F29F45E00C64263 /* Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Example-Bridging-Header.h"; sourceTree = "<group>"; };
 		D7E850181F29F51700C64263 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		D7FF80C41F2ADD710033715E /* CustomWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWebViewController.swift; sourceTree = "<group>"; };
 		D7FF80D01F2B0F9C0033715E /* TUIWebViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TUIWebViewDelegate.h; sourceTree = "<group>"; };
@@ -177,7 +176,6 @@
 		D7E84FFE1F29F32A00C64263 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				D7E8500F1F29F45E00C64263 /* Example-Bridging-Header.h */,
 				D7E84FFF1F29F32A00C64263 /* AppDelegate.swift */,
 				D7E850181F29F51700C64263 /* Launch Screen.storyboard */,
 				D7E850011F29F32A00C64263 /* ViewController.swift */,
@@ -551,7 +549,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = tech.tbd.twk.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "Example/Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
@@ -568,7 +565,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tech.tbd.twk.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Example/Example-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 			};
