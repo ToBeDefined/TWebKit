@@ -69,7 +69,7 @@ static TWebViewCommonDelegate *__staticInstance;
             [[UIApplication sharedApplication] openURL:url];
         } else {
             NSString *message = @"You device dosen't support this link";
-            if (T_IS_ABOVE_IOS(8)) {
+            if (@available(iOS 8, *)) {
                 UIAlertController *ac = [UIAlertController alertControllerWithTitle:nil
                                                                             message:message
                                                                      preferredStyle:UIAlertControllerStyleAlert];

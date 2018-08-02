@@ -66,7 +66,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 #pragma mark - Memory
 - (void)dealloc {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         [_wkWebView stopLoading];
         _wkWebView.UIDelegate = nil;
         _wkWebView.navigationDelegate = nil;
@@ -96,8 +96,9 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         _canScrollChangeSize    = config.canScrollChangeSize;
         _blockTouchCallout      = config.blockTouchCallout;
         _canScrollBack          = config.canScrollBack;
-        _block3DTouch           = config.block3DTouch;
-        
+        if (@available(iOS 9, *)) {
+            _block3DTouch       = config.block3DTouch;
+        }
         _confirmText            = config.confirmText;
         _cancelText             = config.cancelText;
         _loadingDefaultTitle    = config.loadingDefaultTitle;
@@ -162,12 +163,12 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 - (void)setCanScrollBack:(BOOL)canScrollBack {
     _canScrollBack = canScrollBack;
-    if (!T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
+        _wkWebView.allowsBackForwardNavigationGestures = _canScrollBack;
+    } else {
         TLog(" canScrollBack 不支持iOS8以下机型");
-        return;
     }
     
-    _wkWebView.allowsBackForwardNavigationGestures = _canScrollBack;
 }
 
 - (void)setCanScrollChangeSize:(BOOL)canScrollChangeSize {
@@ -195,12 +196,12 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 - (void)setBlock3DTouch:(BOOL)block3DTouch {
     _block3DTouch = block3DTouch;
-    if (!T_IS_ABOVE_IOS(9)) {
+    if (@available(iOS 9, *)) {
+        // 不会走到UIWebView的allowsLinkPreview属性
+        _wkWebView.allowsLinkPreview = !block3DTouch;
+    } else {
         TLog(" block3DTouch 不支持iOS9以下机型");
-        return;
     }
-    _wkWebView.allowsLinkPreview = !block3DTouch;
-    // 不会走到UIWebView的allowsLinkPreview属性
 }
 
 - (void)setBlockTouchCallout:(BOOL)blockTouchCallout {
@@ -232,7 +233,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (UIView *)contentWebView {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         return _wkWebView;
     } else {
         return _uiWebView;
@@ -240,7 +241,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (UIScrollView *)scrollView {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         return [_wkWebView scrollView];
     } else {
         return [_uiWebView scrollView];
@@ -248,7 +249,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (BOOL)canGoBack {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         return [_wkWebView canGoBack];
     } else {
         return [_uiWebView canGoBack];
@@ -256,7 +257,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (BOOL)canGoForward {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         return [_wkWebView canGoForward];
     } else {
         return [_uiWebView canGoForward];
@@ -264,7 +265,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (BOOL)isLoading {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         return [_wkWebView isLoading];
     } else {
         return [_uiWebView isLoading];
@@ -275,7 +276,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 #pragma mark - Create UI
 - (void)setUI {
     UIView *webView;
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         [self setupWKWebView];
         webView = _wkWebView;
     } else {
@@ -310,8 +311,9 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         WKWebView * webView = [[WKWebView alloc] initWithFrame:CGRectZero
                                                  configuration:config];
         webView.allowsBackForwardNavigationGestures = _canScrollBack;
-        webView.allowsLinkPreview = !_block3DTouch;
-        
+        if (@available(iOS 9, *)) {
+            webView.allowsLinkPreview = !_block3DTouch;
+        }
         self.wkWebViewDelegate = [TWKWebViewDelegate getDelegateWith:self];
         webView.navigationDelegate = self.wkWebViewDelegate;
         webView.UIDelegate = self.wkWebViewDelegate;
@@ -357,12 +359,9 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (CGFloat)getTopInset {
-#ifdef __IPHONE_11_0
     if (@available(iOS 11.0, *)) {
         return self.safeAreaInsets.top;
-    }
-#endif
-    if (T_IS_ABOVE_IOS(8)) {
+    } else if (@available(iOS 8, *)) {
         return _wkWebView.scrollView.contentInset.top;
     } else {
         return _uiWebView.scrollView.contentInset.top;
@@ -377,7 +376,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 #pragma mark - Function
 - (void)reload {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         [_wkWebView reload];
     } else {
         [_uiWebView reload];
@@ -385,7 +384,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)stopLoading {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         [_wkWebView stopLoading];
     } else {
         [_uiWebView stopLoading];
@@ -393,7 +392,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)goBack {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         [_wkWebView goBack];
     } else {
         [_uiWebView goBack];
@@ -401,7 +400,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)goForward {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         [_wkWebView goForward];
     } else {
         [_uiWebView goForward];
@@ -409,7 +408,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)loadRequest:(NSURLRequest *)request {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         [_wkWebView loadRequest:request];
     } else {
         [_uiWebView loadRequest:request];
@@ -417,7 +416,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         [_wkWebView loadHTMLString:string baseURL:baseURL];
     } else {
         [_uiWebView loadHTMLString:string baseURL:baseURL];
@@ -425,17 +424,17 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL {
-    if (T_IS_ABOVE_IOS(9)) {
+    if (@available(iOS 9, *)) {
         [_wkWebView loadData:data MIMEType:MIMEType characterEncodingName:textEncodingName baseURL:baseURL];
-    } else if (!T_IS_ABOVE_IOS(8)){
-        [_uiWebView loadData:data MIMEType:MIMEType textEncodingName:textEncodingName baseURL:baseURL];
-    } else {
+    } else if (@available(iOS 8, *)) {
         TLog(@"iOS8不可使用本方法，支持9.0以上或者8.0以下（不包含8.0）");
+    } else {
+        [_uiWebView loadData:data MIMEType:MIMEType textEncodingName:textEncodingName baseURL:baseURL];
     }
 }
 
 - (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL {
-    if (T_IS_ABOVE_IOS(9)) {
+    if (@available(iOS 9, *)) {
         return [_wkWebView loadFileURL:URL allowingReadAccessToURL:readAccessURL];
     } else {
         TLog(@"支持9.0以上");
@@ -525,7 +524,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 - (void)clearCache {
     NSString *iosVer;
     __block NSString *ms = @"清除列表:\n";
-    if (T_IS_ABOVE_IOS(9)) {
+    if (@available(iOS 9, *)) {
         iosVer = @"iOS 9+";
         @tweakify(self);
         WKWebsiteDataStore *dateStore = [WKWebsiteDataStore defaultDataStore];
@@ -547,7 +546,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
                              [self showPrompt:[NSString stringWithFormat:@"%@:%@", @"清除成功", iosVer]
                                       message:ms];
                          }];
-    } else if (T_IS_ABOVE_IOS(8)){
+    } else if (@available(iOS 8, *)) {
         iosVer = @"iOS 8";
         NSString *libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString *cookiesFolderPath = [libraryPath stringByAppendingString:@"/Cookies"];
@@ -579,7 +578,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 - (void)showPrompt:(NSString *)title message:(NSString *)message {
     dispatch_async(dispatch_get_main_queue(), ^{
         // 弹出提示
-        if (T_IS_ABOVE_IOS(8)) {
+        if (@available(iOS 8, *)) {
             UIAlertController *ac = [UIAlertController alertControllerWithTitle:title
                                                                         message:message
                                                                  preferredStyle:UIAlertControllerStyleAlert];
@@ -671,7 +670,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)runJavascript:(NSString *)js completion:(void (^ _Nullable)(id _Nullable, NSError * _Nullable))completion {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         void (^completionBlock)(id _Nullable, NSError * _Nullable) = ^(id _Nullable obj, NSError * _Nullable error) {
             if (completion == nil) {
                 return;

@@ -160,7 +160,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    return self.navigationController.childViewControllers.count > 1;
+    return self.navigationController.viewControllers.count > 1;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -190,7 +190,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 
 #pragma mark - Input URL & Clean
 - (void)inputURL {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"Input URL"
                                                                     message:@"Please Input URL:"
                                                              preferredStyle:UIAlertControllerStyleAlert];
@@ -243,7 +243,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 }
 
 - (void)confirmClearCache {
-    if (T_IS_ABOVE_IOS(8)) {
+    if (@available(iOS 8, *)) {
         UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"Delete All Cache & Cookie？"
                                                                     message:nil
                                                              preferredStyle:UIAlertControllerStyleAlert];
@@ -297,7 +297,9 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.tag == TextFieldTagInputURL) {
-        if (!T_IS_ABOVE_IOS(8)) {
+        if (@available(iOS 8, *)) {
+            return YES;
+        } else {
             UIAlertView *alert = objc_getAssociatedObject(self, &TInputURLAlertView);
             [self alertView:alert clickedButtonAtIndex:alert.firstOtherButtonIndex];
             [alert dismissWithClickedButtonIndex:alert.firstOtherButtonIndex animated:YES];
