@@ -28,6 +28,14 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
     id<UIGestureRecognizerDelegate> _grDelegate;
 }
 
+- (NSString *)navTitle {
+    return _navgationTitle;
+}
+
+- (void)setNavTitle:(NSString *)navTitle {
+    _navgationTitle = [navTitle copy];
+}
+
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -77,7 +85,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
     self.navigationItem.leftBarButtonItems = @[backItem];
     
     [self.view addSubview:self.webView];
-    self.navigationItem.title = self.navTitle;
+    self.navigationItem.title = self.navgationTitle;
     [self.webView twv_makeConstraint:Top equealTo:self.view];
     [self.webView twv_makeConstraint:Left equealTo:self.view];
     [self.webView twv_makeConstraint:Right equealTo:self.view];
@@ -152,8 +160,15 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 #pragma mark - TWebViewDelegate
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title {
     TLog(@"%@", title);
-    if (isEmptyString(self.navTitle)) {
+    if (self.navgationTitleLevel == TWebViewControllerNavigationTitleLevelAlways) {
+        self.navigationItem.title = self.navgationTitle;
+        return;
+    }
+    
+    if (title) {
         self.navigationItem.title = title;
+    } else {
+        self.navigationItem.title = self.navgationTitle;
     }
 }
 

@@ -11,11 +11,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, TWebViewControllerNavigationTitleLevel) {
+    TWebViewControllerNavigationTitleLevelDefault   = 0,
+    TWebViewControllerNavigationTitleLevelAlways    = 1,
+};
+
 @interface TWebViewController : UIViewController
 
 @property (nonatomic, strong) TWebView *webView;
 
-@property (nonatomic, copy) NSString * _Nullable navTitle;
+@property (nonatomic, copy) NSString * _Nullable navTitle NS_DEPRECATED(2.0, 2.0, 2.0, 2.0, "Use `navgationTitle`");
+@property (nonatomic, copy) NSString * _Nullable navgationTitle;
+@property (nonatomic, assign) TWebViewControllerNavigationTitleLevel navgationTitleLevel;
 @property (nonatomic, strong) UIImage * _Nullable backImage;
 
 @property (nonatomic, strong) NSArray<id<UIPreviewActionItem>> * _Nonnull previewActions;
