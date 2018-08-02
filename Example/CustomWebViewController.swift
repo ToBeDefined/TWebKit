@@ -22,7 +22,7 @@ class CustomWebViewController: UIViewController {
         config.progressTintColor = UIColor.orange
         config.forceOverrideCookie = false
         config.canScrollChangeSize = false
-        config.webViewCommonDelegate = TWebViewCommonDelegate.init()
+        config.webViewCommonDelegate = TWebViewCommonDelegate.sharedInstance()
         config.webViewDelegate = self
         config.failedDefaultTitle = "加载失败"
         config.loadingDefaultTitle = "加载中..."
@@ -42,7 +42,7 @@ class CustomWebViewController: UIViewController {
     
     func layoutWebView() {
         webView.translatesAutoresizingMaskIntoConstraints = false
-        let array: [NSLayoutAttribute] = [.left, .right, .bottom]
+        let array: [NSLayoutConstraint.Attribute] = [.left, .right, .bottom]
         for attr in array {
             let constraint = NSLayoutConstraint.init(item: webView,
                                                      attribute: attr,
