@@ -112,7 +112,6 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 }
 
 - (void)loadURLAndAutoConversionFromString:(NSString *)urlString {
-    urlString = trueURLString(urlString);
     [self loadURLFromString:urlString];
 }
 

@@ -40,8 +40,6 @@ NSString *removeBlankSpace(NSString *string);
 // 判断是否是非nil、非空、非空格字符串
 BOOL isEmptyString(NSString *string);
 BOOL isNotEmptyString(NSString *string);
-// 返回真正的url
-NSString *trueURLString(NSString *urlString);
 // 递归查找该controller所显示在顶层的controller
 UIViewController *findShowingViewController(UIViewController *controller);
 // 返回AppDelegate的window的rootViewController所显示在顶层的controller
