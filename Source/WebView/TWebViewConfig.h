@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init;
 
++ (instancetype)defaultConfig;
+
 @end
 
 NS_ASSUME_NONNULL_END

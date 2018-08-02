@@ -39,7 +39,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 - (instancetype)init {
     self = [super init];
     if (self) {
-        TWebViewConfig *config = [[TWebViewConfig alloc] init];
+        TWebViewConfig *config = [TWebViewConfig defaultConfig];
         config.webViewCommonDelegate = [TWebViewCommonDelegate sharedInstance];
         config.webViewDelegate = self;
         self.webView = [[TWebView alloc] initWithConfig:config];

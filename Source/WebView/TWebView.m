@@ -115,12 +115,12 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (instancetype)init {
-    TWebViewConfig *config = [[TWebViewConfig alloc] init];
+    TWebViewConfig *config = [TWebViewConfig defaultConfig];
     return [self initWithConfig:config frame:CGRectZero];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    TWebViewConfig *config = [[TWebViewConfig alloc] init];
+    TWebViewConfig *config = [TWebViewConfig defaultConfig];
     return [self initWithConfig:config frame:frame];
 }
 

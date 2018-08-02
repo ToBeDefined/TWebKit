@@ -10,8 +10,16 @@
 
 @implementation TWebViewConfig
 
-- (instancetype)init
-{
++ (instancetype)defaultConfig {
+    static TWebViewConfig *_defaultTWebViewConfig = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _defaultTWebViewConfig = [[TWebViewConfig alloc] init];
+    });
+    return _defaultTWebViewConfig;
+}
+
+- (instancetype)init {
     self = [super init];
     if (self) {
         _webViewCommonDelegate  = nil;
