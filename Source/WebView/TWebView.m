@@ -127,6 +127,10 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 
 #pragma mark - Setter/Getter
+- (void)setShowProgress:(BOOL)showProgress {
+    _showProgress = showProgress;
+    self.progressView.hidden = !showProgress;
+}
 
 - (void)setProgressTintColor:(UIColor *)progressTintColor {
     _progressTintColor = progressTintColor;
@@ -223,13 +227,6 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     }
     _processPool = processPool;
     return _processPool;
-}
-
-- (void)setShowProgress:(BOOL)showProgress {
-    if (_showProgress == showProgress) {
-        return;
-    }
-    self.progressView.hidden = !showProgress;
 }
 
 - (UIView *)contentWebView {
