@@ -657,7 +657,9 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
             if (error != nil) {
                 TLog(@"%@", error);
             }
-            dataJsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            if (jsonData) {
+                dataJsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            }
         } else if ([data isKindOfClass:[NSString class]]) {
             dataJsonString = [NSString stringWithFormat:@"'%@'", data];
         }

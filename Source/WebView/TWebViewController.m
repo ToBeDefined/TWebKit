@@ -151,7 +151,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 - (void)close {
     if (self.navigationController.viewControllers.count > 1) {
         [self.navigationController popViewControllerAnimated:YES];
-    } else {
+    } else if (self.presentingViewController) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
