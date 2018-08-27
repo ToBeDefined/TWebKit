@@ -84,12 +84,22 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
                                                                 action:@selector(back)];
     self.navigationItem.leftBarButtonItems = @[backItem];
     
+    // 不加上在 iOS10 网页返回会跳动
     [self.view addSubview:self.webView];
+    self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = self.navgationTitle;
-    [self.webView twv_makeConstraint:Top equealTo:self.view];
+    self.webView.layer.masksToBounds = NO;
+    if (@available(iOS 7, *)) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+        [self.webView twv_makeConstraint:Top equealTo:self layoutGuide:TopLayoutGuideBottom];
+        [self.webView twv_makeConstraint:Bottom equealTo:self layoutGuide:BottomLayoutGuideBottom];
+    } else {
+        [self.webView twv_makeConstraint:Top equealTo:self.view];
+        [self.webView twv_makeConstraint:Bottom equealTo:self.view];
+    }
     [self.webView twv_makeConstraint:Left equealTo:self.view];
     [self.webView twv_makeConstraint:Right equealTo:self.view];
-    [self.webView twv_makeConstraint:Bottom equealTo:self.view];
+    
     [self setupRightItems];
 }
 

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, TWVLayoutAttribute) {
     Left,
     Right,
     Top,
@@ -28,8 +28,16 @@ typedef enum : NSUInteger {
     TrailingMargin NS_ENUM_AVAILABLE_IOS(8_0),
     CenterXWithinMargins NS_ENUM_AVAILABLE_IOS(8_0),
     CenterYWithinMargins NS_ENUM_AVAILABLE_IOS(8_0),
-    
-} TWVLayoutAttribute;
+};
+
+typedef NS_ENUM(NSUInteger, TWVLayoutGuide) {
+    TopLayoutGuide,
+    BottomLayoutGuide,
+    TopLayoutGuideTop,
+    TopLayoutGuideBottom,
+    BottomLayoutGuideTop,
+    BottomLayoutGuideBottom,
+} NS_ENUM_AVAILABLE_IOS(7_0) ;
 
 
 @interface UIView (TWVLayout)
@@ -54,5 +62,15 @@ typedef enum : NSUInteger {
                                  attribute:(TWVLayoutAttribute)attr2
                                 multiplier:(CGFloat)multiplier
                                   constant:(CGFloat)constant;
+
+- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute)attr
+                                  equealTo:(UIViewController *)controller
+                               layoutGuide:(TWVLayoutGuide)attr2 API_AVAILABLE(ios(7.0));
+
+- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute)attr
+                                  equealTo:(UIViewController *)controller
+                               layoutGuide:(TWVLayoutGuide)attr2
+                                multiplier:(CGFloat)multiplier
+                                  constant:(CGFloat)constant API_AVAILABLE(ios(7.0));
 
 @end

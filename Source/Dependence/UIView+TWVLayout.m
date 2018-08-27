@@ -134,4 +134,61 @@
     return constraint;
 }
 
+- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute)attr
+                                  equealTo:(UIViewController *)controller
+                               layoutGuide:(TWVLayoutGuide)attr2 {
+    return [self twv_makeConstraint:attr
+                           equealTo:controller
+                        layoutGuide:attr2
+                         multiplier:1.0
+                           constant:0.0];
+}
+
+- (NSLayoutConstraint *)twv_makeConstraint:(TWVLayoutAttribute)attr
+                                  equealTo:(UIViewController *)controller
+                               layoutGuide:(TWVLayoutGuide)attr2
+                                multiplier:(CGFloat)multiplier
+                                  constant:(CGFloat)constant {
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    NSLayoutAttribute attribute = [self getLayoutAttribute:attr];
+    NSLayoutAttribute attribute2 = NSLayoutAttributeNotAnAttribute;
+    id<UILayoutSupport> layoutGuide = nil;
+    switch (attr2) {
+        case TopLayoutGuide:
+            layoutGuide = controller.topLayoutGuide;
+            attribute2 = NSLayoutAttributeBottom;
+            break;
+        case TopLayoutGuideTop:
+            layoutGuide = controller.topLayoutGuide;
+            attribute2 = NSLayoutAttributeTop;
+            break;
+        case TopLayoutGuideBottom:
+            layoutGuide = controller.topLayoutGuide;
+            attribute2 = NSLayoutAttributeBottom;
+            break;
+        case BottomLayoutGuide:
+            layoutGuide = controller.bottomLayoutGuide;
+            attribute2 = NSLayoutAttributeTop;
+            break;
+        case BottomLayoutGuideTop:
+            layoutGuide = controller.bottomLayoutGuide;
+            attribute2 = NSLayoutAttributeTop;
+            break;
+        case BottomLayoutGuideBottom:
+            layoutGuide = controller.bottomLayoutGuide;
+            attribute2 = NSLayoutAttributeBottom;
+            break;
+        default:
+            return nil;
+    }
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self
+                                                                  attribute:attribute
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:layoutGuide
+                                                                  attribute:attribute2
+                                                                 multiplier:multiplier
+                                                                   constant:constant];
+    [controller.view addConstraint:constraint];
+    return constraint;
+}
 @end

@@ -355,6 +355,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         [self setupUIWebView];
         webView = _uiWebView;
     }
+    self.layer.masksToBounds = YES;
     
     [self addSubview:webView];
     [webView twv_makeConstraint:Top equealTo:self];
@@ -389,6 +390,8 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         self.wkWebViewDelegate = [TWKWebViewDelegate getDelegateWith:self];
         webView.navigationDelegate = self.wkWebViewDelegate;
         webView.UIDelegate = self.wkWebViewDelegate;
+        webView.layer.masksToBounds = NO;
+        webView.scrollView.layer.masksToBounds = NO;
         [webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
         [webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
         [webView addObserver:self forKeyPath:@"scrollView.contentInset" options:NSKeyValueObservingOptionNew context:nil];
@@ -401,6 +404,8 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         UIWebView *webView = [[UIWebView alloc] init];
         self.uiWebViewDelegate = [TUIWebViewDelegate getDelegateWith:self];
         webView.delegate = self.uiWebViewDelegate;
+        webView.layer.masksToBounds = NO;
+        webView.scrollView.layer.masksToBounds = NO;
         [webView addObserver:self forKeyPath:@"scrollView.contentInset" options:NSKeyValueObservingOptionNew context:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(appWillResignActive:)
