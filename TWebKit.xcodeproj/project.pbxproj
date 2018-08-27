@@ -70,6 +70,10 @@
 		3FC799C22133C38400C5894F /* XibWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibWebViewController.swift; sourceTree = "<group>"; };
 		3FC799C32133C38400C5894F /* XibWebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = XibWebViewController.xib; sourceTree = "<group>"; };
 		3FC799C62133D76400C5894F /* AlphaGoZero.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AlphaGoZero.pdf; sourceTree = "<group>"; };
+		3FC799C82133DE6F00C5894F /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		3FC799C92133DE6F00C5894F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.markdown; };
+		3FC799CA2133DE6F00C5894F /* README_CN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README_CN.md; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.markdown; };
+		3FC799CB2133DE7600C5894F /* TWebKit.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = TWebKit.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		D7650DEA1F29F7DA00BE988C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D7650DEC1F29F7E600BE988C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D7650DEE1F29F7F300BE988C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -140,6 +144,10 @@
 		D7E84FA11F29F06700C64263 = {
 			isa = PBXGroup;
 			children = (
+				3FC799C82133DE6F00C5894F /* LICENSE */,
+				3FC799CA2133DE6F00C5894F /* README_CN.md */,
+				3FC799C92133DE6F00C5894F /* README.md */,
+				3FC799CB2133DE7600C5894F /* TWebKit.podspec */,
 				D7E84FB61F29F08500C64263 /* Source */,
 				D7E84FAD1F29F06700C64263 /* TWebKit */,
 				D7E84FFE1F29F32A00C64263 /* Example */,
