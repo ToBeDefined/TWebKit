@@ -52,8 +52,6 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 @property (nonatomic, strong) WKProcessPool *processPool;
 
-@property (nonatomic, assign) BOOL forceOverrideCookie;
-
 @property (nonatomic, strong) TWKWebViewDelegate *wkWebViewDelegate;
 @property (nonatomic, strong) TUIWebViewDelegate *uiWebViewDelegate;
 
@@ -125,6 +123,81 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     TWebViewConfig *config = [TWebViewConfig defaultConfig];
     return [self initWithConfig:config frame:frame];
 }
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if(self != nil) {
+        TWebViewConfig *config  = [TWebViewConfig defaultConfig];
+        _commonDelegate         = config.webViewCommonDelegate;
+        _delegate               = config.webViewDelegate;
+        _forceOverrideCookie    = config.forceOverrideCookie;
+        _showProgress           = config.showProgressView;
+        _progressTintColor      = config.progressTintColor;
+        _progressViewHeight     = config.progressViewHeight;
+        
+        _canSelectContent       = config.canSelectContent;
+        _canScrollChangeSize    = config.canScrollChangeSize;
+        _blockTouchCallout      = config.blockTouchCallout;
+        _canScrollBack          = config.canScrollBack;
+        if (@available(iOS 9.0, *)) {
+            _block3DTouch           = config.block3DTouch;
+        }
+        
+        _confirmText            = config.confirmText;
+        _cancelText             = config.cancelText;
+        _loadingDefaultTitle    = config.loadingDefaultTitle;
+        _successDefaultTitle    = config.successDefaultTitle;
+        _failedDefaultTitle     = config.failedDefaultTitle;
+    }
+    return self;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self setUI];
+}
+
+
+#if TARGET_INTERFACE_BUILDER
+- (void)drawRect:(CGRect)rect {
+    UIColor *backgroundColor = self.backgroundColor;
+    if (CGColorEqualToColor([UIColor whiteColor].CGColor, backgroundColor.CGColor)) {
+        backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+    }
+    CALayer *backgroundLayer = [[CALayer alloc] init];
+    backgroundLayer.backgroundColor = backgroundColor.CGColor;
+    backgroundLayer.frame = CGRectMake(0, 0, rect.size.width, rect.size.height);
+    [self.layer addSublayer:backgroundLayer];
+    
+    CATextLayer *textLayer = [[CATextLayer alloc] init];
+    [textLayer setFont:@"Helvetica-Bold"];
+    [textLayer setFontSize:40];
+    textLayer.contentsScale = 3;
+    CGFloat fontSize = textLayer.fontSize;
+    CGFloat height = rect.size.height;
+    CGFloat deltaY = (height-fontSize)/2 - fontSize/10;
+    CGRect textLayerFrame = CGRectMake(0, deltaY, rect.size.width, fontSize * 1.5);
+    textLayer.frame = textLayerFrame;
+    textLayer.string = @"TWebView";
+    textLayer.alignmentMode = kCAAlignmentCenter;
+    UIColor *foregroundColor = [UIColor lightGrayColor];
+    if (CGColorEqualToColor(foregroundColor.CGColor, backgroundColor.CGColor)) {
+        foregroundColor = [UIColor darkGrayColor];
+    }
+    textLayer.foregroundColor = foregroundColor.CGColor;
+    textLayer.backgroundColor = [UIColor clearColor].CGColor;
+    [self.layer addSublayer:textLayer];
+    
+    if (_showProgress) {
+        CALayer *progressLayer = [[CALayer alloc] init];
+        progressLayer.frame = CGRectMake(0, 0, rect.size.width*0.6, self.progressViewHeight);
+        progressLayer.backgroundColor = self.progressTintColor.CGColor;
+        [self.layer addSublayer:progressLayer];
+    }
+    
+    [super drawRect:rect];
+}
+#endif
 
 
 

@@ -24,7 +24,7 @@ extension ViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -32,8 +32,10 @@ extension ViewController {
         switch indexPath.row {
         case 0:
             cell.textLabel?.text = "打开TWebViewController"
-        default:
+        case 1:
             cell.textLabel?.text = "自定义TWebView"
+        default:
+            cell.textLabel?.text = "打开 xib 创建的 Controller"
         }
         return cell
     }
@@ -42,8 +44,10 @@ extension ViewController {
         switch indexPath.row {
         case 0:
             self.pushTWebViewController()
-        default:
+        case 1:
             self.pushCustomViewController()
+        default:
+            self.pushXibWebViewController()
         }
     }
 }
@@ -57,6 +61,12 @@ extension ViewController {
     
     func pushCustomViewController() {
         let vc = CustomWebViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func pushXibWebViewController() {
+        let vc = XibWebViewController()
+        vc.urlString = "http://www.qq.com"
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

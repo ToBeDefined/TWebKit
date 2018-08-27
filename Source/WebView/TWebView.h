@@ -63,6 +63,8 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 #pragma mark - TWebView
 
+IB_DESIGNABLE
+
 @interface TWebView : UIView
 
 #pragma mark - TWebView Property
@@ -78,24 +80,27 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 @property (nonatomic, readonly) BOOL canGoForward;
 @property (nonatomic, readonly, getter=isLoading) BOOL loading;
 
+// xib or storyboard only (should set before init)
+@property (nonatomic, assign) IBInspectable BOOL forceOverrideCookie;
+
 // Progress View
-@property (nonatomic, assign, getter=isShowProgress) BOOL showProgress;
-@property (nonatomic, strong) UIColor *progressTintColor;
-@property (nonatomic, assign) CGFloat progressViewHeight;
+@property (nonatomic, assign, getter=isShowProgress) IBInspectable BOOL showProgress;
+@property (nonatomic, strong) IBInspectable UIColor *progressTintColor;
+@property (nonatomic, assign) IBInspectable CGFloat progressViewHeight;
 
 // User Interaction
-@property (nonatomic, assign) BOOL canSelectContent;    // if set NO, Block most of the pages select content.
-@property (nonatomic, assign) BOOL canScrollChangeSize;
-@property (nonatomic, assign) BOOL blockTouchCallout;   // Block ActionSheet & Long Press Menus
-@property (nonatomic, assign) BOOL canScrollBack API_AVAILABLE(ios(8.0));
-@property (nonatomic, assign) BOOL block3DTouch API_AVAILABLE(ios(9.0));
+@property (nonatomic, assign) IBInspectable BOOL canSelectContent;    // if set NO, Block most of the pages select content.
+@property (nonatomic, assign) IBInspectable BOOL canScrollChangeSize;
+@property (nonatomic, assign) IBInspectable BOOL blockTouchCallout;   // Block ActionSheet & Long Press Menus
+@property (nonatomic, assign) IBInspectable BOOL canScrollBack API_AVAILABLE(ios(8.0));
+@property (nonatomic, assign) IBInspectable BOOL block3DTouch API_AVAILABLE(ios(9.0));
 
 // Texts
-@property (nonatomic, copy) NSString *confirmText;
-@property (nonatomic, copy) NSString *cancelText;
-@property (nonatomic, copy) NSString *loadingDefaultTitle;
-@property (nonatomic, copy) NSString *successDefaultTitle;
-@property (nonatomic, copy) NSString *failedDefaultTitle;
+@property (nonatomic, copy) IBInspectable NSString *confirmText;
+@property (nonatomic, copy) IBInspectable NSString *cancelText;
+@property (nonatomic, copy) IBInspectable NSString *loadingDefaultTitle;
+@property (nonatomic, copy) IBInspectable NSString *successDefaultTitle;
+@property (nonatomic, copy) IBInspectable NSString *failedDefaultTitle;
 
 #pragma mark - TWebView Function
 - (instancetype)init;
