@@ -178,16 +178,15 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 #pragma mark - TWebViewDelegate
 - (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title {
     TLog(@"%@", title);
+    if (status == TWebViewLoadStatusIsLoading && self.navigationItem.title != nil) {
+        return;
+    }
     if (self.navgationTitleLevel == TWebViewControllerNavigationTitleLevelAlways) {
         self.navigationItem.title = self.navgationTitle;
         return;
     }
     
-    if (title) {
-        self.navigationItem.title = title;
-    } else {
-        self.navigationItem.title = self.navgationTitle;
-    }
+    self.navigationItem.title = title ?: self.navgationTitle;
 }
 
 #pragma mark - UIGestureRecognizerDelegate
