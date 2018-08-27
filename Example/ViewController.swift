@@ -21,9 +21,29 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Example"
+        
+        self.datas = [TableViewData.init(title: "打开TWebViewController",
+                                         sel: #selector(pushTWebViewController)),
+                      TableViewData.init(title: "自定义TWebView",
+                                         sel: #selector(pushCustomViewController)),
+                      TableViewData.init(title: "打开 xib 创建的 Controller",
+                                         sel: #selector(pushXibWebViewController)),
+                      TableViewData.init(title: "打开本地文件",
+                                         sel: #selector(pushOpenLocalFile)),]
+        self.tableView.backgroundColor = UIColor.white
+        self.tableView.reloadData()
+        self.tableView.tableFooterView = UIView()
+        
+        self.copyFileToDocumentDir()
+    }
+    
+    func copyFileToDocumentDir() {
+        // imitate file in document directory (document directory need read access)
         let fm = FileManager.default
-        let documentURL = try! fm.url(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: false)
-        let fileURL = documentURL.appendingPathComponent("test.pdf")
+        let documentURL = try? fm.url(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: false)
+        guard let fileURL = documentURL?.appendingPathComponent("AlphaGoZero.pdf") else {
+            return
+        }
         if fm.fileExists(atPath: fileURL.path) {
             try? fm.removeItem(at: fileURL)
         }
@@ -33,18 +53,6 @@ class ViewController: UITableViewController {
             print("copy success")
             self.filePath = fileURL.path
         }
-        
-        datas = [TableViewData.init(title: "打开TWebViewController",
-                                    sel: #selector(pushTWebViewController)),
-                 TableViewData.init(title: "自定义TWebView",
-                                    sel: #selector(pushCustomViewController)),
-                 TableViewData.init(title: "打开 xib 创建的 Controller",
-                                    sel: #selector(pushXibWebViewController)),
-                 TableViewData.init(title: "打开本地文件",
-                                    sel: #selector(pushOpenLocalFile)),]
-        self.tableView.backgroundColor = UIColor.white
-        self.tableView.reloadData()
-        self.tableView.tableFooterView = UIView()
     }
 }
 
@@ -85,7 +93,7 @@ extension ViewController {
     
     @objc
     func pushXibWebViewController() {
-        let vc = XibWebViewController()
+        let vc = XibWebViewController.init(nibName: "XibWebViewController", bundle: nil)
         vc.urlString = "http://www.qq.com"
         self.navigationController?.pushViewController(vc, animated: true)
     }
