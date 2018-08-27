@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3FC799C42133C38400C5894F /* XibWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC799C22133C38400C5894F /* XibWebViewController.swift */; };
 		3FC799C52133C38400C5894F /* XibWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3FC799C32133C38400C5894F /* XibWebViewController.xib */; };
+		3FC799C72133D76400C5894F /* AlphaGoZero.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3FC799C62133D76400C5894F /* AlphaGoZero.pdf */; };
 		D70656641F2B212800E8A4F0 /* TWebKitSetting.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FF810E1F2B10B80033715E /* TWebKitSetting.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7650DEB1F29F7DF00BE988C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7650DEA1F29F7DA00BE988C /* Foundation.framework */; };
 		D7650DED1F29F7EA00BE988C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7650DEC1F29F7E600BE988C /* UIKit.framework */; };
@@ -68,6 +69,7 @@
 /* Begin PBXFileReference section */
 		3FC799C22133C38400C5894F /* XibWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XibWebViewController.swift; sourceTree = "<group>"; };
 		3FC799C32133C38400C5894F /* XibWebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = XibWebViewController.xib; sourceTree = "<group>"; };
+		3FC799C62133D76400C5894F /* AlphaGoZero.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = AlphaGoZero.pdf; sourceTree = "<group>"; };
 		D7650DEA1F29F7DA00BE988C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D7650DEC1F29F7E600BE988C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D7650DEE1F29F7F300BE988C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -186,6 +188,7 @@
 				D7FF80C41F2ADD710033715E /* CustomWebViewController.swift */,
 				3FC799C22133C38400C5894F /* XibWebViewController.swift */,
 				3FC799C32133C38400C5894F /* XibWebViewController.xib */,
+				3FC799C62133D76400C5894F /* AlphaGoZero.pdf */,
 				D7E850061F29F32A00C64263 /* Assets.xcassets */,
 				D7E8500B1F29F32A00C64263 /* Info.plist */,
 			);
@@ -348,6 +351,7 @@
 				D7E850191F29F51700C64263 /* Launch Screen.storyboard in Resources */,
 				D7E850071F29F32A00C64263 /* Assets.xcassets in Resources */,
 				3FC799C52133C38400C5894F /* XibWebViewController.xib in Resources */,
+				3FC799C72133D76400C5894F /* AlphaGoZero.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
