@@ -594,6 +594,69 @@ typedef BOOL (*GetFuc)(id, SEL);
     }
 }
 
+- (void)loadLocalFileInPath:(NSString *)filePath {
+    [self loadLocalFileInBasePath:filePath relativeFilePath:nil];
+}
+
+- (void)loadLocalFileInBasePath:(NSString *)basePath
+               relativeFilePath:(nullable NSString *)relativeFilePath {
+    NSString *realFilePath = basePath ?: @"";
+    if (relativeFilePath) {
+        realFilePath = [realFilePath stringByAppendingPathComponent:relativeFilePath];
+    }
+    NSURL *realFileURL = [NSURL fileURLWithPath:realFilePath];
+    NSURL *baseURL = [NSURL fileURLWithPath:basePath];
+    if (!realFileURL) {
+        return;
+    }
+    if (@available(iOS 9, *)) {
+        [_wkWebView loadFileURL:realFileURL allowingReadAccessToURL:baseURL ?: realFileURL];
+    } else if (@available(iOS 8, *)) {
+        NSString *tmpBasePath = [self copyFilesFromBasePath:basePath ?: realFilePath];
+        NSURL *tmpFileURL = [NSURL fileURLWithPath:tmpBasePath];
+        if (relativeFilePath) {
+            NSString *tmpFilePath = [tmpBasePath ?: @"" stringByAppendingPathComponent:relativeFilePath];
+            tmpFileURL = [NSURL fileURLWithPath:tmpFilePath];
+        }
+        if (tmpFileURL) {
+            [_wkWebView loadRequest:[NSURLRequest requestWithURL:tmpFileURL]];
+        }
+    } else {
+        // is UIWebView
+        [_uiWebView loadRequest:[NSURLRequest requestWithURL:realFileURL]];
+    }
+}
+
+- (nullable NSString *)copyFilesFromBasePath:(NSString *)originBasePath {
+    NSURL *originBaseURL = [NSURL fileURLWithPath:originBasePath];
+    if (![originBaseURL isFileURL]) {
+        NSAssert(NO, @"Its must a file url");
+    }
+    NSError *error;
+    [originBaseURL checkResourceIsReachableAndReturnError:&error];
+    if (error) {
+        NSAssert(NO, @"Resource Is Unreachable");
+    }
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *tmpDirPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"wkWebViewTmpLocalFile"];
+    NSURL *tmpDirURL = [NSURL fileURLWithPath:tmpDirPath];
+    [fm createDirectoryAtURL:tmpDirURL withIntermediateDirectories:YES attributes:nil error:&error];
+    if (error) {
+        NSAssert(NO, @"Create Tmp Dir Error");
+    }
+    
+    NSURL *dstURL = [tmpDirURL URLByAppendingPathComponent:originBaseURL.lastPathComponent];
+    if ([fm fileExistsAtPath:dstURL.path]) {
+        [fm removeItemAtURL:dstURL error:nil];
+    }
+    [fm copyItemAtURL:originBaseURL toURL:dstURL error:&error];
+    if (error) {
+        NSAssert(NO, @"Create Tmp Dir Error");
+    }
+    return dstURL.path;
+}
+
 - (void)resetCookieForceOverride:(BOOL)forceOverride {
     [self runJavascript:[self getSetCookieJSCodeWithForceOverride:forceOverride]
              completion:^(id obj, NSError *error) {

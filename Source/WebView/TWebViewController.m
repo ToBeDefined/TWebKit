@@ -133,6 +133,14 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
     [self loadURLFromString:urlString];
 }
 
+- (void)loadLocalFileInPath:(NSString *)filePath {
+    [self.webView loadLocalFileInPath:filePath];
+}
+
+- (void)loadLocalFileInBasePath:(NSString *)basePath relativeFilePath:(nullable NSString *)relativeFilePath {
+    [self.webView loadLocalFileInBasePath:basePath relativeFilePath:relativeFilePath];
+}
+
 - (void)resetWebViewCookieForceOverride:(BOOL)forceOverride {
     [self.webView resetCookieForceOverride:forceOverride];
 }

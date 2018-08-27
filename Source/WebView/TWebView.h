@@ -131,6 +131,10 @@ IB_DESIGNABLE
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL;
 // 9.0之后可用
 - (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL API_AVAILABLE(ios(9.0));
+// loal local file (single file)
+- (void)loadLocalFileInPath:(NSString *)filePath;
+// load local file in base path
+- (void)loadLocalFileInBasePath:(NSString *)basePath relativeFilePath:(nullable NSString *)relativeFilePath;
 
 + (nullable NSString *)getJavascriptStringWithFunctionName:(NSString *)function data:(id)data;
 

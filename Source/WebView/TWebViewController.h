@@ -33,6 +33,8 @@ typedef NS_ENUM(NSUInteger, TWebViewControllerNavigationTitleLevel) {
 
 - (void)loadURLFromString:(NSString *)urlString;
 - (void)loadURLAndAutoConversionFromString:(NSString *)urlString;
+- (void)loadLocalFileInPath:(NSString *)filePath;
+- (void)loadLocalFileInBasePath:(NSString *)basePath relativeFilePath:(nullable NSString *)relativeFilePath;
 
 - (void)resetWebViewCookieForceOverride:(BOOL)forceOverride;
 
