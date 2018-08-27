@@ -9,6 +9,7 @@
 
 #import "TDefineAndCFunc.h"
 #import "TWebView.h"
+#import <objc/runtime.h>
 
 /**
  // 准备加载页面
@@ -77,6 +78,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         [_uiWebView stopLoading];
         _uiWebView.delegate = nil;
         [_uiWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }
 
@@ -327,6 +329,14 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         self.uiWebViewDelegate = [TUIWebViewDelegate getDelegateWith:self];
         webView.delegate = self.uiWebViewDelegate;
         [webView addObserver:self forKeyPath:@"scrollView.contentInset" options:NSKeyValueObservingOptionNew context:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(appWillResignActive:)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(appDidBecomeActive:)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
         webView;
     });
 }
@@ -368,6 +378,73 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 - (void)resetProgressViewTopInsert {
     CGFloat constant = [self getTopInset];
     self.progressViewTopConstraint.constant = constant;
+}
+
+
+#pragma mark - OpenGL ES Crash
+// OpenGL ES Crash: https://forums.developer.apple.com/thread/30896
+- (void)appWillResignActive:(NSNotification *)notification {
+    [self enableUIWebViewOpenGL:NO];
+}
+
+- (void)appDidBecomeActive:(NSNotification *)notification {
+    [self enableUIWebViewOpenGL:YES];
+}
+
+typedef void (*CallFuc)(id, SEL, BOOL);
+typedef BOOL (*GetFuc)(id, SEL);
+- (BOOL)enableUIWebViewOpenGL:(BOOL)enableOpenGL {
+    if (@available(iOS 8, *)) {
+        return NO;
+    } else {
+        BOOL bRet = NO;
+        do {
+            Ivar internalVar = class_getInstanceVariable([_uiWebView class], "_internal");
+            if (!internalVar) {
+                TLog(@"enable GL _internal invalid!");
+                break;
+            }
+            
+            UIWebViewInternal *internalObj = object_getIvar(_uiWebView, internalVar);
+            Ivar browserVar = class_getInstanceVariable(object_getClass(internalObj), "browserView");
+            if (!browserVar) {
+                TLog(@"enable GL browserView invalid!");
+                break;
+            }
+            
+            id webbrowser = object_getIvar(internalObj, browserVar);
+            Ivar webViewVar = class_getInstanceVariable(object_getClass(webbrowser), "_webView");
+            if (!webViewVar) {
+                TLog(@"enable GL _webView invalid!");
+                break;
+            }
+            
+            id webView = object_getIvar(webbrowser, webViewVar);
+            if (!webView) {
+                TLog(@"enable GL webView obj nil!");
+            }
+            
+            if(object_getClass(webView) != NSClassFromString(@"WebView")) {
+                NSLog(@"enable GL webView not WebView!");
+                break;
+            }
+            
+            SEL selectorSet = NSSelectorFromString(@"_setWebGLEnabled:");
+            IMP impSet = [webView methodForSelector:selectorSet];
+            CallFuc funcSet = (CallFuc)impSet;
+            funcSet(webView, selectorSet, enableOpenGL);
+            
+            SEL selectorGet = NSSelectorFromString(@"_webGLEnabled");
+            IMP impGet = [webView methodForSelector:selectorGet];
+            GetFuc funcGet = (GetFuc)impGet;
+            BOOL val = funcGet(webView, selectorGet);
+            
+            bRet = (val == enableOpenGL);
+            
+        } while(NO);
+        TLog(@"set: %@,  success: %@", enableOpenGL ? @"YES" : @"NO", bRet ? @"YES" : @"NO");
+        return bRet;
+    }
 }
 
 
