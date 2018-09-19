@@ -9,6 +9,12 @@
 import UIKit
 import TWebKit
 
+#if swift(>=4.2)
+typealias NSLayoutConstraintAttribute = NSLayoutConstraint.Attribute
+#else
+typealias NSLayoutConstraintAttribute = NSLayoutAttribute
+#endif
+
 class CustomWebViewController: UIViewController {
     var webView: TWebView!
     
@@ -42,7 +48,7 @@ class CustomWebViewController: UIViewController {
     
     func layoutWebView() {
         webView.translatesAutoresizingMaskIntoConstraints = false
-        let array: [NSLayoutConstraint.Attribute] = [.left, .right, .bottom]
+        let array: [NSLayoutConstraintAttribute] = [.left, .right, .bottom]
         for attr in array {
             let constraint = NSLayoutConstraint.init(item: webView,
                                                      attribute: attr,
