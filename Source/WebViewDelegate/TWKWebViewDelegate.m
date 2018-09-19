@@ -187,7 +187,7 @@
 
 #pragma mark - 3D Touch Peek & Pop; iOS 10+ available
 
-- (BOOL)webView:(WKWebView *)webView shouldPreviewElement:(WKPreviewElementInfo *)elementInfo {
+- (BOOL)webView:(WKWebView *)webView shouldPreviewElement:(WKPreviewElementInfo *)elementInfo API_AVAILABLE(ios(10.0)) {
     self.previewingURL = nil;
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:shouldPreviewURL:)];
     if (delegate != nil) {
@@ -196,7 +196,7 @@
     return YES;
 }
 
-- (UIViewController *)webView:(WKWebView *)webView previewingViewControllerForElement:(WKPreviewElementInfo *)elementInfo defaultActions:(NSArray<id<WKPreviewActionItem>> *)previewActions {
+- (UIViewController *)webView:(WKWebView *)webView previewingViewControllerForElement:(WKPreviewElementInfo *)elementInfo defaultActions:(NSArray<id<WKPreviewActionItem>> *)previewActions API_AVAILABLE(ios(10.0)) {
     self.previewingURL = elementInfo.linkURL;
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:previewingViewControllerForURL:defaultActions:)];
     if (delegate != nil) {
@@ -205,7 +205,7 @@
     return nil;
 }
 
-- (void)webView:(WKWebView *)webView commitPreviewingViewController:(UIViewController *)previewingViewController {
+- (void)webView:(WKWebView *)webView commitPreviewingViewController:(UIViewController *)previewingViewController API_AVAILABLE(ios(10.0)) {
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:commitPreviewingURL:controller:)];
     [delegate webView:self.tWebView commitPreviewingURL:self.previewingURL controller:previewingViewController];
     self.previewingURL = nil;

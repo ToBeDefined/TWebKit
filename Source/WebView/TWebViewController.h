@@ -25,7 +25,7 @@ typedef NS_ENUM(NSUInteger, TWebViewControllerNavigationTitleLevel) {
 @property (nonatomic, assign) TWebViewControllerNavigationTitleLevel navgationTitleLevel;
 @property (nonatomic, strong) UIImage * _Nullable backImage;
 
-@property (nonatomic, strong) NSArray<id<UIPreviewActionItem>> * _Nonnull previewActions;
+@property (nonatomic, strong) NSArray<id<UIPreviewActionItem>> * _Nonnull previewActions API_AVAILABLE(ios(9.0));
 
 - (instancetype)init;
 
