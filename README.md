@@ -34,10 +34,10 @@ TWebKit
     > 
     > In the custom `delegate` to achieve a method in the case will not call the `commonDelegate` in the same name method. (If necessary, you can use the method [webView.commonDelegate someFunc ..] to invoke the `commonDelegate` method in the custom `delegate`)
 - supports `ProgressView`, `UIWebView` uses part of the code in [NJKWebViewProgress](https://github.com/ninjinkun/NJKWebViewProgress) to simulate the progress of the configuration, support the configuration ProgressView color
-- Support the configuration is allowed to slide back (`canScrollBack`)
-- Support the configuration can zoom in and out of the page (`canScrollChangeSize`)
-- Support configuration is masked long press the link to display ActionSheet & MenuController (`blockTouchCallout`)
-- Support configuration for blocking links 3DTouch preview (`block3DTouch`)
+- Support the configuration is allowed to slide back (`scrollBackType`)
+- Support the configuration can zoom in and out of the page (`scrollChangeSizeType`)
+- Support configuration is masked long press the link to display ActionSheet & MenuController (`touchCalloutType`)
+- Support configuration for blocking links 3DTouch preview (`webView3DTouchType`)
 
 #### TWebViewController
 
@@ -138,11 +138,11 @@ Most of the parameters and methods are same like UIWebView, the following descri
 - showProgress: `BOOL`, `getter=isShowProgress`, whether to display the progress view.
 - progressTintColor: `UIColor`, progress color.
 - progressViewHeight: `CGFloat`, set the progress view height.
-- canSelectContent: `BOOL`, set whether you can long press to select the contents of the page.
-- canScrollChangeSize: `BOOL`, whether you can drag to change the page size.
-- blockTouchCallout: `BOOL`, whether to block the long press link appears actionSheet and menuController.
-- canScrollBack: `BOOL`, iOS8+ support, whether it can slide back to the previous page.
-- block3DTouch: `BOOL`, iOS9+ support, whether to block 3DTouch preview links.
+- selectContentType: `Enum`, set whether you can long press to select the contents of the page.
+- scrollChangeSizeType: `Enum`, whether you can drag to change the page size.
+- touchCalloutType: `Enum`, whether to block the long press link appears actionSheet and menuController.
+- scrollBackType: `Enum`, iOS8+ support, whether it can slide back to the previous page.
+- webView3DTouchType: `Enum`, iOS9+ support, whether to block 3DTouch preview links.
 - confirmText: `NSString`, the confirm button text of web page pop-up box.
 - cancelText: `NSString`, the cancel button text of web page pop-up box.
 - loadingDefaultTitle: `NSString`, the title text returned by default in the page loading.
@@ -192,11 +192,11 @@ In order to make the configuration parameters more clear, so add the `TWebViewCo
 | showProgressView          | ->  |        showProgress |
 | progressTintColor         | ->  |   progressTintColor |
 | progressViewHeight        | ->  |  progressViewHeight |
-| canSelectContent          | ->  |    canSelectContent |
-| canScrollChangeSize       | ->  | canScrollChangeSize |
-| blockTouchCallout         | ->  |   blockTouchCallout |
-| canScrollBack             | ->  |       canScrollBack |
-| block3DTouch              | ->  |        block3DTouch |
+| selectContentType          | ->  |    selectContentType |
+| scrollChangeSizeType       | ->  | scrollChangeSizeType |
+| touchCalloutType         | ->  |   touchCalloutType |
+| scrollBackType             | ->  |       scrollBackType |
+| webView3DTouchType              | ->  |        webView3DTouchType |
 | confirmText               | ->  |         confirmText |
 | cancelText                | ->  |          cancelText |
 | loadingDefaultTitle       | ->  |  loadingDefaultTitle|
@@ -259,6 +259,9 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 ##### property
 
+- defaultCachePolicy：Class property, NSURLRequest cache policy
+- defaultTimeoutInterval：Class property, NSURLRequest timeout interval
+
 - webView: `TWebView`, `TWebViewController`'s `TWebView` object, you can modify some of the properties that match your configuration requirements.
 - navTitle: `NSString`, default navgation title, if setting, priority of `- (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title` method, will always show `navTitle`.
 - backImage: `UIImage`, default use `back.png` in `TWebKit.bundle`, you can customize set the back button image.
@@ -272,6 +275,10 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 - `- (void)loadURLFromString:(NSString *)urlString`
 
     > load `urlString`'s web page.
+    
+- `- (void)loadURLFromString:(NSString *)urlString cachePolicy:(NSURLRequestCachePolicy)cachePolicy timeoutInterval:(NSTimeInterval)timeoutInterval`
+
+    > load `urlString`'s web page, with `cachePolicy` and `timeoutInterval`.
 
 - `- (void)loadURLAndAutoConversionFromString:(NSString *)urlString`
 

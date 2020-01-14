@@ -34,10 +34,10 @@ TWebKit
     > 
     > 在普通代理`delegate`中实现某个方法的情况下不会去调用通用代理`commonDelegate`中的同名方法。（如果需要可以在普通代理`delegate`的该方法中使用[webView.commonDelegate  someFunc..]主动调用通用代理`commonDelegate`的该方法）
 - 支持显示`ProgressView`，`UIWebView`的Progress使用了[NJKWebViewProgress](https://github.com/ninjinkun/NJKWebViewProgress)中的部分代码进行模拟进度，支持配置ProgressView的颜色
-- 支持配置是否允许滑动返回(`canScrollBack`)
-- 支持配置是否可以放大缩小网页(`canScrollChangeSize`)
-- 支持配置是否屏蔽长按链接显示ActionSheet和MenuController(`blockTouchCallout`)
-- 支持配置是否屏蔽链接的3DTouch预览(`block3DTouch`)
+- 支持配置是否允许滑动返回(`scrollBackType`)
+- 支持配置是否可以放大缩小网页(`scrollChangeSizeType`)
+- 支持配置是否屏蔽长按链接显示ActionSheet和MenuController(`touchCalloutType`)
+- 支持配置是否屏蔽链接的3DTouch预览(`webView3DTouchType`)
 
 #### TWebViewController
 
@@ -139,11 +139,11 @@ github "tobedefined/TWebKit"
 - showProgress：`BOOL`，`getter=isShowProgress`，是否显示进度条
 - progressTintColor：`UIColor`，进度条颜色
 - progressViewHeight: `CGFloat`, 设置进度条的高度
-- canSelectContent：`BOOL`，设置是否可以长按选择网页中的内容
-- canScrollChangeSize：`BOOL`，是否可以拖动改变网页大小
-- blockTouchCallout：`BOOL`，是否屏蔽长按链接出现actionSheet和menuController
-- canScrollBack：`BOOL`，iOS8+支持，是否可以滑动返回上一个网页
-- block3DTouch：`BOOL`，iOS9+支持，是否屏蔽3DTouch预览链接
+- selectContentType：`Enum`，设置是否可以长按选择网页中的内容
+- scrollChangeSizeType：`Enum`，是否可以拖动改变网页大小
+- touchCalloutType：`Enum`，是否屏蔽长按链接出现actionSheet和menuController
+- scrollBackType：`Enum`，iOS8+支持，是否可以滑动返回上一个网页
+- webView3DTouchType：`Enum`，iOS9+支持，是否屏蔽3DTouch预览链接
 - confirmText：`NSString`，网页弹出框的确定按钮文字
 - cancelText：`NSString`，网页弹出框的取消按钮文字
 - loadingDefaultTitle：`NSString`，网页加载中默认返回的title文字
@@ -193,11 +193,11 @@ github "tobedefined/TWebKit"
 | showProgressView      | ->  |        showProgress |
 | progressTintColor     | ->  |   progressTintColor |
 | progressViewHeight    | ->  |  progressViewHeight |
-| canSelectContent      | ->  |    canSelectContent |
-| canScrollChangeSize   | ->  | canScrollChangeSize |
-| blockTouchCallout     | ->  |   blockTouchCallout |
-| canScrollBack         | ->  |       canScrollBack |
-| block3DTouch          | ->  |        block3DTouch |
+| selectContentType      | ->  |    selectContentType |
+| scrollChangeSizeType   | ->  | scrollChangeSizeType |
+| touchCalloutType     | ->  |   touchCalloutType |
+| scrollBackType         | ->  |       scrollBackType |
+| webView3DTouchType          | ->  |        webView3DTouchType |
 | confirmText           | ->  |         confirmText |
 | cancelText            | ->  |          cancelText |
 | loadingDefaultTitle   | ->  |  loadingDefaultTitle|
@@ -260,6 +260,9 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 ##### property
 
+- defaultCachePolicy：Class property, NSURLRequest 缓存策略
+- defaultTimeoutInterval：Class property, NSURLRequest 超时时间
+
 - webView：`TWebView`，`TWebViewController`中的`TWebView`对象，你可以修改一些属性符合你的配置要求。
 - navTitle：`NSString`，默认的navTitle，如果设置，则覆盖`- (void)webView:(TWebView *)webView loadStatus:(TWebViewLoadStatus)status title:(NSString *)title`回调，始终显示`navTitle`。
 - backImage：`UIImage`，默认使用`TWebKit.bundle`中的`back.png`，可以自定义设置返回按钮。
@@ -273,6 +276,10 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 - `- (void)loadURLFromString:(NSString *)urlString`
 
     > 加载网址`urlString`
+    
+- `- (void)loadURLFromString:(NSString *)urlString cachePolicy:(NSURLRequestCachePolicy)cachePolicy timeoutInterval:(NSTimeInterval)timeoutInterval`
+
+    > 加载网址`urlString`， 设置 `cachePolicy` 和 `timeoutInterval`
 
 - `- (void)loadURLAndAutoConversionFromString:(NSString *)urlString`
 
