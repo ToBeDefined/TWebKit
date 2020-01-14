@@ -3,7 +3,7 @@
 //  Example
 //
 //  Created by TBD on 2018/8/27.
-//  Copyright © 2018 邵伟男. All rights reserved.
+//  Copyright © 2018 TBD. All rights reserved.
 //
 
 import UIKit
