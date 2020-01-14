@@ -7,7 +7,8 @@ TWebKit
 
 <div align="center">
 
-![platform](https://img.shields.io/badge/Platform-iOS%E2%89%A56.0-orange.svg?style=flat)&nbsp;
+![platform](https://img.shields.io/badge/Platform-iOS%E2%89%A56.0-orange.svg?style=flat)[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FToBeDefined%2FTWebKit.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FToBeDefined%2FTWebKit?ref=badge_shield)
+&nbsp;
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)&nbsp;
 [![CocoaPods](https://img.shields.io/badge/Cocoapods-compatible-brightgreen.svg?style=flat)](http://cocoapods.org/)&nbsp;
 [![Build Status](https://travis-ci.org/tobedefined/TWebKit.svg?branch=master)](https://travis-ci.org/tobedefined/TWebKit)&nbsp;
@@ -291,3 +292,7 @@ typedef NS_ENUM(NSUInteger, TWebViewLoadStatus) {
 
 
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FToBeDefined%2FTWebKit.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FToBeDefined%2FTWebKit?ref=badge_large)
