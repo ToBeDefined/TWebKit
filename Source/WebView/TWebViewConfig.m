@@ -7,6 +7,7 @@
 //
 
 #import "TWebViewConfig.h"
+#import "TWebViewCommonDelegate.h"
 
 @implementation TWebViewConfig
 
@@ -22,24 +23,24 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _webViewCommonDelegate  = nil;
-        _webViewDelegate        = nil;
-        _forceOverrideCookie    = YES;
-        _showProgressView       = YES;
-        _progressTintColor      = [UIColor blueColor];
-        _progressViewHeight     = 1.0;
+        self->_webViewCommonDelegate  = TWebViewCommonDelegate.shared;
+        self->_webViewDelegate        = nil;
+        self->_forceOverrideCookie    = YES;
+        self->_showProgressView       = YES;
+        self->_progressTintColor      = [UIColor orangeColor];
+        self->_progressViewHeight     = 2.0/[UIScreen mainScreen].scale;
         
-        _canSelectContent       = YES;
-        _canScrollBack          = YES;
-        _canScrollChangeSize    = YES;
-        _blockTouchCallout      = NO;
-        _block3DTouch           = NO;
+        self->_selectContentType      = IBCWebViewConfigBlockTypeNotSet;
+        self->_scrollChangeSizeType   = IBCWebViewConfigBlockTypeNotSet;
+        self->_touchCalloutType       = IBCWebViewConfigBlockTypeNotSet;
+        self->_scrollBackType         = IBCWebViewConfigBlockTypeNotSet;
+        self->_webView3DTouchType     = IBCWebViewConfigBlockTypeNotSet;
         
-        _confirmText            = @"OK";
-        _cancelText             = @"Cancel";
-        _loadingDefaultTitle    = @"Loading...";
-        _successDefaultTitle    = @"Details";
-        _failedDefaultTitle     = @"Failed";
+        self->_confirmText            = @"OK";
+        self->_cancelText             = @"Cancel";
+        self->_loadingDefaultTitle    = @"Loading...";
+        self->_successDefaultTitle    = @"Details";
+        self->_failedDefaultTitle     = @"Failed";
     }
     return self;
 }

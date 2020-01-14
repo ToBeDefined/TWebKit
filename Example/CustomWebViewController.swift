@@ -27,8 +27,8 @@ class CustomWebViewController: UIViewController {
         config.confirmText = "确定"
         config.progressTintColor = UIColor.orange
         config.forceOverrideCookie = false
-        config.canScrollChangeSize = false
-        config.webViewCommonDelegate = TWebViewCommonDelegate.sharedInstance()
+        config.scrollChangeSizeType = .forbidden
+        config.webViewCommonDelegate = TWebViewCommonDelegate.shared
         config.webViewDelegate = self
         config.failedDefaultTitle = "加载失败"
         config.loadingDefaultTitle = "加载中..."

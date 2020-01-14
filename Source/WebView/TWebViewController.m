@@ -28,19 +28,35 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
     id<UIGestureRecognizerDelegate> _grDelegate;
 }
 
+static NSURLRequestCachePolicy _defaultCachePolicy = NSURLRequestUseProtocolCachePolicy;
++ (NSURLRequestCachePolicy)defaultCachePolicy {
+    return _defaultCachePolicy;
+}
++ (void)setDefaultCachePolicy:(NSURLRequestCachePolicy)defaultCachePolicy {
+    _defaultCachePolicy = defaultCachePolicy;
+}
+
+static NSTimeInterval _defaultTimeoutInterval = 60.0;
++ (NSTimeInterval)defaultTimeoutInterval {
+    return _defaultTimeoutInterval;
+}
++ (void)setDefaultTimeoutInterval:(NSTimeInterval)defaultTimeoutInterval {
+    _defaultTimeoutInterval = defaultTimeoutInterval;
+}
+
 - (NSString *)navTitle {
-    return _navgationTitle;
+    return self->_navgationTitle;
 }
 
 - (void)setNavTitle:(NSString *)navTitle {
-    _navgationTitle = [navTitle copy];
+    self->_navgationTitle = [navTitle copy];
 }
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        TWebViewConfig *config = [TWebViewConfig defaultConfig];
-        config.webViewCommonDelegate = [TWebViewCommonDelegate sharedInstance];
+        TWebViewConfig *config = TWebViewConfig.defaultConfig;
+        config.webViewCommonDelegate = TWebViewCommonDelegate.shared;
         config.webViewDelegate = self;
         self.webView = [[TWebView alloc] initWithConfig:config];
     }
@@ -60,15 +76,15 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 }
 
 - (UIImage *)backImage {
-    if (_backImage == nil) {
+    if (self->_backImage == nil) {
         NSString *path = [[NSBundle bundleForClass:[TWebViewController class]] pathForResource:@"TWebKit"
                                                                                         ofType:@"bundle"];
         NSBundle *bundle = [NSBundle bundleWithPath:path];
         UIImage *image = [UIImage imageWithContentsOfFile:[bundle pathForResource:@"back" ofType:@"png"]];
         UIImage *backImage = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        _backImage = backImage;
+        self->_backImage = backImage;
     }
-    return _backImage;
+    return self->_backImage;
 }
 
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
@@ -107,7 +123,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
     if (self.navigationController.viewControllers.count > 1) {
-        _grDelegate = self.navigationController.interactivePopGestureRecognizer.delegate;
+        self->_grDelegate = self.navigationController.interactivePopGestureRecognizer.delegate;
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
     }
 }
@@ -118,15 +134,29 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.navigationController.interactivePopGestureRecognizer.delegate = _grDelegate;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self->_grDelegate;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 }
 
+
 - (void)loadURLFromString:(NSString *)urlString {
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+    [self loadURLFromString:urlString
+                cachePolicy:self.class.defaultCachePolicy
+            timeoutInterval:self.class.defaultTimeoutInterval];
+}
+
+- (void)loadURLFromString:(NSString *)urlString cachePolicy:(NSURLRequestCachePolicy)cachePolicy timeoutInterval:(NSTimeInterval)timeoutInterval {
+    NSURL *url = [NSURL URLWithString:urlString];
+    if (![url isFileURL]) {
+        [self.webView loadRequest:[NSURLRequest requestWithURL:url
+                                                   cachePolicy:cachePolicy
+                                               timeoutInterval:timeoutInterval]];
+    } else {
+        [self.webView loadLocalFileInPath:urlString];
+    }
 }
 
 - (void)loadURLAndAutoConversionFromString:(NSString *)urlString {
@@ -203,7 +233,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
 
 - (void)setupRightItems {
     NSMutableArray *item_array = [NSMutableArray array];
-    #ifdef DEBUG
+#ifdef DEBUG
     UIBarButtonItem *itemCompose = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                                                                                  target:self
                                                                                  action:@selector(inputURL)];
@@ -213,7 +243,7 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
                                                                                target:self
                                                                                action:@selector(confirmClearCache)];
     [item_array addObject:itemTrash];
-    #endif
+#endif
     
     [self.navigationItem setRightBarButtonItems:item_array animated:YES];
 }
@@ -229,13 +259,13 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
         [ac addAction:[UIAlertAction actionWithTitle:@"Go"
                                                style:UIAlertActionStyleDestructive
                                              handler:^(UIAlertAction * _Nonnull action) {
-                                                 @tstrongify(self);
-                                                 NSString *url = [ac.textFields objectAtIndex:0].text;
-                                                 if (isNotEmptyString(url)) {
-                                                     [[NSUserDefaults standardUserDefaults] setObject:url forKey:T_TESTURL_LASTINPUTURL];
-                                                     [self loadURLFromString:url];
-                                                 }
-                                             }]];
+            @tstrongify(self);
+            NSString *url = [ac.textFields objectAtIndex:0].text;
+            if (isNotEmptyString(url)) {
+                [[NSUserDefaults standardUserDefaults] setObject:url forKey:T_TESTURL_LASTINPUTURL];
+                [self loadURLFromString:url];
+            }
+        }]];
         [ac addAction:[UIAlertAction actionWithTitle:@"Cancel"
                                                style:UIAlertActionStyleCancel
                                              handler:nil]];
@@ -281,16 +311,16 @@ static NSString *TInputURLAlertView = @"TInputURLAlertView";
         [ac addAction:[UIAlertAction actionWithTitle:@"NO"
                                                style:UIAlertActionStyleCancel
                                              handler:^(UIAlertAction * _Nonnull action) {
-                                                 return;
-                                             }]];
+            return;
+        }]];
         
         @tweakify(self);
         [ac addAction:[UIAlertAction actionWithTitle:@"YES"
                                                style:UIAlertActionStyleDestructive
                                              handler:^(UIAlertAction * _Nonnull action) {
-                                                 @tstrongify(self);
-                                                 [self.webView clearCache];
-                                             }]];
+            @tstrongify(self);
+            [self.webView clearCache];
+        }]];
         [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:ac animated:YES completion:nil];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete All Cache & Cookie？"

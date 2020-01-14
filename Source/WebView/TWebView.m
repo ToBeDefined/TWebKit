@@ -66,16 +66,16 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 #pragma mark - Memory
 - (void)dealloc {
     if (@available(iOS 8, *)) {
-        [_wkWebView stopLoading];
-        _wkWebView.UIDelegate = nil;
-        _wkWebView.navigationDelegate = nil;
-        [_wkWebView removeObserver:self forKeyPath:@"estimatedProgress"];
-        [_wkWebView removeObserver:self forKeyPath:@"title"];
-        [_wkWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
+        [self->_wkWebView stopLoading];
+        self->_wkWebView.UIDelegate = nil;
+        self->_wkWebView.navigationDelegate = nil;
+        [self->_wkWebView removeObserver:self forKeyPath:@"estimatedProgress"];
+        [self->_wkWebView removeObserver:self forKeyPath:@"title"];
+        [self->_wkWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
     } else {
-        [_uiWebView stopLoading];
-        _uiWebView.delegate = nil;
-        [_uiWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
+        [self->_uiWebView stopLoading];
+        self->_uiWebView.delegate = nil;
+        [self->_uiWebView removeObserver:self forKeyPath:@"scrollView.contentInset"];
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }
@@ -85,25 +85,24 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
                          frame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        _commonDelegate         = config.webViewCommonDelegate;
-        _delegate               = config.webViewDelegate;
-        _forceOverrideCookie    = config.forceOverrideCookie;
-        _showProgress           = config.showProgressView;
-        _progressTintColor      = config.progressTintColor;
-        _progressViewHeight     = config.progressViewHeight;
+        self->_commonDelegate         = config.webViewCommonDelegate;
+        self->_delegate               = config.webViewDelegate;
+        self->_forceOverrideCookie    = config.forceOverrideCookie;
+        self->_showProgress           = config.showProgressView;
+        self->_progressTintColor      = config.progressTintColor;
+        self->_progressViewHeight     = config.progressViewHeight;
         
-        _canSelectContent       = config.canSelectContent;
-        _canScrollChangeSize    = config.canScrollChangeSize;
-        _blockTouchCallout      = config.blockTouchCallout;
-        _canScrollBack          = config.canScrollBack;
-        if (@available(iOS 9, *)) {
-            _block3DTouch       = config.block3DTouch;
-        }
-        _confirmText            = config.confirmText;
-        _cancelText             = config.cancelText;
-        _loadingDefaultTitle    = config.loadingDefaultTitle;
-        _successDefaultTitle    = config.successDefaultTitle;
-        _failedDefaultTitle     = config.failedDefaultTitle;
+        self->_selectContentType      = config.selectContentType;
+        self->_scrollChangeSizeType   = config.scrollChangeSizeType;
+        self->_touchCalloutType       = config.touchCalloutType;
+        self->_scrollBackType         = config.scrollBackType;
+        self->_webView3DTouchType     = config.webView3DTouchType;
+        
+        self->_confirmText            = config.confirmText;
+        self->_cancelText             = config.cancelText;
+        self->_loadingDefaultTitle    = config.loadingDefaultTitle;
+        self->_successDefaultTitle    = config.successDefaultTitle;
+        self->_failedDefaultTitle     = config.failedDefaultTitle;
         
         [self setUI];
     }
@@ -115,39 +114,35 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (instancetype)init {
-    TWebViewConfig *config = [TWebViewConfig defaultConfig];
-    return [self initWithConfig:config frame:CGRectZero];
+    return [self initWithConfig:TWebViewConfig.defaultConfig frame:CGRectZero];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    TWebViewConfig *config = [TWebViewConfig defaultConfig];
-    return [self initWithConfig:config frame:frame];
+    return [self initWithConfig:TWebViewConfig.defaultConfig frame:frame];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if(self != nil) {
-        TWebViewConfig *config  = [TWebViewConfig defaultConfig];
-        _commonDelegate         = config.webViewCommonDelegate;
-        _delegate               = config.webViewDelegate;
-        _forceOverrideCookie    = config.forceOverrideCookie;
-        _showProgress           = config.showProgressView;
-        _progressTintColor      = config.progressTintColor;
-        _progressViewHeight     = config.progressViewHeight;
+        TWebViewConfig *config  = TWebViewConfig.defaultConfig;
+        self->_commonDelegate         = config.webViewCommonDelegate;
+        self->_delegate               = config.webViewDelegate;
+        self->_forceOverrideCookie    = config.forceOverrideCookie;
+        self->_showProgress           = config.showProgressView;
+        self->_progressTintColor      = config.progressTintColor;
+        self->_progressViewHeight     = config.progressViewHeight;
         
-        _canSelectContent       = config.canSelectContent;
-        _canScrollChangeSize    = config.canScrollChangeSize;
-        _blockTouchCallout      = config.blockTouchCallout;
-        _canScrollBack          = config.canScrollBack;
-        if (@available(iOS 9.0, *)) {
-            _block3DTouch           = config.block3DTouch;
-        }
+        self->_selectContentType      = config.selectContentType;
+        self->_scrollChangeSizeType   = config.scrollChangeSizeType;
+        self->_touchCalloutType       = config.touchCalloutType;
+        self->_scrollBackType         = config.scrollBackType;
+        self->_webView3DTouchType     = config.webView3DTouchType;
         
-        _confirmText            = config.confirmText;
-        _cancelText             = config.cancelText;
-        _loadingDefaultTitle    = config.loadingDefaultTitle;
-        _successDefaultTitle    = config.successDefaultTitle;
-        _failedDefaultTitle     = config.failedDefaultTitle;
+        self->_confirmText            = config.confirmText;
+        self->_cancelText             = config.cancelText;
+        self->_loadingDefaultTitle    = config.loadingDefaultTitle;
+        self->_successDefaultTitle    = config.successDefaultTitle;
+        self->_failedDefaultTitle     = config.failedDefaultTitle;
     }
     return self;
 }
@@ -203,93 +198,109 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 
 #pragma mark - Setter/Getter
 - (void)setShowProgress:(BOOL)showProgress {
-    _showProgress = showProgress;
+    self->_showProgress = showProgress;
     self.progressView.hidden = !showProgress;
 }
 
 - (void)setProgressTintColor:(UIColor *)progressTintColor {
-    _progressTintColor = progressTintColor;
+    self->_progressTintColor = progressTintColor;
     self.progressView.progressTintColor = progressTintColor;
 }
 
 - (void)setProgressViewHeight:(CGFloat)progressViewHeight {
-    _progressViewHeight = progressViewHeight;
+    self->_progressViewHeight = progressViewHeight;
     self.progressViewHeightConstraint.constant = progressViewHeight;
 }
 
-- (void)setCanSelectContent:(BOOL)canSelectContent {
-    _canSelectContent = canSelectContent;
-    if (canSelectContent) {
-        [self runJavascript:@"\
-         \n document.documentElement.style.webkitUserSelect='all'; \
-         \n document.documentElement.style.khtmlUserSelect='all'; \
-         \n document.documentElement.style.mozUserSelect='all'; \
-         \n document.documentElement.style.msUserSelect='all'; \
-         \n document.documentElement.style.userSelect='all'; \
-         \n"
-                 completion:nil];
+- (void)setSelectContentType:(IBCWebViewConfigBlockType)selectContentType {
+    self->_selectContentType = selectContentType;
+    NSString *jsString;
+    if (self->_selectContentType == IBCWebViewConfigBlockTypeAllow) {
+        jsString = @"\
+        \n document.documentElement.style.webkitUserSelect='all'; \
+        \n document.documentElement.style.khtmlUserSelect='all'; \
+        \n document.documentElement.style.mozUserSelect='all'; \
+        \n document.documentElement.style.msUserSelect='all'; \
+        \n document.documentElement.style.userSelect='all'; \
+        \n";
+    } else if (self->_selectContentType == IBCWebViewConfigBlockTypeForbidden) {
+        jsString = @"\
+        \n document.documentElement.style.webkitUserSelect='none'; \
+        \n document.documentElement.style.khtmlUserSelect='none'; \
+        \n document.documentElement.style.mozUserSelect='none'; \
+        \n document.documentElement.style.msUserSelect='none'; \
+        \n document.documentElement.style.userSelect='none'; \
+        \n";
     } else {
-        [self runJavascript:@"\
-         \n document.documentElement.style.webkitUserSelect='none'; \
-         \n document.documentElement.style.khtmlUserSelect='none'; \
-         \n document.documentElement.style.mozUserSelect='none'; \
-         \n document.documentElement.style.msUserSelect='none'; \
-         \n document.documentElement.style.userSelect='none'; \
-         \n"
-                 completion:nil];
+        jsString = @"\
+        \n document.documentElement.style.webkitUserSelect=undefined; \
+        \n document.documentElement.style.khtmlUserSelect=undefined; \
+        \n document.documentElement.style.mozUserSelect=undefined; \
+        \n document.documentElement.style.msUserSelect=undefined; \
+        \n document.documentElement.style.userSelect=undefined; \
+        \n";
     }
+    [self runJavascript:jsString completion:nil];
 }
 
-- (void)setCanScrollBack:(BOOL)canScrollBack {
-    _canScrollBack = canScrollBack;
+- (void)setScrollBackType:(IBCWebViewConfigBlockType)scrollBackType {
+    self->_scrollBackType = scrollBackType;
     if (@available(iOS 8, *)) {
-        _wkWebView.allowsBackForwardNavigationGestures = _canScrollBack;
+        if (self->_scrollBackType == IBCWebViewConfigBlockTypeAllow) {
+            self->_wkWebView.allowsBackForwardNavigationGestures = YES;
+        } else if (self->_scrollBackType == IBCWebViewConfigBlockTypeForbidden) {
+            self->_wkWebView.allowsBackForwardNavigationGestures = NO;
+        }
     } else {
-        TLog(" canScrollBack 不支持iOS8以下机型");
+        TLog("ScrollBack 不支持iOS8以下机型");
     }
-    
 }
 
-- (void)setCanScrollChangeSize:(BOOL)canScrollChangeSize {
-    _canScrollChangeSize = canScrollChangeSize;
+- (void)setScrollChangeSizeType:(IBCWebViewConfigBlockType)scrollChangeSizeType {
+    self->_scrollChangeSizeType = scrollChangeSizeType;
     
-    NSString *injectionJSString;
-    if (self.canScrollChangeSize) {
-        injectionJSString = @"\
+    if (self->_scrollChangeSizeType == IBCWebViewConfigBlockTypeAllow) {
+        NSString *injectionJSString = @"\
         \n var script = document.createElement('meta');\
         \n script.name = 'viewport';\
         \n script.content=\"width=device-width, initial-scale=1.0,maximum-scale=10.0, minimum-scale=0.0, user-scalable=no\";\
         \n document.getElementsByTagName('head')[0].appendChild(script);\
         \n ";
-    } else {
-        injectionJSString = @"\
+        [self runJavascript:injectionJSString
+                 completion:nil];
+    } else if (self->_scrollChangeSizeType == IBCWebViewConfigBlockTypeNotSet) {
+        NSString *injectionJSString = @"\
         \n var script = document.createElement('meta');\
         \n script.name = 'viewport';\
         \n script.content=\"width=device-width, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0, user-scalable=no\";\
         \n document.getElementsByTagName('head')[0].appendChild(script);\
         \n ";
+        [self runJavascript:injectionJSString
+                 completion:nil];
     }
-    [self runJavascript:injectionJSString
-             completion:nil];
 }
 
-- (void)setBlock3DTouch:(BOOL)block3DTouch {
-    _block3DTouch = block3DTouch;
+- (void)setwebView3DTouchType:(IBCWebViewConfigBlockType)webView3DTouchType {
+    self->_webView3DTouchType = webView3DTouchType;
     if (@available(iOS 9, *)) {
         // 不会走到UIWebView的allowsLinkPreview属性
-        _wkWebView.allowsLinkPreview = !block3DTouch;
+        if (webView3DTouchType == IBCWebViewConfigBlockTypeAllow) {
+            self->_wkWebView.allowsLinkPreview = YES;
+        } else if (webView3DTouchType == IBCWebViewConfigBlockTypeForbidden) {
+            self->_wkWebView.allowsLinkPreview = NO;
+        }
     } else {
-        TLog(" block3DTouch 不支持iOS9以下机型");
+        TLog("3DTouch 不支持iOS9以下机型");
     }
 }
 
-- (void)setBlockTouchCallout:(BOOL)blockTouchCallout {
-    _blockTouchCallout = blockTouchCallout;
-    if (blockTouchCallout) {
-        [self runJavascript:@"document.documentElement.style.webkitTouchCallout='none';"
-                 completion:nil];
-    } else {
+- (void)setTouchCalloutType:(IBCWebViewConfigBlockType)touchCalloutType {
+    self->_touchCalloutType = touchCalloutType;
+    if (self->_touchCalloutType == IBCWebViewConfigBlockTypeAllow) {
         [self runJavascript:@"document.documentElement.style.webkitTouchCallout='inherit';"
+                 completion:nil];
+    } else if (self->_touchCalloutType == IBCWebViewConfigBlockTypeForbidden) {
+        [self runJavascript:@"document.documentElement.style.webkitTouchCallout='none';"
                  completion:nil];
     }
 }
@@ -300,47 +311,55 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         processPool = [[WKProcessPool alloc] init];
         objc_setAssociatedObject([UIApplication sharedApplication], &WKWebViewProcessPoolKey, processPool, OBJC_ASSOCIATION_RETAIN);
     }
-    _processPool = processPool;
-    return _processPool;
+    self->_processPool = processPool;
+    return self->_processPool;
 }
 
 - (UIView *)contentWebView {
     if (@available(iOS 8, *)) {
-        return _wkWebView;
+        return self->_wkWebView;
     } else {
-        return _uiWebView;
+        return self->_uiWebView;
     }
 }
 
 - (UIScrollView *)scrollView {
     if (@available(iOS 8, *)) {
-        return [_wkWebView scrollView];
+        return self->_wkWebView.scrollView;
     } else {
-        return [_uiWebView scrollView];
+        return self->_uiWebView.scrollView;
     }
 }
 
 - (BOOL)canGoBack {
     if (@available(iOS 8, *)) {
-        return [_wkWebView canGoBack];
+        return self->_wkWebView.canGoBack;
     } else {
-        return [_uiWebView canGoBack];
+        return self->_uiWebView.canGoBack;
     }
 }
 
 - (BOOL)canGoForward {
     if (@available(iOS 8, *)) {
-        return [_wkWebView canGoForward];
+        return self->_wkWebView.canGoForward;
     } else {
-        return [_uiWebView canGoForward];
+        return self->_uiWebView.canGoForward;
     }
 }
 
 - (BOOL)isLoading {
     if (@available(iOS 8, *)) {
-        return [_wkWebView isLoading];
+        return self->_wkWebView.isLoading;
     } else {
-        return [_uiWebView isLoading];
+        return self->_uiWebView.isLoading;
+    }
+}
+
+- (NSString *)title {
+    if (@available(iOS 9, *)) {
+        return self->_wkWebView.title;
+    } else {
+        return [self->_uiWebView stringByEvaluatingJavaScriptFromString:@"document.title"];
     }
 }
 
@@ -350,10 +369,10 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     UIView *webView;
     if (@available(iOS 8, *)) {
         [self setupWKWebView];
-        webView = _wkWebView;
+        webView = self->_wkWebView;
     } else {
         [self setupUIWebView];
-        webView = _uiWebView;
+        webView = self->_uiWebView;
     }
     self.layer.masksToBounds = YES;
     
@@ -369,7 +388,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)setupWKWebView {
-    _wkWebView = ({
+    self->_wkWebView = ({
         // 设置cookie
         WKUserContentController *userContentController = [[WKUserContentController alloc] init];
         NSString *cookieJS = [self getSetCookieJSCodeWithForceOverride:_forceOverrideCookie];
@@ -383,9 +402,17 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
         config.processPool = self.processPool;
         WKWebView * webView = [[WKWebView alloc] initWithFrame:CGRectZero
                                                  configuration:config];
-        webView.allowsBackForwardNavigationGestures = _canScrollBack;
-        if (@available(iOS 9, *)) {
-            webView.allowsLinkPreview = !_block3DTouch;
+        if (self.scrollBackType == IBCWebViewConfigBlockTypeAllow) {
+            webView.allowsBackForwardNavigationGestures = YES;
+        } else if (self.scrollBackType == IBCWebViewConfigBlockTypeForbidden) {
+            webView.allowsBackForwardNavigationGestures = NO;
+        }
+        if (@available(iOS 9.0, *)) {
+            if (self.webView3DTouchType == IBCWebViewConfigBlockTypeAllow) {
+                webView.allowsLinkPreview = YES;
+            } else if (self.webView3DTouchType == IBCWebViewConfigBlockTypeForbidden) {
+                webView.allowsLinkPreview = NO;
+            }
         }
         self.wkWebViewDelegate = [TWKWebViewDelegate getDelegateWith:self];
         webView.navigationDelegate = self.wkWebViewDelegate;
@@ -400,7 +427,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
 }
 
 - (void)setupUIWebView {
-    _uiWebView = ({
+    self->_uiWebView = ({
         UIWebView *webView = [[UIWebView alloc] init];
         self.uiWebViewDelegate = [TUIWebViewDelegate getDelegateWith:self];
         webView.delegate = self.uiWebViewDelegate;
@@ -425,7 +452,7 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     }
     self.progressView = [[UIProgressView alloc] init];
     self.progressView.trackTintColor = [UIColor clearColor];
-    self.progressView.progressTintColor = _progressTintColor;
+    self.progressView.progressTintColor = self->_progressTintColor;
     self.progressView.trackTintColor = [UIColor whiteColor];
     
     [self addSubview:self.progressView];
@@ -447,9 +474,9 @@ static const NSString * WKWebViewProcessPoolKey = @"WKWebViewProcessPoolKey";
     if (@available(iOS 11.0, *)) {
         return self.safeAreaInsets.top;
     } else if (@available(iOS 8, *)) {
-        return _wkWebView.scrollView.contentInset.top;
+        return self->_wkWebView.scrollView.contentInset.top;
     } else {
-        return _uiWebView.scrollView.contentInset.top;
+        return self->_uiWebView.scrollView.contentInset.top;
     }
 }
 
@@ -477,7 +504,7 @@ typedef BOOL (*GetFuc)(id, SEL);
     } else {
         BOOL bRet = NO;
         do {
-            Ivar internalVar = class_getInstanceVariable([_uiWebView class], "_internal");
+            Ivar internalVar = class_getInstanceVariable([self->_uiWebView class], "_internal");
             if (!internalVar) {
                 TLog(@"enable GL _internal invalid!");
                 break;
@@ -529,65 +556,65 @@ typedef BOOL (*GetFuc)(id, SEL);
 #pragma mark - Function
 - (void)reload {
     if (@available(iOS 8, *)) {
-        [_wkWebView reload];
+        [self->_wkWebView reload];
     } else {
-        [_uiWebView reload];
+        [self->_uiWebView reload];
     }
 }
 
 - (void)stopLoading {
     if (@available(iOS 8, *)) {
-        [_wkWebView stopLoading];
+        [self->_wkWebView stopLoading];
     } else {
-        [_uiWebView stopLoading];
+        [self->_uiWebView stopLoading];
     }
 }
 
 - (void)goBack {
     if (@available(iOS 8, *)) {
-        [_wkWebView goBack];
+        [self->_wkWebView goBack];
     } else {
-        [_uiWebView goBack];
+        [self->_uiWebView goBack];
     }
 }
 
 - (void)goForward {
     if (@available(iOS 8, *)) {
-        [_wkWebView goForward];
+        [self->_wkWebView goForward];
     } else {
-        [_uiWebView goForward];
+        [self->_uiWebView goForward];
     }
 }
 
 - (void)loadRequest:(NSURLRequest *)request {
     if (@available(iOS 8, *)) {
-        [_wkWebView loadRequest:request];
+        [self->_wkWebView loadRequest:request];
     } else {
-        [_uiWebView loadRequest:request];
+        [self->_uiWebView loadRequest:request];
     }
 }
 
 - (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL {
     if (@available(iOS 8, *)) {
-        [_wkWebView loadHTMLString:string baseURL:baseURL];
+        [self->_wkWebView loadHTMLString:string baseURL:baseURL];
     } else {
-        [_uiWebView loadHTMLString:string baseURL:baseURL];
+        [self->_uiWebView loadHTMLString:string baseURL:baseURL];
     }
 }
 
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL {
     if (@available(iOS 9, *)) {
-        [_wkWebView loadData:data MIMEType:MIMEType characterEncodingName:textEncodingName baseURL:baseURL];
+        [self->_wkWebView loadData:data MIMEType:MIMEType characterEncodingName:textEncodingName baseURL:baseURL];
     } else if (@available(iOS 8, *)) {
         TLog(@"iOS8不可使用本方法，支持9.0以上或者8.0以下（不包含8.0）");
     } else {
-        [_uiWebView loadData:data MIMEType:MIMEType textEncodingName:textEncodingName baseURL:baseURL];
+        [self->_uiWebView loadData:data MIMEType:MIMEType textEncodingName:textEncodingName baseURL:baseURL];
     }
 }
 
 - (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL {
     if (@available(iOS 9, *)) {
-        return [_wkWebView loadFileURL:URL allowingReadAccessToURL:readAccessURL];
+        return [self->_wkWebView loadFileURL:URL allowingReadAccessToURL:readAccessURL];
     } else {
         TLog(@"支持9.0以上");
         return nil;
@@ -610,7 +637,7 @@ typedef BOOL (*GetFuc)(id, SEL);
         return;
     }
     if (@available(iOS 9, *)) {
-        [_wkWebView loadFileURL:realFileURL allowingReadAccessToURL:baseURL ?: realFileURL];
+        [self->_wkWebView loadFileURL:realFileURL allowingReadAccessToURL:baseURL ?: realFileURL];
     } else if (@available(iOS 8, *)) {
         NSString *tmpBasePath = [self copyFilesFromBasePath:basePath ?: realFilePath];
         NSURL *tmpFileURL = [NSURL fileURLWithPath:tmpBasePath];
@@ -619,11 +646,11 @@ typedef BOOL (*GetFuc)(id, SEL);
             tmpFileURL = [NSURL fileURLWithPath:tmpFilePath];
         }
         if (tmpFileURL) {
-            [_wkWebView loadRequest:[NSURLRequest requestWithURL:tmpFileURL]];
+            [self->_wkWebView loadRequest:[NSURLRequest requestWithURL:tmpFileURL]];
         }
     } else {
         // is UIWebView
-        [_uiWebView loadRequest:[NSURLRequest requestWithURL:realFileURL]];
+        [self->_uiWebView loadRequest:[NSURLRequest requestWithURL:realFileURL]];
     }
 }
 
@@ -660,8 +687,8 @@ typedef BOOL (*GetFuc)(id, SEL);
 - (void)resetCookieForceOverride:(BOOL)forceOverride {
     [self runJavascript:[self getSetCookieJSCodeWithForceOverride:forceOverride]
              completion:^(id obj, NSError *error) {
-                 TLog(@"重设cookie成功");
-             }];
+        TLog(@"重设cookie成功");
+    }];
 }
 
 
@@ -694,7 +721,7 @@ typedef BOOL (*GetFuc)(id, SEL);
         [self resetProgressViewTopInsert];
     }
     
-    if (object == _wkWebView) {
+    if (object == self->_wkWebView) {
         if ([keyPath isEqualToString:@"estimatedProgress"]) {
             double newprogress = [[change objectForKey:NSKeyValueChangeNewKey] doubleValue];
             [self setProgress:newprogress animated:YES];
@@ -745,22 +772,22 @@ typedef BOOL (*GetFuc)(id, SEL);
         WKWebsiteDataStore *dateStore = [WKWebsiteDataStore defaultDataStore];
         [dateStore fetchDataRecordsOfTypes:[WKWebsiteDataStore allWebsiteDataTypes]
                          completionHandler:^(NSArray<WKWebsiteDataRecord *> * __nonnull records) {
-                             @tstrongify(self);
-                             for (WKWebsiteDataRecord *record  in records) {
-                                 //取消备注，可以针对某域名清除，否则是全清
-                                 //if (![record.displayName containsString:@"baidu"]) {
-                                 //    continue;
-                                 //}
-                                 ms = [ms stringByAppendingString:[NSString stringWithFormat:@"%@\n", record.displayName]];
-                                 [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:record.dataTypes
-                                                                           forDataRecords:@[record]
-                                                                        completionHandler:^{
-                                                                            TLog(@"Cookies for %@ deleted successfully",record.displayName);
-                                                                        }];
-                             }
-                             [self showPrompt:[NSString stringWithFormat:@"%@:%@", @"清除成功", iosVer]
-                                      message:ms];
-                         }];
+            @tstrongify(self);
+            for (WKWebsiteDataRecord *record  in records) {
+                //取消备注，可以针对某域名清除，否则是全清
+                //if (![record.displayName containsString:@"baidu"]) {
+                //    continue;
+                //}
+                ms = [ms stringByAppendingString:[NSString stringWithFormat:@"%@\n", record.displayName]];
+                [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:record.dataTypes
+                                                          forDataRecords:@[record]
+                                                       completionHandler:^{
+                    TLog(@"Cookies for %@ deleted successfully",record.displayName);
+                }];
+            }
+            [self showPrompt:[NSString stringWithFormat:@"%@:%@", @"清除成功", iosVer]
+                     message:ms];
+        }];
     } else if (@available(iOS 8, *)) {
         iosVer = @"iOS 8";
         NSString *libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -909,10 +936,10 @@ typedef BOOL (*GetFuc)(id, SEL);
             }
         };
         
-        [_wkWebView evaluateJavaScript:js
-                     completionHandler:completionBlock];
+        [self->_wkWebView evaluateJavaScript:js
+                           completionHandler:completionBlock];
     } else {
-        NSString *resultString = [_uiWebView stringByEvaluatingJavaScriptFromString:js];
+        NSString *resultString = [self->_uiWebView stringByEvaluatingJavaScriptFromString:js];
         if (completion == nil) {
             return;
         }

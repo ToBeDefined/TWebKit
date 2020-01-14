@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TWebViewCommonDelegate : NSObject <TWebViewDelegate>
 
-+ (instancetype)sharedInstance;
+@property (class, nonatomic, strong, readonly) TWebViewCommonDelegate *shared;
 
 #pragma mark - TWebViewDelegate
 - (BOOL)webView:(TWebView *)webView shouldStartLoadRequest:(NSURLRequest *)request;

@@ -13,23 +13,36 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, IBCWebViewConfigBlockType) {
+    IBCWebViewConfigBlockTypeNotSet,
+    IBCWebViewConfigBlockTypeAllow,
+    IBCWebViewConfigBlockTypeForbidden,
+};
+
 @interface TWebViewConfig : NSObject
+
+@property (class, nonatomic, strong, readonly) TWebViewConfig *defaultConfig;
 
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable webViewCommonDelegate;
 @property (nonatomic, weak) id<TWebViewDelegate> _Nullable webViewDelegate;
+
 @property (nonatomic, assign) BOOL forceOverrideCookie;
+
 @property (nonatomic, assign) BOOL showProgressView;
 @property (nonatomic, strong) UIColor *progressTintColor;
 @property (nonatomic, assign) CGFloat progressViewHeight;
 
 // User Interaction
-@property (nonatomic, assign) BOOL canSelectContent;        // if set NO, Block most of the pages select content.
-@property (nonatomic, assign) BOOL canScrollChangeSize;
-@property (nonatomic, assign) BOOL blockTouchCallout;       // Block ActionSheet & Long Press Menus
+
+// if set IBCWebViewConfigBlockTypeNone, Block most of the pages select content.
+@property (nonatomic, assign) IBCWebViewConfigBlockType selectContentType;
+@property (nonatomic, assign) IBCWebViewConfigBlockType scrollChangeSizeType;
+// Block ActionSheet & Long Press Menus
+@property (nonatomic, assign) IBCWebViewConfigBlockType touchCalloutType;
 // only uper ios 8.0
-@property (nonatomic, assign) BOOL canScrollBack API_AVAILABLE(ios(8.0));
+@property (nonatomic, assign) IBCWebViewConfigBlockType scrollBackType;
 // only uper ios 9.0
-@property (nonatomic, assign) BOOL block3DTouch API_AVAILABLE(ios(9.0));
+@property (nonatomic, assign) IBCWebViewConfigBlockType webView3DTouchType API_AVAILABLE(ios(9.0));
 
 @property (nonatomic, copy) NSString *confirmText;
 @property (nonatomic, copy) NSString *cancelText;

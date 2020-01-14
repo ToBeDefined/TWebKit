@@ -18,6 +18,11 @@ typedef NS_ENUM(NSUInteger, TWebViewControllerNavigationTitleLevel) {
 
 @interface TWebViewController : UIViewController
 
+/// default is `NSURLRequestUseProtocolCachePolicy`
+@property (class, nonatomic, assign) NSURLRequestCachePolicy defaultCachePolicy;
+/// default is `60.0`
+@property (class, nonatomic, assign) NSTimeInterval defaultTimeoutInterval;
+
 @property (nonatomic, strong) TWebView *webView;
 
 @property (nonatomic, copy) NSString * _Nullable navTitle NS_DEPRECATED(2.0, 2.0, 2.0, 2.0, "Use `navgationTitle`");
@@ -31,12 +36,18 @@ typedef NS_ENUM(NSUInteger, TWebViewControllerNavigationTitleLevel) {
 
 - (instancetype)initWithConfig:(TWebViewConfig *)config;
 
+/// use defaultCachePolicy and defaultTimeoutInterval for NSURLRequest
 - (void)loadURLFromString:(NSString *)urlString;
-- (void)loadURLAndAutoConversionFromString:(NSString *)urlString;
+
+- (void)loadURLFromString:(NSString *)urlString
+              cachePolicy:(NSURLRequestCachePolicy)cachePolicy
+          timeoutInterval:(NSTimeInterval)timeoutInterval;
+
 - (void)loadLocalFileInPath:(NSString *)filePath;
+
 - (void)loadLocalFileInBasePath:(NSString *)basePath relativeFilePath:(nullable NSString *)relativeFilePath;
 
-- (void)resetWebViewCookieForceOverride:(BOOL)forceOverride;
+- (void)resetWebViewCookieForceOverride:(BOOL)forceOverride NS_SWIFT_NAME(resetWebViewCookie(forceOverride:));
 
 @end
 

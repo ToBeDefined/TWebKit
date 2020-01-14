@@ -79,9 +79,9 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     // 使用set方法重新注入js
-    self.tWebView.canSelectContent = self.tWebView.canSelectContent;
-    self.tWebView.canScrollChangeSize = self.tWebView.canScrollChangeSize;
-    self.tWebView.blockTouchCallout = self.tWebView.blockTouchCallout;
+    self.tWebView.selectContentType = self.tWebView.selectContentType;
+    self.tWebView.scrollChangeSizeType = self.tWebView.scrollChangeSizeType;
+    self.tWebView.touchCalloutType = self.tWebView.touchCalloutType;
     
     id<TWebViewDelegate> delegate = [self.tWebView getDelegateWithSEL:@selector(webView:didFinishLoadRequest:)];
     [delegate webView:self.tWebView didFinishLoadRequest:self.tWebView.request];
@@ -97,11 +97,10 @@
     [delegate webView:self.tWebView didFailedLoadRequest:self.tWebView.request withError:error];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [self.tWebView getDocumentTitle:^(NSString * _Nullable title) {
-        [delegate webView:self.tWebView
-               loadStatus:TWebViewLoadStatusFailed
-                    title:isNotEmptyString(title) ? title : self.tWebView.failedDefaultTitle];
-    }];
+    NSString *title = self.tWebView.title;
+    [delegate webView:self.tWebView
+           loadStatus:TWebViewLoadStatusFailed
+                title:isNotEmptyString(title) ? title : self.tWebView.failedDefaultTitle];
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
@@ -113,11 +112,10 @@
     [delegate webView:self.tWebView didFailedLoadRequest:self.tWebView.request withError:error];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [self.tWebView getDocumentTitle:^(NSString * _Nullable title) {
-        [delegate webView:self.tWebView
-               loadStatus:TWebViewLoadStatusFailed
-                    title:isNotEmptyString(title) ? title : self.tWebView.failedDefaultTitle];
-    }];
+    NSString *title = self.tWebView.title;
+    [delegate webView:self.tWebView
+           loadStatus:TWebViewLoadStatusFailed
+                title:isNotEmptyString(title) ? title : self.tWebView.failedDefaultTitle];
 }
 
 

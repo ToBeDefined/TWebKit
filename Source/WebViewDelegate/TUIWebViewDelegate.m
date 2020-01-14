@@ -64,7 +64,7 @@ const float WebViewFinalProgressValue = 0.9f;
     BOOL isTopLevelNavigation = [request.mainDocumentURL isEqual:request.URL];
     BOOL isHTTPOrLocalFile = [request.URL.scheme isEqualToString:@"http"] || [request.URL.scheme isEqualToString:@"https"] || [request.URL.scheme isEqualToString:@"file"];
     if (ret && !isFragmentJump && isHTTPOrLocalFile && isTopLevelNavigation) {
-        _currentURL = request.URL;
+        self->_currentURL = request.URL;
         [self reset];
     }
     return ret;
@@ -81,8 +81,8 @@ const float WebViewFinalProgressValue = 0.9f;
            loadStatus:TWebViewLoadStatusIsLoading
                 title:self.tWebView.loadingDefaultTitle];
     
-    ++ _loadingCount;
-    _maxLoadCount = fmax(_maxLoadCount, _loadingCount);
+    ++ self->_loadingCount;
+    self->_maxLoadCount = fmax(self->_maxLoadCount, self->_loadingCount);
     [self startProgress];
 }
 
@@ -91,22 +91,15 @@ const float WebViewFinalProgressValue = 0.9f;
     [delegate webView:self.tWebView didFinishLoadRequest:self.tWebView.request];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [self.tWebView runJavascript:@"document.title"
-                      completion:^(id _Nullable obj, NSError * _Nullable error) {
-                          NSString *title = obj;
-                          title = isNotEmptyString(title) ? title : self.tWebView.successDefaultTitle;
-                          [delegate webView:self.tWebView
-                                 loadStatus:TWebViewLoadStatusSuccess
-                                      title:title];
-                          if (error != nil) {
-                              TLog(@"%@", error);
-                          }
-                      }];
+    NSString *title = self.tWebView.title;
+    [delegate webView:self.tWebView
+           loadStatus:TWebViewLoadStatusSuccess
+                title:isNotEmptyString(title) ? title : self.tWebView.successDefaultTitle];
     
     // 使用set方法重新注入js
-    self.tWebView.canSelectContent = self.tWebView.canSelectContent;
-    self.tWebView.canScrollChangeSize = self.tWebView.canScrollChangeSize;
-    self.tWebView.blockTouchCallout = self.tWebView.blockTouchCallout;
+    self.tWebView.selectContentType = self.tWebView.selectContentType;
+    self.tWebView.scrollChangeSizeType = self.tWebView.scrollChangeSizeType;
+    self.tWebView.touchCalloutType = self.tWebView.touchCalloutType;
     [self reduceLoadingCount:nil];
 }
 
@@ -118,11 +111,10 @@ const float WebViewFinalProgressValue = 0.9f;
             withError:error];
     
     delegate = [self.tWebView getDelegateWithSEL:@selector(webView:loadStatus:title:)];
-    [self.tWebView getDocumentTitle:^(NSString * _Nullable title) {
-        [delegate webView:self.tWebView
-               loadStatus:TWebViewLoadStatusFailed
-                    title:isNotEmptyString(title) ? title : self.tWebView.failedDefaultTitle];
-    }];
+    NSString *title = self.tWebView.title;
+    [delegate webView:self.tWebView
+           loadStatus:TWebViewLoadStatusFailed
+                title:isNotEmptyString(title) ? title : self.tWebView.failedDefaultTitle];
     [self reduceLoadingCount:error];
 }
 
@@ -132,23 +124,23 @@ const float WebViewFinalProgressValue = 0.9f;
 }
 
 - (void)startProgress {
-    if (_progress < WebViewInitialProgressValue) {
+    if (self->_progress < WebViewInitialProgressValue) {
         [self setProgress:WebViewInitialProgressValue];
     }
 }
 
 - (void)setProgress:(float)progress {
     // progress should be incremental only
-    if (progress > _progress || progress == 0) {
-        _progress = progress;
+    if (progress > self->_progress || progress == 0) {
+        self->_progress = progress;
         [self.tWebView setProgress:progress animated:YES];
     }
 }
 
 - (void)incrementProgress {
     float progress = self.progress;
-    float maxProgress = _interactive ? WebViewFinalProgressValue : WebViewInteractiveProgressValue;
-    float remainPercent = (float)_loadingCount / (float)_maxLoadCount;
+    float maxProgress = self->_interactive ? WebViewFinalProgressValue : WebViewInteractiveProgressValue;
+    float remainPercent = (float)self->_loadingCount / (float)self->_maxLoadCount;
     float increment = (maxProgress - progress) * remainPercent;
     progress += increment;
     progress = fmin(progress, maxProgress);
@@ -156,14 +148,14 @@ const float WebViewFinalProgressValue = 0.9f;
 }
 
 - (void)reset {
-    _maxLoadCount = _loadingCount = 0;
-    _interactive = NO;
+    self->_maxLoadCount = self->_loadingCount = 0;
+    self->_interactive = NO;
     [self setProgress:0.0];
 }
 
 // UIWebView Calculate Progress Func
 - (void)reduceLoadingCount:(nullable NSError*)error {
-    -- _loadingCount;
+    -- self->_loadingCount;
     [self incrementProgress];
     @tweakify(self)
     [self.tWebView runJavascript:@"document.readyState" completion:^(id  _Nonnull obj, NSError * _Nonnull error) {

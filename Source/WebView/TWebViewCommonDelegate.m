@@ -2,8 +2,8 @@
 //  TWebViewCommonDelegate.m
 //  TWebView
 //
-//  Created by 邵伟男 on 2017/7/27.
-//  Copyright © 2017年 邵伟男. All rights reserved.
+//  Created by TBD on 2017/7/27.
+//  Copyright © 2017年 TBD. All rights reserved.
 //
 
 #import "TWebViewCommonDelegate.h"
@@ -21,7 +21,7 @@ static TWebViewCommonDelegate *__staticInstance;
 
 
 #pragma mark: Shared Instance
-+ (instancetype)sharedInstance {
++ (instancetype)shared {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         __staticInstance = [[self.class alloc] init];

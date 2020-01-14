@@ -80,6 +80,9 @@ IB_DESIGNABLE
 @property (nonatomic, readonly) BOOL canGoForward;
 @property (nonatomic, readonly, getter=isLoading) BOOL loading;
 
+// WKWebView title
+@property (nullable, nonatomic, readonly, copy) NSString *title API_AVAILABLE(ios(8.0));
+
 // xib or storyboard only (should set before init)
 @property (nonatomic, assign) IBInspectable BOOL forceOverrideCookie;
 
@@ -89,11 +92,14 @@ IB_DESIGNABLE
 @property (nonatomic, assign) IBInspectable CGFloat progressViewHeight;
 
 // User Interaction
-@property (nonatomic, assign) IBInspectable BOOL canSelectContent;    // if set NO, Block most of the pages select content.
-@property (nonatomic, assign) IBInspectable BOOL canScrollChangeSize;
-@property (nonatomic, assign) IBInspectable BOOL blockTouchCallout;   // Block ActionSheet & Long Press Menus
-@property (nonatomic, assign) IBInspectable BOOL canScrollBack API_AVAILABLE(ios(8.0));
-@property (nonatomic, assign) IBInspectable BOOL block3DTouch API_AVAILABLE(ios(9.0));
+@property (nonatomic, assign) IBCWebViewConfigBlockType selectContentType;
+@property (nonatomic, assign) IBCWebViewConfigBlockType scrollChangeSizeType;
+// Block ActionSheet & Long Press Menus
+@property (nonatomic, assign) IBCWebViewConfigBlockType touchCalloutType;
+// only uper ios 8.0
+@property (nonatomic, assign) IBCWebViewConfigBlockType scrollBackType API_AVAILABLE(ios(8.0));
+// only uper ios 9.0
+@property (nonatomic, assign) IBCWebViewConfigBlockType webView3DTouchType API_AVAILABLE(ios(9.0));
 
 // Texts
 @property (nonatomic, copy) IBInspectable NSString *confirmText;
@@ -107,7 +113,9 @@ IB_DESIGNABLE
 - (instancetype)initWithConfig:(TWebViewConfig *)config;
 - (instancetype)initWithFrame:(CGRect)frame;
 - (instancetype)initWithConfig:(TWebViewConfig *)config
-                         frame:(CGRect)frame;
+                         frame:(CGRect)frame NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
 - (nullable id<TWebViewDelegate>)getDelegateWithSEL:(SEL)sel;
 
@@ -131,6 +139,7 @@ IB_DESIGNABLE
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)textEncodingName baseURL:(NSURL *)baseURL;
 // 9.0之后可用
 - (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL API_AVAILABLE(ios(9.0));
+
 // loal local file (single file)
 - (void)loadLocalFileInPath:(NSString *)filePath;
 // load local file in base path
