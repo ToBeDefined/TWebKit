@@ -16,7 +16,7 @@ typealias NSLayoutConstraintAttribute = NSLayoutAttribute
 #endif
 
 class CustomWebViewController: UIViewController {
-    var webView: TWebView!
+    var webView: TWebView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +39,7 @@ class CustomWebViewController: UIViewController {
 //        webView = TWebView.init(frame: CGRect.init(x: 0, y: 0, width: 20, height: 20));
 //        webView = TWebView.init(config: config, frame: CGRect.init(x: 0, y: 0, width: 20, height: 20))
         
+        guard let webView = webView else { return }
         self.view.addSubview(webView);
         self.layoutWebView()
         if let url = URL.init(string: "http://www.qq.com/") {
@@ -47,6 +48,7 @@ class CustomWebViewController: UIViewController {
     }
     
     func layoutWebView() {
+        guard let webView = webView else { return }
         webView.translatesAutoresizingMaskIntoConstraints = false
         let array: [NSLayoutConstraintAttribute] = [.left, .right, .bottom]
         for attr in array {
